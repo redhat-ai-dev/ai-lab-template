@@ -121,7 +121,22 @@ spec:
           gitSecretKey: password
           webhookSecret: pipelines-secret
           webhookSecretKey: webhook.secret
-          defaultBranch: main
+          defaultBranch: ${{ parameters.branch }}
+    - id: fetch-skeleton
+      name: Fetch Skeleton
+      action: fetch:template
+      input:
+        url: ../../skeleton/source-repo
+        values:
+          name: ${{ parameters.name }}
+          namespace: ${{ parameters.namespace }}
+          description: Secure Supply Chain Example for Code Generation Application example that generate code in countless programming languages. 
+          gitopsSecretName: ${{ 'gitops-auth-secret' if parameters.hostType === 'GitHub' else 'gitlab-auth-secret' }}
+          image: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
+          tags: '["ai"]'
+          owner: ${{ parameters.owner }} 
+          repoSlug: '${{ parameters.imageOrg }}/${{ parameters.imageName }}'
+          defaultBranch: ${{ parameters.branch }} 
     # This action creates a new GitHub repository and publishes the files in the workspace directory to the repository.
     - id: publish-github
       name: Publish Repository to GitHub
