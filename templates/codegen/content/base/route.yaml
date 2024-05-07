@@ -14,22 +14,6 @@ spec:
     termination: edge
   to:
     kind: Service
-    name: llamacpp-svc
+    name: ${{ values.name }} 
     weight: 100 
   wildcardPolicy: None
-
-
-# apiVersion: route.openshift.io/v1
-# kind: Route
-# metadata:
-#   name: llamacpp-route
-#   namespace: test-proj
-# spec:
-#   host: llamacpp.apps.rosa.f5mm6-ny5i2-ai4.1uvd.p3.openshiftapps.com
-#   port:
-#     targetPort: 8501
-#   to:
-#     kind: Service
-#     name: llamacpp-svc
-#     weight: 100
-#   wildcardPolicy: None

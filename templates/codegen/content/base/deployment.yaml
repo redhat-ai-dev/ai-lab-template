@@ -37,7 +37,6 @@ spec:
         name: codegen-inference
         ports:
         - containerPort: 8501
-          hostPort: 8501
         securityContext:
           runAsNonRoot: true
       - env:
@@ -51,7 +50,6 @@ spec:
         name: codegen-model-service
         ports:
         - containerPort: 8001
-          hostPort: 8001
         securityContext:
           runAsNonRoot: true
         volumeMounts:
