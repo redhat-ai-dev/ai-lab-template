@@ -1,10 +1,4 @@
 ROOTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )" 
 
-# pull in latest pipeline run definition
-$ROOTDIR/scripts/update-tekton-definition
-
-# generate templates from samples
-$ROOTDIR/scripts/import-repo
-
-# get gitops templates
-$ROOTDIR/scripts/import-gitops-template
+# get app templates
+$ROOTDIR/scripts/import-ai-lab-app

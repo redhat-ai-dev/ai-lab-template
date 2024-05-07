@@ -1,0 +1,177 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+# https://backstage.io/docs/features/software-catalog/descriptor-format#kind-template
+kind: Template
+metadata:
+  name: codegen
+  title: Code Generation Application
+  description: Code Generation Application example that generate code in countless programming languages.
+  tags: ["ai"]
+spec:
+  type: service
+  # These parameters are used to generate the input form in the frontend, and are
+  # used to gather input data for the execution of the template.
+  parameters:
+    - title: Application Information
+      required:
+        - name
+        - owner
+      properties:
+        name:
+          title: Name
+          type: string
+          description: Unique name of the component
+          ui:autofocus: true
+          ui:options:
+            rows: 5
+          ui:field: EntityNamePicker
+          maxLength: 63
+        owner:
+          title: Owner
+          type: string
+          description: Owner of the component
+          default: user:guest
+          ui:field: OwnerPicker
+          ui:options:
+            catalogFilter:
+              kind: [Group, User]
+    - title: Application Repository Information
+      required:
+        - hostType
+        - repoOwner
+        - repoName
+        - branch
+      properties:
+        hostType:
+          title: Host Type
+          type: string
+          enum:
+            - GitHub
+            - GitLab
+          defaut: GitHub
+        repoOwner:
+          title: Repository Owner
+          type: string
+          ui:help: The organization, user or project that this repo will belong to
+        repoName:
+          title: Repository Name
+          type: string
+        branch:
+          title: Repository Default Branch
+          type: string
+          default: main
+      dependencies:
+        hostType:
+          oneOf:
+            - required:
+                - githubServer
+              properties:
+                hostType:
+                    const: GitHub
+                githubServer:
+                  title: Repository Server
+                  type: string
+                  default: github.com
+                  ui:help: "You can also provide the on-prem github server, example: github-github.apps.cluster-ljg9z.sandbox219.opentlc.com"
+            - required:
+                - gitlabServer
+              properties:
+                hostType:
+                    const: GitLab
+                gitlabServer:
+                  title: Repository Server
+                  type: string
+                  default: gitlab.com
+                  ui:help: "You can also provide the on-prem gitlab server, example: gitlab-gitlab.apps.cluster-ljg9z.sandbox219.opentlc.com"
+    - title: Deployment information
+      required:
+        - namespace
+      properties:
+        namespace:
+          title: Deployment Namespace
+          type: string
+          default: rhtap-app
+          ui:autofocus: true
+          ui:options:
+            rows: 5
+  # These steps are executed in the scaffolder backend, using data that we gathered
+  # via the parameters above.
+  steps:
+    # Each step executes an action, in this case one templates files into the workspace.
+    # Get the sample source code
+    - id: fetch-base
+      name: Fetch Base
+      action: fetch:template
+      input:
+        url: ./content
+        targetPath: ./app
+        values:
+          name: ${{ parameters.name }}
+          description: This is example app for ${{ parameters.name }}
+          appName: ${{ parameters.name }} # for now just use the component name, since it's single component app
+          namespace: ${{ parameters.namespace }}
+          repoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}
+          rhtapNamespace: rhtap
+          defaultDeployNamespace: rhtap-app
+          # example: github.com?owner=<owner>&repo=<srcRepo>, the gitops repo name will be <srcRepo>-gitops
+          owner: ${{ parameters.owner }} 
+          argoNS: rhtap
+          argoProject: default
+          secretRef: ${{ parameters.hostType === 'GitLab' }}
+          gitSecret: gitlab-auth-secret
+          gitSecretKey: password
+          webhookSecret: pipelines-secret
+          webhookSecretKey: webhook.secret
+          defaultBranch: main
+    # This action creates a new GitHub repository and publishes the files in the workspace directory to the repository.
+    - id: publish-github
+      name: Publish Repository to GitHub
+      action: publish:github
+      if: ${{ parameters.hostType === 'GitHub' }}
+      input:
+        allowedHosts: [ '${{ parameters.githubServer}}' ]
+        description: This is ${{ parameters.name }}
+        repoUrl: ${{ parameters.githubServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}
+        defaultBranch: ${{ parameters.branch }}
+        protectDefaultBranch: false
+        repoVisibility: "public"
+    # This action creates a new GitLab repository and publishes the files in the workspace directory to the repository.
+    - id: publish-gitlab
+      name: Publish Repository to GitLab
+      action: publish:gitlab
+      if: ${{ parameters.hostType === 'GitLab' }}
+      input:
+        allowedHosts: [ '${{ parameters.gitlabServer }}' ]
+        description: This is ${{ parameters.name }}
+        repoUrl: ${{ parameters.gitlabServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}
+        defaultBranch: ${{ parameters.branch }}
+        protectDefaultBranch: false
+        repoVisibility: "public"
+    - id: wait-for-github-repository
+      name: Waiting for repository availability
+      action: 'debug:wait'
+      input:
+        seconds: 3
+    - id: register
+      name: Register
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps['publish-github'].output.repoContentsUrl if steps['publish-github'].output else steps['publish-gitlab'].output.repoContentsUrl }}
+        catalogInfoPath: '/catalog-info.yaml'
+    - id: create-argocd-resources
+      name: Create ArgoCD Resources
+      action: argocd:create-resources
+      input:
+        appName: ${{ parameters.name }}-app
+        # name set in rhdh config
+        argoInstance: default
+        namespace: rhtap
+        repoUrl: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops.git
+        path: './app'
+  # Outputs are displayed to the user after a successful execution of the template.
+  output:
+    links:
+      - title: Source Repository
+        url: ${{ steps['publish-github'].output.remoteUrl if steps['publish-github'].output else steps['publish-gitlab'].output.remoteUrl }}
+      - title: Open Component in catalog
+        icon: catalog
+        entityRef: ${{ steps['register'].output.entityRef }}
