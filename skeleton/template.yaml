@@ -180,7 +180,7 @@ spec:
         # name set in rhdh config
         argoInstance: default
         namespace: ${ARGOCD__DEFAULT__NAMESPACE}
-        repoUrl: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops.git
+        repoUrl: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}.git
         path: './app'
   # Outputs are displayed to the user after a successful execution of the template.
   output:
