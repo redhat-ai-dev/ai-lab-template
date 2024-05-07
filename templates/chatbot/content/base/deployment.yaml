@@ -24,8 +24,8 @@ spec:
     spec:
       initContainers:
       - name: model-file
-        image: quay.io/yangcao/mistral-7b-code-16k-qlora:latest
-        command: [sh,-c, "/usr/bin/install /model/model.file /shared/"]
+        image: quay.io/yangcao/granite-7b-lab:latest
+        command: ['/usr/bin/install', "/model/model.file", "/shared/"]
         volumeMounts:
         - name: model-file
           mountPath: /shared
@@ -33,8 +33,8 @@ spec:
       - env:
         - name: MODEL_ENDPOINT
           value: http://0.0.0.0:8001
-        image: quay.io/ai-lab/codegen:latest
-        name: codegen-inference
+        image: quay.io/ai-lab/chatbot:latest
+        name: chatbot-inference
         ports:
         - containerPort: 8501
         securityContext:
@@ -47,7 +47,7 @@ spec:
         - name: MODEL_PATH
           value: /model/model.file
         image: quay.io/ai-lab/llamacpp_python:latest
-        name: codegen-model-service
+        name: chatbot-model-service
         ports:
         - containerPort: 8001
         securityContext:
