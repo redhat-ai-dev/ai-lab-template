@@ -103,7 +103,7 @@ spec:
       action: fetch:template
       input:
         url: ./content
-        targetPath: ./app
+        targetPath: ./${{ parameters.name }}
         values:
           name: ${{ parameters.name }}
           description: This is example app for ${{ parameters.name }}
