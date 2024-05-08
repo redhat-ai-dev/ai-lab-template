@@ -1,4 +1,4 @@
 export APP_NAME="codegen"
 export APP_DISPLAY_NAME="Code Generation Application"
 export APP_DESC="Code Generation Application example that generate code in countless programming languages."
-export APP_TAGS='["ai"]'
+export APP_TAGS='["ai", "llamacpp", "python"]'

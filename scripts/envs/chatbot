@@ -1,4 +1,4 @@
 export APP_NAME="chatbot"
 export APP_DISPLAY_NAME="Chatbot Application"
 export APP_DESC="Chatbot Application example with LLM enabled chat applications"
-export APP_TAGS='["ai"]'
+export APP_TAGS='["ai", "llamacpp", "python"]'

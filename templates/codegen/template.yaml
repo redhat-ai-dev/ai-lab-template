@@ -5,7 +5,7 @@ metadata:
   name: codegen
   title: Code Generation Application
   description: Code Generation Application example that generate code in countless programming languages.
-  tags: ["ai"]
+  tags: ["ai", "llamacpp", "python"]
 spec:
   type: service
   # These parameters are used to generate the input form in the frontend, and are
@@ -133,7 +133,7 @@ spec:
           description: Secure Supply Chain Example for Code Generation Application example that generate code in countless programming languages. 
           gitopsSecretName: ${{ 'gitops-auth-secret' if parameters.hostType === 'GitHub' else 'gitlab-auth-secret' }}
           image: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
-          tags: '["ai"]'
+          tags: '["ai", "llamacpp", "python"]'
           owner: ${{ parameters.owner }} 
           repoSlug: '${{ parameters.imageOrg }}/${{ parameters.imageName }}'
           defaultBranch: ${{ parameters.branch }} 
