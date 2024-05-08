@@ -12,5 +12,5 @@ spec:
   template: 
     spec:
       containers:
-      - image: ${{ values.image }}
-        name: container-image  
+      - image: quay.io/ai-lab/codegen:latest # use pre-built to bootstrap 
+        name: codegen-inference 

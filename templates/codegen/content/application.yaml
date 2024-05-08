@@ -13,7 +13,7 @@ metadata:
 spec:
   project: ${{ values.argoProject }}
   source:
-    path: ./app/base
+    path: ./app/overlays
     repoURL: ${{ values.repoURL }}.git
     targetRevision: main
   destination:

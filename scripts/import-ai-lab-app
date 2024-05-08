@@ -2,7 +2,7 @@
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )" 
 ROOT_DIR=$(realpath $SCRIPTDIR/..)
 
-REPO="https://github.com/yangcao77/ai-lab-app"
+REPO="https://github.com/redhat-ai-dev/ai-lab-app"
 DIRNAME=$(basename $REPO)
 mkdir -p $SCRIPTDIR/samples 
 SAMPLE_DIR=$SCRIPTDIR/samples/$DIRNAME 
