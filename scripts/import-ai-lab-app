@@ -1,33 +1,10 @@
 
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )" 
 ROOT_DIR=$(realpath $SCRIPTDIR/..)
+SKELETON_DIR=$ROOT_DIR/skeleton
+TEMPLATE_DIR=$ROOT_DIR/templates
 
-REPO="https://github.com/redhat-ai-dev/ai-lab-app"
-DIRNAME=$(basename $REPO)
-mkdir -p $SCRIPTDIR/samples 
-SAMPLE_DIR=$SCRIPTDIR/samples/$DIRNAME 
-if [ -d $SAMPLE_DIR ]; then
-    (cd $SAMPLE_DIR; git pull 2>&1 > /dev/null)
-else 
-    (cd $SCRIPTDIR/samples;  git clone $REPO 2>&1 > /dev/null)
-fi
-
-function iterate() {
-  local dir="$1"
-
-  for file in "$dir"/*; do
-    if [ -f "$file" ]; then
-      sed -i "s/{{/\${{ /g" $file
-      sed -i "s/}}/ }}/g" $file
-    fi
-
-    if [ -d "$file" ]; then
-      iterate "$file"
-    fi
-  done
-}
-
-cd $SAMPLE_DIR
+cd $TEMPLATE_DIR
 for f in */; do
     if [ -d "$f" ]; then
         # $f is a directory
@@ -35,9 +12,7 @@ for f in */; do
         DEST=$ROOT_DIR/templates/$SAMPLENAME
         rm -rf $DEST
         mkdir -p $DEST
-        cp -r $SAMPLE_DIR/$SAMPLENAME/. $DEST/content
-        cp $SAMPLE_DIR/application.yaml $DEST/content
-        iterate $DEST/content
+        cp -r $SKELETON_DIR/gitops-template $DEST/content
 
         cp $ROOT_DIR/skeleton/template.yaml $DEST/template.yaml
 

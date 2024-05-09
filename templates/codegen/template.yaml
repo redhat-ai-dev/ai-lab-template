@@ -103,7 +103,6 @@ spec:
       action: fetch:template
       input:
         url: ./content
-        targetPath: ./app
         values:
           name: ${{ parameters.name }}
           description: This is example app for ${{ parameters.name }}
@@ -112,6 +111,7 @@ spec:
           repoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}
           rhtapNamespace: rhtap
           defaultDeployNamespace: rhtap-app
+          argoComponentOverlays: './components/${{ parameters.name }}/overlays'
           # example: github.com?owner=<owner>&repo=<srcRepo>, the gitops repo name will be <srcRepo>-gitops
           owner: ${{ parameters.owner }} 
           argoNS: rhtap
@@ -121,6 +121,11 @@ spec:
           gitSecretKey: password
           webhookSecret: pipelines-secret
           webhookSecretKey: webhook.secret
+          initContainer: quay.io/yangcao/mistral-7b-code-16k-qlora:latest
+          appContainer: quay.io/ai-lab/codegen:latest
+          appPort: 8501
+          modelServiceContainer: quay.io/ai-lab/llamacpp_python:latest
+          modelServicePort: 8001
           defaultBranch: ${{ parameters.branch }}
     - id: fetch-skeleton
       name: Fetch Skeleton
@@ -136,7 +141,15 @@ spec:
           tags: '["ai", "llamacpp", "python"]'
           owner: ${{ parameters.owner }} 
           repoSlug: '${{ parameters.imageOrg }}/${{ parameters.imageName }}'
-          defaultBranch: ${{ parameters.branch }} 
+          defaultBranch: ${{ parameters.branch }}
+    - action: fs:rename
+      id: renameComponentDir
+      name: Rename Component Directory
+      input:
+        files:
+          - from: ./components/http
+            to: ./components/${{ parameters.name }}
+            overwrite: true
     # This action creates a new GitHub repository and publishes the files in the workspace directory to the repository.
     - id: publish-github
       name: Publish Repository to GitHub
@@ -181,7 +194,7 @@ spec:
         argoInstance: default
         namespace: rhtap
         repoUrl: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}.git
-        path: './app'
+        path: './app-of-apps'
   # Outputs are displayed to the user after a successful execution of the template.
   output:
     links:
