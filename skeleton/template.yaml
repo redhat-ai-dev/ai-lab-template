@@ -111,6 +111,8 @@ spec:
           repoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}
           rhtapNamespace: ${RHTAP__DEFAULT__NAMESPACE}
           defaultDeployNamespace: ${DEFAULT__DEPLOYMENT__NAMESPACE__PREFIX}
+          argoComponent: './components/${{ parameters.name }}/overlays/development'
+          argoComponentOverlays: './components/${{ parameters.name }}/overlays'
           # example: github.com?owner=<owner>&repo=<srcRepo>, the gitops repo name will be <srcRepo>-gitops
           owner: ${{ parameters.owner }} 
           argoNS: ${ARGOCD__DEFAULT__NAMESPACE}
