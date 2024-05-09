@@ -103,7 +103,6 @@ spec:
       action: fetch:template
       input:
         url: ./content
-        targetPath: ./app
         values:
           name: ${{ parameters.name }}
           description: This is example app for ${{ parameters.name }}
@@ -121,6 +120,11 @@ spec:
           gitSecretKey: ${GIT__SECRET__DEFAULT__KEY}
           webhookSecret: ${WEBHOOK__SECRET__DEFAULT__NAME}
           webhookSecretKey: ${WEBHOOK__SECRET__DEFAULT__KEY}
+          initContainer: ${INIT_CONTAINER}
+          appContainer: ${APP_INTERFACE_CONTAINER}
+          appPort: ${APP_PORT}
+          modelServiceContainer: ${MODEL_SERVICE_CONTAINER}
+          modelServicePort: ${MODEL_SERVICE_PORT}
           defaultBranch: ${{ parameters.branch }}
     - id: fetch-skeleton
       name: Fetch Skeleton
@@ -181,7 +185,7 @@ spec:
         argoInstance: default
         namespace: ${ARGOCD__DEFAULT__NAMESPACE}
         repoUrl: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}.git
-        path: './app'
+        path: './app-of-apps'
   # Outputs are displayed to the user after a successful execution of the template.
   output:
     links:

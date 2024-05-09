@@ -103,7 +103,6 @@ spec:
       action: fetch:template
       input:
         url: ./content
-        targetPath: ./app
         values:
           name: ${{ parameters.name }}
           description: This is example app for ${{ parameters.name }}
@@ -121,6 +120,11 @@ spec:
           gitSecretKey: password
           webhookSecret: pipelines-secret
           webhookSecretKey: webhook.secret
+          initContainer: quay.io/yangcao/mistral-7b-code-16k-qlora:latest
+          appContainer: quay.io/ai-lab/codegen:latest
+          appPort: 8501
+          modelServiceContainer: quay.io/ai-lab/llamacpp_python:latest
+          modelServicePort: 8001
           defaultBranch: ${{ parameters.branch }}
     - id: fetch-skeleton
       name: Fetch Skeleton
@@ -181,7 +185,7 @@ spec:
         argoInstance: default
         namespace: rhtap
         repoUrl: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}.git
-        path: './app'
+        path: './app-of-apps'
   # Outputs are displayed to the user after a successful execution of the template.
   output:
     links:
