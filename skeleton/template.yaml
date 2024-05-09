@@ -141,7 +141,15 @@ spec:
           tags: 'sed.edit.APPTAGS'
           owner: ${{ parameters.owner }} 
           repoSlug: '${{ parameters.imageOrg }}/${{ parameters.imageName }}'
-          defaultBranch: ${{ parameters.branch }} 
+          defaultBranch: ${{ parameters.branch }}
+    - action: fs:rename
+      id: renameComponentDir
+      name: Rename Component Directory
+      input:
+        files:
+          - from: gitops/components/http
+            to: gitops/components/${{ parameters.name }}
+            overwrite: true
     # This action creates a new GitHub repository and publishes the files in the workspace directory to the repository.
     - id: publish-github
       name: Publish Repository to GitHub
