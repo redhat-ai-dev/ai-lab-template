@@ -147,8 +147,8 @@ spec:
       name: Rename Component Directory
       input:
         files:
-          - from: gitops/components/http
-            to: gitops/components/${{ parameters.name }}
+          - from: ./components/http
+            to: ./components/${{ parameters.name }}
             overwrite: true
     # This action creates a new GitHub repository and publishes the files in the workspace directory to the repository.
     - id: publish-github
