@@ -2,8 +2,8 @@ apiVersion: scaffolder.backstage.io/v1beta3
 # https://backstage.io/docs/features/software-catalog/descriptor-format#kind-template
 kind: Template
 metadata:
-  name: chatbot2
-  title: Chatbot2 Application
+  name: chatbot
+  title: Chatbot Application
   description: Chatbot Application example with LLM enabled chat applications
   tags: ["ai", "llamacpp", "python"]
 spec:
