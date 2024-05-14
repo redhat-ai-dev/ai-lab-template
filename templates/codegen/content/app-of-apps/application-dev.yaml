@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: ${{ values.name }}-development
+  name: ${{ values.name }}
   namespace: ${{ values.argoNS }}
   finalizers: ["resources-finalizer.argocd.argoproj.io"] 
 spec:
@@ -11,7 +11,7 @@ spec:
     repoURL: ${{ values.repoURL }}.git
     targetRevision: main
   destination:
-    namespace: ${{ values.namespace }}-development
+    namespace: ${{ values.namespace }}
     server: https://kubernetes.default.svc
   syncPolicy:
     managedNamespaceMetadata:
