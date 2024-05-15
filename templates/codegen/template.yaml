@@ -84,8 +84,27 @@ spec:
                   ui:help: "You can also provide the on-prem gitlab server, example: gitlab-gitlab.apps.cluster-ljg9z.sandbox219.opentlc.com"
     - title: Deployment information
       required:
+        - imageRegistry
+        - imageOrg
+        - imageName
         - namespace
       properties:
+        imageRegistry:
+          title: Image Registry
+          type: string
+          description: The image registry host
+          default: quay.io
+          ui:help: "You can also provide the on-prem registry host, example: quay-tv2pb.apps.cluster-tv2pb.sandbox1194.opentlc.com"
+        imageOrg:
+          title: Image Organization
+          type: string
+          description: The organization, user or project that this repo will belong to
+        imageName:
+          title: Image Name
+          type: string
+          ui:autofocus: true
+          ui:options:
+            rows: 5
         namespace:
           title: Deployment Namespace
           type: string
@@ -105,28 +124,11 @@ spec:
         url: ./content
         values:
           name: ${{ parameters.name }}
-          description: This is example app for ${{ parameters.name }}
-          appName: ${{ parameters.name }} # for now just use the component name, since it's single component app
           namespace: ${{ parameters.namespace }}
-          repoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}
-          rhtapNamespace: rhtap
-          defaultDeployNamespace: rhtap-app
-          argoComponentOverlays: './components/${{ parameters.name }}/overlays'
-          # example: github.com?owner=<owner>&repo=<srcRepo>, the gitops repo name will be <srcRepo>-gitops
-          owner: ${{ parameters.owner }} 
-          argoNS: rhtap
-          argoProject: default
-          secretRef: ${{ parameters.hostType === 'GitLab' }}
-          gitSecret: gitlab-auth-secret
-          gitSecretKey: password
-          webhookSecret: pipelines-secret
-          webhookSecretKey: webhook.secret
-          initContainer: quay.io/yangcao/mistral-7b-code-16k-qlora:latest
-          appContainer: quay.io/ai-lab/codegen:latest
-          appPort: 8501
-          modelServiceContainer: quay.io/ai-lab/llamacpp_python:latest
-          modelServicePort: 8001
-          defaultBranch: ${{ parameters.branch }}
+          repoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops
+          srcRepoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}
+          
+    # Renders all the template variables into the files and directory names and content, and places the result in the workspace.
     - id: fetch-skeleton
       name: Fetch Skeleton
       action: fetch:template
@@ -136,20 +138,14 @@ spec:
           name: ${{ parameters.name }}
           namespace: ${{ parameters.namespace }}
           description: Secure Supply Chain Example for Code Generation Application example that generate code in countless programming languages. 
+          dockerfile: sed.edit.DOCKERFILE
+          buildContext: sed.edit.BUILDCONTEXT
           gitopsSecretName: ${{ 'gitops-auth-secret' if parameters.hostType === 'GitHub' else 'gitlab-auth-secret' }}
           image: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
           tags: '["ai", "llamacpp", "python"]'
           owner: ${{ parameters.owner }} 
           repoSlug: '${{ parameters.imageOrg }}/${{ parameters.imageName }}'
-          defaultBranch: ${{ parameters.branch }}
-    - action: fs:rename
-      id: renameComponentDir
-      name: Rename Component Directory
-      input:
-        files:
-          - from: ./components/http
-            to: ./components/${{ parameters.name }}
-            overwrite: true
+          defaultBranch: ${{ parameters.branch }} 
     # This action creates a new GitHub repository and publishes the files in the workspace directory to the repository.
     - id: publish-github
       name: Publish Repository to GitHub
@@ -174,6 +170,75 @@ spec:
         defaultBranch: ${{ parameters.branch }}
         protectDefaultBranch: false
         repoVisibility: "public"
+    # The final step is to register our new component in the catalog.
+    - id: fetch-gitops-skeleton
+      name: Fetch Gitops Skeleton
+      action: fetch:template
+      input:
+        url: ../../skeleton/gitops-template
+        targetPath: gitops
+        values:
+          name: ${{ parameters.name }}
+          appName: ${{ parameters.name }}-gitops # for now just use the component name, since it's single component app
+          description: This is GitOps manifest for ${{ parameters.name }}
+          namespace: ${{ parameters.namespace }}
+          rhtapNamespace: rhtap
+          defaultDeployNamespace: rhtap-app
+          # example: github.com?owner=<owner>&repo=<srcRepo>, the gitops repo name will be <srcRepo>-gitops
+          repoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops
+          srcRepoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}
+          argoComponentOverlays: './components/${{ parameters.name }}/overlays'
+          owner: ${{ parameters.owner }} 
+          image: quay.io/redhat-appstudio/dance-bootstrap-app:latest # bootstrap app image as placeholder
+          # actual src image, should be used by tekton PR pipeline to update the image in gitops repo
+          srcImage: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
+          port: sed.edit.IMAGEPORT
+          argoNS: rhtap
+          argoProject: default
+          secretRef: ${{ parameters.hostType === 'GitLab' }}
+          gitSecret: gitlab-auth-secret
+          gitSecretKey: password
+          webhookSecret: pipelines-secret
+          webhookSecretKey: webhook.secret
+          defaultBranch: main
+          initContainer: quay.io/yangcao/mistral-7b-code-16k-qlora:latest
+          appContainer: quay.io/ai-lab/codegen:latest
+          appPort: 8501
+          modelServiceContainer: quay.io/ai-lab/llamacpp_python:latest
+          modelServicePort: 8001
+    - action: fs:rename
+      id: renameComponentDir
+      name: Rename Component Directory
+      input:
+        files:
+          - from: gitops/components/http
+            to: gitops/components/${{ parameters.name }}
+            overwrite: true
+    - id: publish-github-gitops
+      name: Publish GitOps Repository to Github
+      action: publish:github
+      if: ${{ parameters.hostType === 'GitHub' }}
+      input:
+        sourcePath: gitops
+        allowedHosts: ['${{ parameters.githubServer }}']
+        description: This is GitOps repository for ${{ parameters.name }}
+        repoUrl:  ${{ parameters.githubServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}-gitops
+        defaultBranch: "main"
+        protectDefaultBranch: false
+        repoVisibility: "public"
+    # This action creates a new GitLab repository and publishes the files in the workspace directory to the repository.
+    - id: publish-gitlab-gitops
+      name: Publish GitOps Repository to GitLab
+      action: publish:gitlab
+      if: ${{ parameters.hostType === 'GitLab' }}
+      input:
+        sourcePath: gitops
+        allowedHosts: ['${{ parameters.gitlabServer }}']
+        description: This is GitOps repository for ${{ parameters.name }}
+        repoUrl:  ${{ parameters.gitlabServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}-gitops
+        defaultBranch: "main"
+        protectDefaultBranch: false
+        repoVisibility: "public"
     - id: wait-for-github-repository
       name: Waiting for repository availability
       action: 'debug:wait'
@@ -185,21 +250,32 @@ spec:
       input:
         repoContentsUrl: ${{ steps['publish-github'].output.repoContentsUrl if steps['publish-github'].output else steps['publish-gitlab'].output.repoContentsUrl }}
         catalogInfoPath: '/catalog-info.yaml'
+    - id: register-gitops
+      name: Register Gitops
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps['publish-github-gitops'].output.repoContentsUrl if steps['publish-github-gitops'].output else steps['publish-gitlab-gitops'].output.repoContentsUrl }}
+        catalogInfoPath: '/catalog-info.yaml'
     - id: create-argocd-resources
       name: Create ArgoCD Resources
       action: argocd:create-resources
       input:
-        appName: ${{ parameters.name }}-app
+        appName: ${{ parameters.name }}-app-of-apps
         # name set in rhdh config
         argoInstance: default
         namespace: rhtap
-        repoUrl: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}.git
+        repoUrl: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops.git
         path: './app-of-apps'
   # Outputs are displayed to the user after a successful execution of the template.
   output:
     links:
       - title: Source Repository
         url: ${{ steps['publish-github'].output.remoteUrl if steps['publish-github'].output else steps['publish-gitlab'].output.remoteUrl }}
+      - title: GitOps Repository
+        url: ${{ steps['publish-github-gitops'].output.remoteUrl if steps['publish-github-gitops'].output else steps['publish-gitlab-gitops'].output.remoteUrl }}
       - title: Open Component in catalog
         icon: catalog
         entityRef: ${{ steps['register'].output.entityRef }}
+      - title: Open GitOps Resource in catalog
+        icon: catalog
+        entityRef: ${{ steps['register-gitops'].output.entityRef }}

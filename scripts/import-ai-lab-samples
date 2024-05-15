@@ -4,7 +4,17 @@ ROOT_DIR=$(realpath $SCRIPTDIR/..)
 SKELETON_DIR=$ROOT_DIR/skeleton
 TEMPLATE_DIR=$ROOT_DIR/templates
 
-cd $TEMPLATE_DIR
+REPO="https://github.com/redhat-ai-dev/ai-lab-samples"
+DIRNAME=$(basename $REPO)
+mkdir -p $SCRIPTDIR/samples 
+SAMPLE_DIR=$SCRIPTDIR/samples/$DIRNAME 
+if [ -d $SAMPLE_DIR ]; then
+    (cd $SAMPLE_DIR; git pull 2>&1 > /dev/null)
+else 
+    (cd $SCRIPTDIR/samples;  git clone $REPO 2>&1 > /dev/null)
+fi
+
+cd $SAMPLE_DIR
 for f in */; do
     if [ -d "$f" ]; then
         # $f is a directory
@@ -12,7 +22,7 @@ for f in */; do
         DEST=$ROOT_DIR/templates/$SAMPLENAME
         rm -rf $DEST
         mkdir -p $DEST
-        cp -r $SKELETON_DIR/gitops-template $DEST/content
+        cp -r $SAMPLE_DIR/$SAMPLENAME $DEST/content
 
         cp $ROOT_DIR/skeleton/template.yaml $DEST/template.yaml
 
