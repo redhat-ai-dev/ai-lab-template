@@ -28,6 +28,11 @@ for f in */; do
 
         source $SCRIPTDIR/envs/$SAMPLENAME
 
+        if [ -f $f/Containerfile ]; then
+            sed -i "s!sed.edit.DOCKERFILE!Containerfile!g" $DEST/template.yaml
+            sed -i "s!sed.edit.BUILDCONTEXT!.!g" $DEST/template.yaml
+        fi
+
         sed -i "s!sed.edit.NAME!$APP_NAME!g" $DEST/template.yaml
         sed -i "s!sed.edit.TITLE!$APP_DISPLAY_NAME!g" $DEST/template.yaml
         sed -i "s!sed.edit.DESCRIPTION!$APP_DESC!g" $DEST/template.yaml
