@@ -199,7 +199,7 @@ spec:
           gitSecretKey: ${GIT__SECRET__DEFAULT__KEY}
           webhookSecret: ${WEBHOOK__SECRET__DEFAULT__NAME}
           webhookSecretKey: ${WEBHOOK__SECRET__DEFAULT__KEY}
-          defaultBranch: ${{ parameters.branch }}
+          defaultBranch: main
           initContainer: ${INIT_CONTAINER}
           appContainer: ${APP_INTERFACE_CONTAINER}
           appPort: ${APP_PORT}

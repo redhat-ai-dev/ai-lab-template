@@ -199,7 +199,7 @@ spec:
           gitSecretKey: password
           webhookSecret: pipelines-secret
           webhookSecretKey: webhook.secret
-          defaultBranch: ${{ parameters.branch }}
+          defaultBranch: main
           initContainer: quay.io/yangcao/granite-7b-lab:latest
           appContainer: quay.io/ai-lab/chatbot:latest
           appPort: 8501
