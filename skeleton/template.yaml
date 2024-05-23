@@ -127,7 +127,10 @@ spec:
           namespace: ${{ parameters.namespace }}
           repoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops
           srcRepoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}
-          
+          appContainer: ${APP_INTERFACE_CONTAINER}
+          appPort: ${APP_PORT}
+          modelServiceContainer: ${MODEL_SERVICE_CONTAINER}
+          modelServicePort: ${MODEL_SERVICE_PORT}          
     # Renders all the template variables into the files and directory names and content, and places the result in the workspace.
     - id: fetch-skeleton
       name: Fetch Skeleton
