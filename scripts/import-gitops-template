@@ -24,7 +24,8 @@ cp -r $TEMPDIR/$REPONAME/templates/application.yaml $DEST/
 
 # copy readme to techdoc folder
 cp -r $TEMPDIR/$REPONAME/README.md $ROOTDIR/skeleton/techdoc/docs/gitops-application.md
-
+sed -i "s/{{/\${{ /g" $ROOTDIR/skeleton/techdoc/docs/gitops-application.md
+sed -i "s/}}/ }}/g" $ROOTDIR/skeleton/techdoc/docs/gitops-application.md
 rm -rf $TEMPDIR
 
 # replace {{value}} to ${{ value }} for software templates
@@ -48,5 +49,4 @@ function iterate() {
 
 iterate $DEST/components
 iterate $DEST/app-of-apps
-
 
