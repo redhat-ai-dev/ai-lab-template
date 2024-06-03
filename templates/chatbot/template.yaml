@@ -208,6 +208,9 @@ spec:
           appPort: 8501
           modelServiceContainer: quay.io/ai-lab/llamacpp_python:latest
           modelServicePort: 8001
+          vllmSelected: true
+          vllmModelServiceContainer: quay.io/rh-aiservices-bu/vllm-openai-ubi9:0.4.2
+          vllmModelName: instructlab/granite-7b-lab
     - action: fs:rename
       id: renameComponentDir
       name: Rename Component Directory

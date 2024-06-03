@@ -42,7 +42,10 @@ spec:
         securityContext:
           runAsNonRoot: true
       {%- if values.vllmSelected %}
-      - image: ${{ values.vllmModelServiceContainer }}
+      - env:
+        - name: MODEL_NAME
+          value: "${{ values.vllmModelName }}"
+        image: ${{ values.vllmModelServiceContainer }}
         args: [
             "--model",
             "${{ values.vllmModelName }}",
@@ -52,11 +55,7 @@ spec:
             "/models-cache"]
         resources:
           limits:
-            cpu: '8'
-            memory: 24Gi
             nvidia.com/gpu: '1'
-          requests:
-            cpu: '6'
         volumeMounts:
         - name: dshm
           mountPath: /dev/shm
