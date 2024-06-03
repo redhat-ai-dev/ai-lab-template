@@ -22,6 +22,7 @@ spec:
       labels:
         app.kubernetes.io/instance:  ${{ values.name }}
     spec:
+      {%- if !values.vllmSelected %}
       initContainers:
       - name: model-file
         image: ${{ values.initContainer }}
@@ -29,6 +30,7 @@ spec:
         volumeMounts:
         - name: model-file
           mountPath: /shared
+      {%- endif %}
       containers:
       - env:
         - name: MODEL_ENDPOINT
@@ -39,6 +41,28 @@ spec:
         - containerPort: ${{ values.appPort }}
         securityContext:
           runAsNonRoot: true
+      {%- if values.vllmSelected %}
+      - image: ${{ values.vllmModelServiceContainer }}
+        args: [
+            "--model",
+            "${{ values.vllmModelName }}",
+            "--port",
+            "${{ values.modelServicePort }}",
+            "--download-dir",
+            "/models-cache"]
+        resources:
+          limits:
+            cpu: '8'
+            memory: 24Gi
+            nvidia.com/gpu: '1'
+          requests:
+            cpu: '6'
+        volumeMounts:
+        - name: dshm
+          mountPath: /dev/shm
+        - name: models-cache
+          mountPath: /models-cache
+      {%- else %}
       - env:
         - name: HOST
           value: "0.0.0.0"
@@ -47,14 +71,31 @@ spec:
         - name: MODEL_PATH
           value: /model/model.file
         image: ${{ values.modelServiceContainer }}
+        volumeMounts:
+        - name: model-file
+          mountPath: /model
+      {%- endif %}
         name: app-model-service
         ports:
         - containerPort: ${{ values.modelServicePort }}
         securityContext:
           runAsNonRoot: true
-        volumeMounts:
-        - name: model-file
-          mountPath: /model
+      {%- if values.vllmSelected %}
+      volumes:
+      - name: dshm
+        emptyDir:
+          medium: Memory
+          sizeLimit: "2Gi"
+      - name: models-cache
+        persistentVolumeClaim:
+          claimName: vllm-models-cache
+
+      tolerations:
+        - key: nvidia.com/gpu
+          operator: Exists
+          effect: NoSchedule
+      {%- else %}
       volumes:
       - name: model-file
         emptyDir: {}
+      {%- endif %}
