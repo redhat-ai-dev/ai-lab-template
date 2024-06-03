@@ -208,6 +208,7 @@ spec:
           appPort: 8501
           modelServiceContainer: quay.io/ai-lab/llamacpp_python:latest
           modelServicePort: 8001
+          vllmSelected: false
     - action: fs:rename
       id: renameComponentDir
       name: Rename Component Directory
