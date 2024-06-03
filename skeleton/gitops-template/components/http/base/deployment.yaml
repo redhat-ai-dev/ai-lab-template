@@ -22,7 +22,7 @@ spec:
       labels:
         app.kubernetes.io/instance:  ${{ values.name }}
     spec:
-      {%- if values.vllmSelected == "false" or values.vllmSelected == nil %}
+      {%- if values.vllmSelected == nil or not(values.vllmSelected) %}
       initContainers:
       - name: model-file
         image: ${{ values.initContainer }}
