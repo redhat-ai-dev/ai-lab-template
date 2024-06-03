@@ -204,7 +204,7 @@ spec:
           webhookSecretKey: webhook.secret
           defaultBranch: main
           initContainer: quay.io/yangcao/granite-7b-lab:latest
-          appContainer: quay.io/ai-lab/chatbot:latest
+          appContainer: quay.io/yangcao/chatbot:latest #quay.io/ai-lab/chatbot:latest
           appPort: 8501
           modelServiceContainer: quay.io/ai-lab/llamacpp_python:latest
           modelServicePort: 8001
