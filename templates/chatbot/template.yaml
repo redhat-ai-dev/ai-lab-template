@@ -203,11 +203,13 @@ spec:
           webhookSecret: pipelines-secret
           webhookSecretKey: webhook.secret
           defaultBranch: main
-          initContainer: quay.io/yangcao/granite-7b-lab:latest
+          initContainer: quay.io/ai-lab/granite-7b-lab:latest #quay.io/yangcao/granite-7b-lab:latest
           appContainer: quay.io/ai-lab/chatbot:latest
           appPort: 8501
           modelServiceContainer: quay.io/ai-lab/llamacpp_python:latest
           modelServicePort: 8001
+          # set to false for the timebeing, till vllm supported in software template is implemented
+          vllmSelected: false
     - action: fs:rename
       id: renameComponentDir
       name: Rename Component Directory
