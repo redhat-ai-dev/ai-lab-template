@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: vllm-models-cache
+  name: vllm-models-cache-${{ values.name }}
 spec:
   accessModes:
     - ReadWriteOnce
