@@ -208,6 +208,8 @@ spec:
           appPort: ${APP_PORT}
           modelServiceContainer: ${MODEL_SERVICE_CONTAINER}
           modelServicePort: ${MODEL_SERVICE_PORT}
+          # set to false for the timebeing, till vllm supported in software template is implemented
+          vllmSelected: false
     - action: fs:rename
       id: renameComponentDir
       name: Rename Component Directory

@@ -8,6 +8,9 @@ commonLabels:
   app.kubernetes.io/part-of: ${{ values.name }}
 resources: 
 - initialize-namespace.yaml
+{%- if values.vllmSelected %}
+- pvc.yaml
+{%- endif %}
 - deployment.yaml
 - route.yaml
 - service.yaml
