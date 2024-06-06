@@ -15,6 +15,7 @@ spec:
       required:
         - name
         - owner
+        - modelServer
       properties:
         name:
           title: Name
@@ -34,6 +35,15 @@ spec:
           ui:options:
             catalogFilter:
               kind: [Group, User]
+        modelServer:
+          title: Large Language Model(LLM) Server 
+          description: The model server container to use
+          type: string
+          enum:
+            - llama.cpp
+            - vLLM
+          defaut: llama.cpp
+          ui:help: If you choose vLLM, ensure your cluster has Nvidia GPU supported, and is with enough cpu and memory
     - title: Application Repository Information
       required:
         - hostType
@@ -208,6 +218,10 @@ spec:
           appPort: ${APP_PORT}
           modelServiceContainer: ${MODEL_SERVICE_CONTAINER}
           modelServicePort: ${MODEL_SERVICE_PORT}
+          # set to false for the timebeing, till vllm supported in software template is implemented
+          vllmSelected: ${{ parameters.modelServer === 'vLLM' }}
+          vllmModelServiceContainer: ${VLLM_CONTAINER}
+          vllmModelName: ${VLLM_MODEL_NAME}
     - action: fs:rename
       id: renameComponentDir
       name: Rename Component Directory

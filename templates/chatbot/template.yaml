@@ -15,6 +15,7 @@ spec:
       required:
         - name
         - owner
+        - modelServer
       properties:
         name:
           title: Name
@@ -34,6 +35,15 @@ spec:
           ui:options:
             catalogFilter:
               kind: [Group, User]
+        modelServer:
+          title: Large Language Model(LLM) Server 
+          description: The model server container to use
+          type: string
+          enum:
+            - llama.cpp
+            - vLLM
+          defaut: llama.cpp
+          ui:help: If you choose vLLM, ensure your cluster has Nvidia GPU supported, and is with enough cpu and memory
     - title: Application Repository Information
       required:
         - hostType
@@ -127,7 +137,7 @@ spec:
           namespace: ${{ parameters.namespace }}
           repoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops
           srcRepoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}
-          appContainer: quay.io/ai-lab/chatbot:latest
+          appContainer: quay.io/yangcao/chatbot:latest
           appPort: 8501
           modelServiceContainer: quay.io/ai-lab/llamacpp_python:latest
           modelServicePort: 8001          
@@ -204,11 +214,12 @@ spec:
           webhookSecretKey: webhook.secret
           defaultBranch: main
           initContainer: quay.io/yangcao/granite-7b-lab:latest
-          appContainer: quay.io/yangcao/chatbot:latest #quay.io/ai-lab/chatbot:latest
+          appContainer: quay.io/yangcao/chatbot:latest
           appPort: 8501
           modelServiceContainer: quay.io/ai-lab/llamacpp_python:latest
           modelServicePort: 8001
-          vllmSelected: true
+          # set to false for the timebeing, till vllm supported in software template is implemented
+          vllmSelected: ${{ parameters.modelServer === 'vLLM' }}
           vllmModelServiceContainer: quay.io/rh-aiservices-bu/vllm-openai-ubi9:0.4.2
           vllmModelName: instructlab/granite-7b-lab
     - action: fs:rename

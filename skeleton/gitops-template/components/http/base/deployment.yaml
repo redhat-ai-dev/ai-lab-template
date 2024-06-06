@@ -35,6 +35,10 @@ spec:
       - env:
         - name: MODEL_ENDPOINT
           value: http://0.0.0.0:${{ values.modelServicePort }}
+        {%- if values.vllmSelected %}
+        - name: MODEL_NAME
+          value: "${{ values.vllmModelName }}"
+        {%- endif %}
         image:  ${{ values.appContainer }}
         name: app-inference
         ports:
@@ -42,10 +46,7 @@ spec:
         securityContext:
           runAsNonRoot: true
       {%- if values.vllmSelected %}
-      - env:
-        - name: MODEL_NAME
-          value: "${{ values.vllmModelName }}"
-        image: ${{ values.vllmModelServiceContainer }}
+      - image: ${{ values.vllmModelServiceContainer }}
         args: [
             "--model",
             "${{ values.vllmModelName }}",
