@@ -53,7 +53,9 @@ spec:
             "--port",
             "${{ values.modelServicePort }}",
             "--download-dir",
-            "/models-cache"]
+            "/models-cache",
+            "--max-model-len",
+            "${{ values.maxModelLength }}"]
         resources:
           limits:
             nvidia.com/gpu: '1'
@@ -88,7 +90,7 @@ spec:
           sizeLimit: "2Gi"
       - name: models-cache
         persistentVolumeClaim:
-          claimName: vllm-models-cache-${{ values.name }}
+          claimName: ${{ values.name }}
 
       tolerations:
         - key: nvidia.com/gpu

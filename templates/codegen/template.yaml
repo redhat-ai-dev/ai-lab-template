@@ -40,9 +40,9 @@ spec:
           description: The model server container to use
           type: string
           enum:
-            - llama.cpp
+            - llamacpp
             - vLLM
-          defaut: llama.cpp
+          defaut: llamacpp
           ui:help: If you choose vLLM, ensure your cluster has Nvidia GPU supported, and is with enough cpu and memory
     - title: Application Repository Information
       required:
@@ -218,10 +218,11 @@ spec:
           appPort: 8501
           modelServiceContainer: quay.io/ai-lab/llamacpp_python:latest
           modelServicePort: 8001
-          # set to false for the timebeing, till vllm supported in software template is implemented
+          # for vllm
           vllmSelected: ${{ parameters.modelServer === 'vLLM' }}
           vllmModelServiceContainer: quay.io/rh-aiservices-bu/vllm-openai-ubi9:0.4.2
           vllmModelName: Nondzu/Mistral-7B-code-16k-qlora
+          maxModelLength: 6144
     - action: fs:rename
       id: renameComponentDir
       name: Rename Component Directory
