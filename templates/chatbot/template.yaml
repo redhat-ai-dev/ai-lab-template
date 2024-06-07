@@ -5,7 +5,7 @@ metadata:
   name: chatbot
   title: Chatbot Application
   description: Chatbot Application example with LLM enabled chat applications
-  tags: ["ai", "llamacpp", "python"]
+  tags: ["ai", "llamacpp", "vllm", "python"]
 spec:
   type: service
   # These parameters are used to generate the input form in the frontend, and are
@@ -15,6 +15,7 @@ spec:
       required:
         - name
         - owner
+        - modelServer
       properties:
         name:
           title: Name
@@ -34,6 +35,15 @@ spec:
           ui:options:
             catalogFilter:
               kind: [Group, User]
+        modelServer:
+          title: Large Language Model(LLM) Server 
+          description: The model server container to use
+          type: string
+          enum:
+            - llamacpp
+            - vLLM
+          defaut: llamacpp
+          ui:help: If you choose vLLM, ensure your cluster has Nvidia GPU supported, and is with enough cpu and memory
     - title: Application Repository Information
       required:
         - hostType
@@ -127,7 +137,7 @@ spec:
           namespace: ${{ parameters.namespace }}
           repoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops
           srcRepoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}
-          appContainer: quay.io/ai-lab/chatbot:latest
+          appContainer: quay.io/yangcao/chatbot:latest
           appPort: 8501
           modelServiceContainer: quay.io/ai-lab/llamacpp_python:latest
           modelServicePort: 8001          
@@ -145,7 +155,7 @@ spec:
           buildContext: .
           gitopsSecretName: ${{ 'gitops-auth-secret' if parameters.hostType === 'GitHub' else 'gitlab-auth-secret' }}
           image: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
-          tags: '["ai", "llamacpp", "python"]'
+          tags: '["ai", "llamacpp", "vllm", "python"]'
           owner: ${{ parameters.owner }} 
           repoSlug: '${{ parameters.imageOrg }}/${{ parameters.imageName }}'
           defaultBranch: ${{ parameters.branch }} 
@@ -204,12 +214,15 @@ spec:
           webhookSecretKey: webhook.secret
           defaultBranch: main
           initContainer: quay.io/yangcao/granite-7b-lab:latest
-          appContainer: quay.io/ai-lab/chatbot:latest
+          appContainer: quay.io/yangcao/chatbot:latest
           appPort: 8501
           modelServiceContainer: quay.io/ai-lab/llamacpp_python:latest
           modelServicePort: 8001
-          # set to false for the timebeing, till vllm supported in software template is implemented
-          vllmSelected: false
+          # for vllm
+          vllmSelected: ${{ parameters.modelServer === 'vLLM' }}
+          vllmModelServiceContainer: quay.io/rh-aiservices-bu/vllm-openai-ubi9:0.4.2
+          vllmModelName: instructlab/granite-7b-lab
+          maxModelLength: 4096
     - action: fs:rename
       id: renameComponentDir
       name: Rename Component Directory
