@@ -40,9 +40,9 @@ spec:
           description: The model server container to use
           type: string
           enum:
-            - llamacpp
+            - llama.cpp
             - vLLM
-          defaut: llamacpp
+          default: llama.cpp
           ui:help: If you choose vLLM, ensure your cluster has Nvidia GPU supported, and is with enough cpu and memory
     - title: Application Repository Information
       required:
