@@ -2,8 +2,10 @@ SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 ROOTDIR=$(realpath $SCRIPTDIR/..)
 
 # get gitops templates
-REPO="${1:-https://github.com/redhat-ai-dev/ai-lab-app}"
-BRANCH="${2:-main}"
+# REPO="${1:-https://github.com/redhat-ai-dev/ai-lab-app}"
+# BRANCH="${2:-main}"
+REPO="${1:-https://github.com/yangcao77/ai-lab-app-fork}"
+BRANCH="${2:-multi-pods}"
 REPONAME=$(basename $REPO)
 
 TEMPDIR=$ROOTDIR/temp
