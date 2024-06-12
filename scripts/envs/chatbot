@@ -1,9 +1,12 @@
 export APP_NAME="chatbot"
 export APP_DISPLAY_NAME="Chatbot Application"
 export APP_DESC="Chatbot Application example with LLM enabled chat applications"
-export APP_TAGS='["ai", "llamacpp", "python"]'
+export APP_TAGS='["ai", "llamacpp", "vllm", "python"]'
 export INIT_CONTAINER="quay.io/yangcao/granite-7b-lab:latest"
-export APP_INTERFACE_CONTAINER="quay.io/ai-lab/chatbot:latest"
+export APP_INTERFACE_CONTAINER="quay.io/yangcao/chatbot:latest"
 export APP_PORT=8501
 export MODEL_SERVICE_CONTAINER="quay.io/ai-lab/llamacpp_python:latest"
 export MODEL_SERVICE_PORT=8001
+export VLLM_CONTAINER="quay.io/rh-aiservices-bu/vllm-openai-ubi9:0.4.2"
+export VLLM_MODEL_NAME="instructlab/granite-7b-lab"
+export VLLM_MAX_MODEL_LEN=4096

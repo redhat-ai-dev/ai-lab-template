@@ -2,7 +2,8 @@ SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 ROOTDIR=$(realpath $SCRIPTDIR/..)
 
 # get gitops templates
-REPO="https://github.com/redhat-ai-dev/ai-lab-app"
+REPO="${1:-https://github.com/redhat-ai-dev/ai-lab-app}"
+BRANCH="${2:-main}"
 REPONAME=$(basename $REPO)
 
 TEMPDIR=$ROOTDIR/temp
@@ -10,6 +11,7 @@ rm -rf $TEMPDIR # clean up
 mkdir -p $TEMPDIR
 cd $TEMPDIR
 git clone $REPO 2>&1 > /dev/null
+(cd $REPONAME; git checkout $BRANCH; git pull)
 
 
 DEST=$ROOTDIR/skeleton/gitops-template
