@@ -132,6 +132,7 @@ spec:
       action: fetch:template
       input:
         url: ./content
+        targetPath: source
         values:
           name: ${{ parameters.name }}
           namespace: ${{ parameters.namespace }}
@@ -147,6 +148,7 @@ spec:
       action: fetch:template
       input:
         url: ../../skeleton/source-repo
+        targetPath: source
         values:
           name: ${{ parameters.name }}
           namespace: ${{ parameters.namespace }}
@@ -165,6 +167,7 @@ spec:
       action: publish:github
       if: ${{ parameters.hostType === 'GitHub' }}
       input:
+        sourcePath: source
         allowedHosts: [ '${{ parameters.githubServer}}' ]
         description: This is ${{ parameters.name }}
         repoUrl: ${{ parameters.githubServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}
@@ -178,6 +181,7 @@ spec:
       action: publish:gitlab
       if: ${{ parameters.hostType === 'GitLab' }}
       input:
+        sourcePath: source
         allowedHosts: [ '${{ parameters.gitlabServer }}' ]
         description: This is ${{ parameters.name }}
         repoUrl: ${{ parameters.gitlabServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}
