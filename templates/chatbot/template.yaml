@@ -2,8 +2,8 @@ apiVersion: scaffolder.backstage.io/v1beta3
 # https://backstage.io/docs/features/software-catalog/descriptor-format#kind-template
 kind: Template
 metadata:
-  name: chatbot4
-  title: Chatbot Application4
+  name: chatbot6
+  title: Chatbot Application6
   description: Chatbot Application example with LLM enabled chat applications
   tags: ["ai", "llamacpp", "vllm", "python"]
 spec:
@@ -182,7 +182,7 @@ spec:
         protectDefaultBranch: true
         allowAutoMerge: true
         deleteBranchOnMerge: true
-        requiredStatusCheckContexts: false
+        requiredStatusCheckContexts: []
         repoVisibility: "public"
         requiredApprovingReviewCount: 0
     # This action creates a new GitLab repository and publishes the files in the workspace directory to the repository.

@@ -182,7 +182,7 @@ spec:
         protectDefaultBranch: true
         allowAutoMerge: true
         deleteBranchOnMerge: true
-        requiredStatusCheckContexts: false
+        requiredStatusCheckContexts: []
         repoVisibility: "public"
         requiredApprovingReviewCount: 0
     # This action creates a new GitLab repository and publishes the files in the workspace directory to the repository.
