@@ -293,6 +293,7 @@ spec:
         repoUrl: ${{ parameters.githubServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}
         branchName: trigger-pipeline
         gitCommitMessage: trigger pipeline build
+        description: "pr to trigger pipeline build"
         title: trigger pipeline build
         targetBranchName: ${{ parameters.branch }}
   # Outputs are displayed to the user after a successful execution of the template.
