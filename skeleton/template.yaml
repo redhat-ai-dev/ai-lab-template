@@ -172,7 +172,7 @@ spec:
         description: This is ${{ parameters.name }}
         repoUrl: ${{ parameters.githubServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}
         defaultBranch: ${{ parameters.branch }}
-        protectDefaultBranch: false
+        protectDefaultBranch: true
         allowAutoMerge: true
         repoVisibility: "public"
     # This action creates a new GitLab repository and publishes the files in the workspace directory to the repository.
