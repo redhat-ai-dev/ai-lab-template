@@ -161,6 +161,13 @@ spec:
           owner: ${{ parameters.owner }} 
           repoSlug: '${{ parameters.imageOrg }}/${{ parameters.imageName }}'
           defaultBranch: ${{ parameters.branch }} 
+    - id: fetch-github-action
+      name: Fetch GitHub Action
+      action: fetch:plain
+      if: ${{ parameters.hostType === 'GitHub' }}
+      input:
+        targetPath: source
+        url: ../../skeleton/github-action
     # This action creates a new GitHub repository and publishes the files in the workspace directory to the repository.
     - id: publish-github
       name: Publish Repository to GitHub
@@ -174,7 +181,10 @@ spec:
         defaultBranch: ${{ parameters.branch }}
         protectDefaultBranch: true
         allowAutoMerge: true
+        deleteBranchOnMerge: true
+        requiredStatusCheckContexts: false
         repoVisibility: "public"
+        requiredApprovingReviewCount: 0
     # This action creates a new GitLab repository and publishes the files in the workspace directory to the repository.
     - id: publish-gitlab
       name: Publish Repository to GitLab
