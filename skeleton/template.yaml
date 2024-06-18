@@ -170,6 +170,7 @@ spec:
         repoUrl: ${{ parameters.githubServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}
         defaultBranch: ${{ parameters.branch }}
         protectDefaultBranch: false
+        allowAutoMerge: true
         repoVisibility: "public"
     # This action creates a new GitLab repository and publishes the files in the workspace directory to the repository.
     - id: publish-gitlab
@@ -283,6 +284,17 @@ spec:
         namespace: ${ARGOCD__DEFAULT__NAMESPACE}
         repoUrl: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops.git
         path: './app-of-apps'
+    # PR back the change
+    - id: pr-repo
+      name: Trigger Pipeline Build
+      action: publish:github:pull-request
+      if: ${{ parameters.hostType === 'GitHub' }}
+      input:
+        repoUrl: ${{ parameters.githubServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}
+        branchName: trigger-pipeline
+        gitCommitMessage: trigger pipeline build
+        title: trigger pipeline build
+        targetBranchName: ${{ parameters.branch }}
   # Outputs are displayed to the user after a successful execution of the template.
   output:
     links:
