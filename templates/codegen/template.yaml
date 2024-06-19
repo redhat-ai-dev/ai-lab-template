@@ -317,9 +317,9 @@ spec:
       action: github:actions:dispatch
       if: ${{ parameters.hostType === 'GitHub' }}
       input:
-        repoUrl: github.com?repo=testgo-0618-gitops&owner=stephanie-cy
-        branchOrTagName: main
-        workflowId: test-dispatch.yml
+        repoUrl: ${{ parameters.githubServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}
+        targetBranchName: ${{ parameters.branch }}
+        workflowId: automerge.yml
         workflowInputs: {
           pr_url: "${{ steps['trigger-build-pr'].output.remoteUrl }}"
         }
