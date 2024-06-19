@@ -321,7 +321,7 @@ spec:
         branchOrTagName: main
         workflowId: test-dispatch.yml
         workflowInputs: {
-          pr_url: ${{ steps['trigger-build-pr'].output.remoteUrl }}
+          pr_url: "${{ steps['trigger-build-pr'].output.remoteUrl }}"
         }
 
 
