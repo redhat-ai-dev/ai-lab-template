@@ -320,9 +320,8 @@ spec:
         repoUrl: github.com?repo=testgo-0618-gitops&owner=stephanie-cy
         branchOrTagName: main
         workflowId: test-dispatch.yml
-        workflowInputs: 
+        workflowInputs:
           pr_url: ${{ steps['trigger-build-pr'].output.remoteUrl }}
-          source_repo_url: https://github.com/stephanie-cy/testgo-0618
 
 
   # Outputs are displayed to the user after a successful execution of the template.
