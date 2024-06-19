@@ -318,7 +318,7 @@ spec:
       if: ${{ parameters.hostType === 'GitHub' }}
       input:
         repoUrl: ${{ parameters.githubServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}
-        targetBranchName: ${{ parameters.branch }}
+        branchOrTagName: ${{ parameters.branch }}
         workflowId: automerge.yml
         workflowInputs: {
           pr_url: "${{ steps['trigger-build-pr'].output.remoteUrl }}"

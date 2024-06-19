@@ -2,8 +2,8 @@ apiVersion: scaffolder.backstage.io/v1beta3
 # https://backstage.io/docs/features/software-catalog/descriptor-format#kind-template
 kind: Template
 metadata:
-  name: chatbot5
-  title: Chatbot Application5
+  name: chatbot6
+  title: Chatbot Application6
   description: Chatbot Application example with LLM enabled chat applications
   tags: ["ai", "llamacpp", "vllm", "python"]
 spec:
@@ -318,7 +318,7 @@ spec:
       if: ${{ parameters.hostType === 'GitHub' }}
       input:
         repoUrl: ${{ parameters.githubServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}
-        targetBranchName: ${{ parameters.branch }}
+        branchOrTagName: ${{ parameters.branch }}
         workflowId: automerge.yml
         workflowInputs: {
           pr_url: "${{ steps['trigger-build-pr'].output.remoteUrl }}"
