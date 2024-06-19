@@ -298,9 +298,9 @@ spec:
         namespace: ${ARGOCD__DEFAULT__NAMESPACE}
         repoUrl: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops.git
         path: './app-of-apps'
-    # PR back the change
-    - id: pr-repo
-      name: Trigger Pipeline Build
+    # PR with empty commit
+    - id: trigger-build-pr
+      name: PR to Trigger Pipeline Build
       action: publish:github:pull-request
       if: ${{ parameters.hostType === 'GitHub' }}
       input:
@@ -311,6 +311,20 @@ spec:
         title: trigger pipeline build
         sourcePath: source
         targetBranchName: ${{ parameters.branch }}
+    # dispatch the workflow to automerge the pr and trigger the pipeline build
+    - id: trigger_gh_workflow
+      name: Trigger GitHub workflow
+      action: github:actions:dispatch
+      if: ${{ parameters.hostType === 'GitHub' }}
+      input:
+        repoUrl: github.com?repo=testgo-0618-gitops&owner=stephanie-cy
+        branchOrTagName: main
+        workflowId: test-dispatch.yml
+        workflowInputs: 
+          pr_url: ${{ steps['trigger-build-pr'].output.remoteUrl }}
+          source_repo_url: https://github.com/stephanie-cy/testgo-0618
+
+
   # Outputs are displayed to the user after a successful execution of the template.
   output:
     links:

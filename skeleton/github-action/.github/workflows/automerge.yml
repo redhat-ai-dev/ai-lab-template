@@ -1,19 +1,11 @@
-name: automerge
+name: Trigger Target PipelineRun
+
 on:
-  pull_request:
-    types:
-      - labeled
-      - unlabeled
-      - synchronize
-      - opened
-      - edited
-      - ready_for_review
-      - reopened
-      - unlocked
-  check_suite:
-    types:
-      - completed
-  status: {}
+  workflow_dispatch:
+    inputs:
+      pr_url:
+        description: 'The PR URL that need to be merged to trigger the pipelinerun'
+        required: true
 jobs:
   automerge:
     runs-on: ubuntu-latest
@@ -25,14 +17,8 @@ jobs:
       - name: Enable Automerge
         run: gh pr merge --auto --squash "$PR_URL"
         env:
-          PR_URL: ${{ github.event.pull_request.html_url }}
+          PR_URL: ${{ github.event.inputs.pr_url }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # - id: automerge
-      #   name: automerge
-      #   uses: "pascalgn/automerge-action@v0.16.3"
-      #   env:
-      #     GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-      #     MERGE_LABELS: "automerge"
       - name: feedback
         if: ${{ steps.automerge.outputs.mergeResult == 'merged' }}
         run: |
