@@ -132,6 +132,7 @@ spec:
       action: fetch:template
       input:
         url: ./content
+        targetPath: source
         values:
           name: ${{ parameters.name }}
           namespace: ${{ parameters.namespace }}
@@ -147,6 +148,7 @@ spec:
       action: fetch:template
       input:
         url: ../../skeleton/source-repo
+        targetPath: source
         values:
           name: ${{ parameters.name }}
           namespace: ${{ parameters.namespace }}
@@ -159,24 +161,37 @@ spec:
           owner: ${{ parameters.owner }} 
           repoSlug: '${{ parameters.imageOrg }}/${{ parameters.imageName }}'
           defaultBranch: ${{ parameters.branch }} 
+    - id: fetch-github-action
+      name: Fetch GitHub Action
+      action: fetch:plain
+      if: ${{ parameters.hostType === 'GitHub' }}
+      input:
+        targetPath: source
+        url: ../../skeleton/github-action
     # This action creates a new GitHub repository and publishes the files in the workspace directory to the repository.
     - id: publish-github
       name: Publish Repository to GitHub
       action: publish:github
       if: ${{ parameters.hostType === 'GitHub' }}
       input:
+        sourcePath: source
         allowedHosts: [ '${{ parameters.githubServer}}' ]
         description: This is ${{ parameters.name }}
         repoUrl: ${{ parameters.githubServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}
         defaultBranch: ${{ parameters.branch }}
-        protectDefaultBranch: false
+        protectDefaultBranch: true
+        allowAutoMerge: true
+        deleteBranchOnMerge: true
+        requiredStatusCheckContexts: []
         repoVisibility: "public"
+        requiredApprovingReviewCount: 0
     # This action creates a new GitLab repository and publishes the files in the workspace directory to the repository.
     - id: publish-gitlab
       name: Publish Repository to GitLab
       action: publish:gitlab
       if: ${{ parameters.hostType === 'GitLab' }}
       input:
+        sourcePath: source
         allowedHosts: [ '${{ parameters.gitlabServer }}' ]
         description: This is ${{ parameters.name }}
         repoUrl: ${{ parameters.gitlabServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}
@@ -283,6 +298,33 @@ spec:
         namespace: rhtap
         repoUrl: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops.git
         path: './app-of-apps'
+    # PR with empty commit
+    - id: trigger-build-pr
+      name: PR to Trigger Pipeline Build
+      action: publish:github:pull-request
+      if: ${{ parameters.hostType === 'GitHub' }}
+      input:
+        repoUrl: ${{ parameters.githubServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}
+        branchName: trigger-pipeline
+        gitCommitMessage: trigger pipeline build
+        description: "pr to trigger pipeline build"
+        title: trigger pipeline build
+        sourcePath: source
+        targetBranchName: ${{ parameters.branch }}
+    # dispatch the workflow to automerge the pr and trigger the pipeline build
+    - id: trigger_gh_workflow
+      name: Trigger GitHub workflow
+      action: github:actions:dispatch
+      if: ${{ parameters.hostType === 'GitHub' }}
+      input:
+        repoUrl: ${{ parameters.githubServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}
+        branchOrTagName: ${{ parameters.branch }}
+        workflowId: automerge.yml
+        workflowInputs: {
+          pr_url: "${{ steps['trigger-build-pr'].output.remoteUrl }}"
+        }
+
+
   # Outputs are displayed to the user after a successful execution of the template.
   output:
     links:
