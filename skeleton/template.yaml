@@ -138,7 +138,7 @@ spec:
           namespace: ${{ parameters.namespace }}
           repoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops
           srcRepoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}
-          appContainer: ${{ '${APP_INTERFACE_CONTAINER}' if parameters.hostType === 'GitHub' else 'quay.io/redhat-ai-dev/ai-template-bootstrap-app:latest' }}
+          appContainer: ${{ 'quay.io/redhat-ai-dev/ai-template-bootstrap-app:latest' if parameters.hostType === 'GitHub' else '${APP_INTERFACE_CONTAINER}' }}
           appPort: ${APP_PORT}
           modelServiceContainer: ${MODEL_SERVICE_CONTAINER}
           modelServicePort: ${MODEL_SERVICE_PORT}          
@@ -229,7 +229,7 @@ spec:
           webhookSecretKey: ${WEBHOOK__SECRET__DEFAULT__KEY}
           defaultBranch: main
           initContainer: ${INIT_CONTAINER}
-          appContainer: ${{ '${APP_INTERFACE_CONTAINER}' if parameters.hostType === 'GitHub' else 'quay.io/redhat-ai-dev/ai-template-bootstrap-app:latest' }}
+          appContainer: ${{ 'quay.io/redhat-ai-dev/ai-template-bootstrap-app:latest' if parameters.hostType === 'GitHub' else '${APP_INTERFACE_CONTAINER}' }}
           appPort: ${APP_PORT}
           modelServiceContainer: ${MODEL_SERVICE_CONTAINER}
           modelServicePort: ${MODEL_SERVICE_PORT}
