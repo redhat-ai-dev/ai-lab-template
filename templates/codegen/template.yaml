@@ -138,7 +138,7 @@ spec:
           namespace: ${{ parameters.namespace }}
           repoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops
           srcRepoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}
-          appContainer: quay.io/yangcao/codegen:latest
+          appContainer: ${{ 'quay.io/redhat-ai-dev/codegen:latest' if parameters.hostType === 'GitHub' else 'quay.io/redhat-ai-dev/ai-template-bootstrap-app:latest' }}
           appPort: 8501
           modelServiceContainer: quay.io/ai-lab/llamacpp_python:latest
           modelServicePort: 8001          
@@ -228,8 +228,8 @@ spec:
           webhookSecret: pipelines-secret
           webhookSecretKey: webhook.secret
           defaultBranch: main
-          initContainer: quay.io/yangcao/mistral-7b-code-16k-qlora:latest
-          appContainer: quay.io/yangcao/codegen:latest
+          initContainer: quay.io/redhat-ai-dev/mistral-7b-code-16k-qlora:latest
+          appContainer: ${{ 'quay.io/redhat-ai-dev/codegen:latest' if parameters.hostType === 'GitHub' else 'quay.io/redhat-ai-dev/ai-template-bootstrap-app:latest' }}
           appPort: 8501
           modelServiceContainer: quay.io/ai-lab/llamacpp_python:latest
           modelServicePort: 8001
