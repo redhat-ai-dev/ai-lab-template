@@ -2,11 +2,13 @@ export APP_NAME="codegen"
 export APP_DISPLAY_NAME="Code Generation Application"
 export APP_DESC="Code Generation Application example that generate code in countless programming languages."
 export APP_TAGS='["ai", "llamacpp", "vllm", "python"]'
-export INIT_CONTAINER="quay.io/yangcao/mistral-7b-code-16k-qlora:latest"
-export APP_INTERFACE_CONTAINER="quay.io/yangcao/codegen:latest"
+export INIT_CONTAINER="quay.io/redhat-ai-dev/mistral-7b-code-16k-qlora:latest"
 export APP_PORT=8501
 export MODEL_SERVICE_CONTAINER="quay.io/ai-lab/llamacpp_python:latest"
 export MODEL_SERVICE_PORT=8001
 export VLLM_CONTAINER="quay.io/rh-aiservices-bu/vllm-openai-ubi9:0.4.2"
 export VLLM_MODEL_NAME="Nondzu/Mistral-7B-code-16k-qlora"
 export VLLM_MAX_MODEL_LEN=6144
+
+# for gitlab case, since gitlab does not have pipeline webhook pre-set to trigger the initial build
+export APP_INTERFACE_CONTAINER="quay.io/redhat-ai-dev/codegen:latest"
