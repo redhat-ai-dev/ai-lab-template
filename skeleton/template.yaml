@@ -124,7 +124,7 @@ spec:
             rows: 5
         rhoaiSelected:
           title: Create workbench for OpenShift AI
-          description: Deploy to OpenShift AI in your app's namespace?
+          description: Deploy to OpenShift AI in your app's namespace
           type: boolean
           default: false
           ui:help: If you select this field, you must ensure that Red Hat OpenShift AI has been installed on your cluster.
