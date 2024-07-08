@@ -246,7 +246,6 @@ spec:
           maxModelLength: ${VLLM_MAX_MODEL_LEN}
           # for RHOAI
           rhoaiSelected: ${{ parameters.rhoaiSelected }}
-          dsp: ${{ parameters.rhoaiDSP }}
     - action: fs:rename
       id: renameComponentDir
       name: Rename Component Directory
