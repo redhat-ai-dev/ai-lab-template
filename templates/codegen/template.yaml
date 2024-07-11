@@ -122,6 +122,12 @@ spec:
           ui:autofocus: true
           ui:options:
             rows: 5
+        rhoaiSelected:
+          title: Create workbench for OpenShift AI
+          description: Deploy to OpenShift AI in your app's namespace
+          type: boolean
+          default: false
+          ui:help: If you select this field, you must ensure that Red Hat OpenShift AI has been installed on your cluster.
   # These steps are executed in the scaffolder backend, using data that we gathered
   # via the parameters above.
   steps:
@@ -238,6 +244,8 @@ spec:
           vllmModelServiceContainer: quay.io/rh-aiservices-bu/vllm-openai-ubi9:0.4.2
           vllmModelName: Nondzu/Mistral-7B-code-16k-qlora
           maxModelLength: 6144
+          # for RHOAI
+          rhoaiSelected: ${{ parameters.rhoaiSelected }}
     - action: fs:rename
       id: renameComponentDir
       name: Rename Component Directory
