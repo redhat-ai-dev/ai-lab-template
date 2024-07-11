@@ -15,9 +15,9 @@ spec:
       required:
         - name
         - owner
-      {%- if ${SUPPORT_VLLM} %}
+      # SED_MODEL_SERVER_START
         - modelServer
-      {%- endif %}
+      # SED_MODEL_SERVER_END
       properties:
         name:
           title: Name
@@ -37,7 +37,7 @@ spec:
           ui:options:
             catalogFilter:
               kind: [Group, User]
-        {%- if ${SUPPORT_VLLM} %}
+        # SED_MODEL_SERVER_START
         modelServer:
           title: Large Language Model(LLM) Server 
           description: The model server container to use
@@ -47,7 +47,7 @@ spec:
             - vLLM
           default: llama.cpp
           ui:help: If you choose vLLM, ensure your cluster has Nvidia GPU supported, and is with enough cpu and memory
-        {%- endif %}
+        # SED_MODEL_SERVER_END
     - title: Application Repository Information
       required:
         - hostType
