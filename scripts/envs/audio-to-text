@@ -1,0 +1,14 @@
+export APP_NAME="audio-to-text"
+export APP_DISPLAY_NAME="Audio to Text Application"
+export APP_DESC="Audio to Text Application example with AI enabled audio transcription"
+export APP_TAGS='["ai", "whispercpp", "python", "asr"]'
+export INIT_CONTAINER="quay.io/redhat-ai-dev/whisper-small:latest"
+export APP_PORT=8501
+export MODEL_SERVICE_CONTAINER="quay.io/ai-lab/whispercpp:latest"
+export MODEL_SERVICE_PORT=8001
+export SUPPORT_VLLM=false
+
+export MODEL_SERVER_RUN_AS_ROOT=true
+
+# for gitlab case, since gitlab does not have pipeline webhook pre-set to trigger the initial build
+export APP_INTERFACE_CONTAINER="quay.io/redhat-ai-dev/audio-to-text:latest"

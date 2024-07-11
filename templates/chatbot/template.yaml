@@ -15,7 +15,9 @@ spec:
       required:
         - name
         - owner
+      {%- if true %}
         - modelServer
+      {%- endif %}
       properties:
         name:
           title: Name
@@ -35,6 +37,7 @@ spec:
           ui:options:
             catalogFilter:
               kind: [Group, User]
+        {%- if true %}
         modelServer:
           title: Large Language Model(LLM) Server 
           description: The model server container to use
@@ -44,6 +47,7 @@ spec:
             - vLLM
           default: llama.cpp
           ui:help: If you choose vLLM, ensure your cluster has Nvidia GPU supported, and is with enough cpu and memory
+        {%- endif %}
     - title: Application Repository Information
       required:
         - hostType
@@ -246,6 +250,7 @@ spec:
           maxModelLength: 4096
           # for RHOAI
           rhoaiSelected: ${{ parameters.rhoaiSelected }}
+          runAsRoot: false
     - action: fs:rename
       id: renameComponentDir
       name: Rename Component Directory

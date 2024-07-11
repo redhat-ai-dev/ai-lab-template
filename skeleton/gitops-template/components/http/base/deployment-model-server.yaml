@@ -69,8 +69,10 @@ spec:
         name: app-model-service
         ports:
         - containerPort: ${{ values.modelServicePort }}
+        {%- if values.runAsRoot == nil or not(values.runAsRoot) %}
         securityContext:
           runAsNonRoot: true
+        {%- endif %}
       {%- if values.vllmSelected %}
       volumes:
       - name: dshm
