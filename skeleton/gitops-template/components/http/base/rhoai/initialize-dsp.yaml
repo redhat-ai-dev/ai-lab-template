@@ -16,6 +16,6 @@ spec:
         - -c
         - |
           NS=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
-          oc label ns $NS opendatahub.io/dashboard=true
+          oc label ns $NS opendatahub.io/dashboard=true --overwrite
           
       restartPolicy: Never

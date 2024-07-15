@@ -128,6 +128,19 @@ spec:
           type: boolean
           default: false
           ui:help: If you select this field, you must ensure that Red Hat OpenShift AI has been installed on your cluster.
+      dependencies:
+        rhoaiSelected:
+          oneOf:
+            - required:
+                - clusterURL
+              properties:
+                hostType:
+                    const: true
+                clusterURL:
+                  title: Cluster Routing Prefix
+                  description: The routing prefixed used by your cluster. It should start with "apps", e.g. "apps.test-cluster.devcluster.openshift.com"
+                  type: string
+                  ui:help: ""
   # These steps are executed in the scaffolder backend, using data that we gathered
   # via the parameters above.
   steps:
@@ -246,6 +259,7 @@ spec:
           maxModelLength: 4096
           # for RHOAI
           rhoaiSelected: ${{ parameters.rhoaiSelected }}
+          clusterURL: ${{ parameters.clusterURL }}
     - action: fs:rename
       id: renameComponentDir
       name: Rename Component Directory

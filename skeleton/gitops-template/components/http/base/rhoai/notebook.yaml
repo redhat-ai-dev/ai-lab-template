@@ -3,8 +3,9 @@ kind: Notebook
 metadata:
   annotations:
     notebooks.opendatahub.io/inject-oauth: 'true'
-    opendatahub.io/image-display-name: Minimal Python
-    openshift.io/display-name: ${{ values.name }}
+    notebooks.opendatahub.io/last-size-selection: Small
+    notebooks.opendatahub.io/oauth-logout-url: https://rhods-dashboard-redhat-ods-applications${{ values.clusterURL }}/projects/${{ values.namespace }}?notebookLogout=${{ values.name }}
+    opendatahub.io/image-display-name: ${{ values.name }}
   name: ${{ values.name }}
   namespace: ${{ values.namespace }}
   labels:
@@ -15,118 +16,135 @@ spec:
   template:
     spec:
       containers:
-        - resources:
-            limits:
-              cpu: '2'
-              memory: 8Gi
-            requests:
-              cpu: '1'
-              memory: 8Gi
-          readinessProbe:
-            failureThreshold: 3
-            httpGet:
-              path: /notebook/${{ values.namespace }}/${{ values.name }}/api
-              port: notebook-port
-              scheme: HTTP
-            initialDelaySeconds: 10
-            periodSeconds: 5
-            successThreshold: 1
-            timeoutSeconds: 1
+      - name: ${{ values.name }}
+        image: image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/s2i-minimal-notebook:2024.1
+        imagePullPolicy: Always
+        env:
+          - name: NOTEBOOK_ARGS
+            value: |-
+              --ServerApp.port=8888
+              --ServerApp.token=''
+              --ServerApp.password=''
+              --ServerApp.base_url=/notebook/${{ values.name }}/${{ values.namespace }}
+              --ServerApp.quit_button=False
+          - name: JUPYTER_IMAGE
+            value: image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/s2i-minimal-notebook:2024.1
+          - name: MODEL_ENDPOINT
+            value: http://${{ values.name }}-model-server.${{ values.namespace }}.svc.cluster.local:${{ values.modelServicePort }}
+          {%- if values.vllmSelected %}
+          - name: MODEL_NAME
+            value: "${{ values.vllmModelName }}"
+          {%- endif %}
+        ports:
+        - containerPort: 8888
+          name: notebook-port
+          protocol: TCP
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /notebook/${{ values.namespace }}/${{ values.name }}/api
+            port: notebook-port
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          successThreshold: 1
+          timeoutSeconds: 1
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /notebook/${{ values.namespace }}/${{ values.name }}/api
+            port: notebook-port
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          successThreshold: 1
+          timeoutSeconds: 1
+        resources:
+          limits:
+            cpu: "2"
+            memory: 8Gi
+          requests:
+            cpu: "1"
+            memory: 8Gi
+        volumeMounts:
+        - mountPath: /opt/app-root/src
           name: ${{ values.name }}
-          livenessProbe:
-            failureThreshold: 3
-            httpGet:
-              path: /notebook/${{ values.namespace }}/${{ values.name }}/api
-              port: notebook-port
-              scheme: HTTP
-            initialDelaySeconds: 10
-            periodSeconds: 5
-            successThreshold: 1
-            timeoutSeconds: 1
-          env:
-            - name: NOTEBOOK_ARGS
-              value: |-
-                --ServerApp.port=8888
-                --ServerApp.base_url=/notebook/${{ values.namespace }}/${{ values.name }}
-                --ServerApp.quit_button=False
-            - name: JUPYTER_IMAGE
-              value: 'image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/s2i-minimal-notebook:2024.1'
-            - name: MODEL_ENDPOINT
-              value: http://${{ values.name }}-model-server.${{ values.namespace }}.svc.cluster.local:${{ values.modelServicePort }}
-            {%- if values.vllmSelected %}
-            - name: MODEL_NAME
-              value: "${{ values.vllmModelName }}"
-            {%- endif %}
-          ports:
-            - containerPort: 8888
-              name: notebook-port
-              protocol: TCP
-          imagePullPolicy: Always
-          volumeMounts:
-            - mountPath: /opt/app-root/src
-              name: ${{ values.name }}-rhoai
-            - mountPath: /dev/shm
-              name: shm
-          image: 'image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/s2i-minimal-notebook:2024.1'
-          workingDir: /opt/app-root/src
-        - resources:
-            limits:
-              cpu: 100m
-              memory: 64Mi
-            requests:
-              cpu: 100m
-              memory: 64Mi
-          readinessProbe:
-            failureThreshold: 3
-            httpGet:
-              path: /oauth/healthz
-              port: oauth-proxy
-              scheme: HTTPS
-            initialDelaySeconds: 5
-            periodSeconds: 5
-            successThreshold: 1
-            timeoutSeconds: 1
+        - mountPath: /dev/shm
+          name: shm
+        workingDir: /opt/app-root/src
+      - name: oauth-proxy
+        image: registry.redhat.io/openshift4/ose-oauth-proxy@sha256:4bef31eb993feb6f1096b51b4876c65a6fb1f4401fee97fa4f4542b6b7c9bc46
+        imagePullPolicy: Always
+        args:
+        - --provider=openshift
+        - --https-address=:8443
+        - --http-address=
+        - --openshift-service-account=${{ values.name }}
+        - --cookie-secret-file=/etc/oauth/config/cookie_secret
+        - --cookie-expire=24h0m0s
+        - --tls-cert=/etc/tls/private/tls.crt
+        - --tls-key=/etc/tls/private/tls.key
+        - --upstream=http://localhost:8888
+        - --upstream-ca=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        - --email-domain=*
+        - --skip-provider-button
+        - --openshift-sar={"verb":"get","resource":"notebooks","resourceAPIGroup":"kubeflow.org","resourceName":"${{ values.name }}","namespace":"$(NAMESPACE)"}
+        - --logout-url=https://rhods-dashboard-redhat-ods-applications${{ values.clusterURL }}/projects/${{ values.namespace }}?notebookLogout=${{ values.name }}
+        env:
+        - name: NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        ports:
+        - containerPort: 8443
           name: oauth-proxy
-          livenessProbe:
-            failureThreshold: 3
-            httpGet:
-              path: /oauth/healthz
-              port: oauth-proxy
-              scheme: HTTPS
-            initialDelaySeconds: 30
-            periodSeconds: 5
-            successThreshold: 1
-            timeoutSeconds: 1
-          env:
-            - name: NAMESPACE
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.namespace
-          ports:
-            - containerPort: 8443
-              name: oauth-proxy
-              protocol: TCP
-          imagePullPolicy: Always
-          volumeMounts:
-            - mountPath: /etc/oauth/config
-              name: oauth-config
-            - mountPath: /etc/tls/private
-              name: tls-certificates
-          image: 'registry.redhat.io/openshift4/ose-oauth-proxy@sha256:4bef31eb993feb6f1096b51b4876c65a6fb1f4401fee97fa4f4542b6b7c9bc46'
+          protocol: TCP
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /oauth/healthz
+            port: oauth-proxy
+            scheme: HTTPS
+          initialDelaySeconds: 30
+          periodSeconds: 5
+          successThreshold: 1
+          timeoutSeconds: 1
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /oauth/healthz
+            port: oauth-proxy
+            scheme: HTTPS
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          successThreshold: 1
+          timeoutSeconds: 1
+        resources:
+          limits:
+            cpu: 100m
+            memory: 64Mi
+          requests:
+            cpu: 100m
+            memory: 64Mi
+        volumeMounts:
+        - mountPath: /etc/oauth/config
+          name: oauth-config
+        - mountPath: /etc/tls/private
+          name: tls-certificates
       enableServiceLinks: false
       serviceAccountName: ${{ values.name }}
       volumes:
-        - name: ${{ values.name }}-rhoai
-          persistentVolumeClaim:
-            claimName: ${{ values.name }}-rhoai
-        - emptyDir:
-            medium: Memory
-          name: shm
-        - name: oauth-config
-          secret:
-            defaultMode: 420
-            secretName: ${{ values.name }}-oauth-config
-        - name: tls-certificates
-          secret:
-            defaultMode: 420
-            secretName: ${{ values.name }}-tls
+      - name: ${{ values.name }}
+        persistentVolumeClaim:
+          claimName: ${{ values.name }}
+      - emptyDir:
+          medium: Memory
+        name: shm
+      - name: oauth-config
+        secret:
+          defaultMode: 420
+          secretName: ${{ values.name }}-oauth-config
+      - name: tls-certificates
+        secret:
+          defaultMode: 420
+          secretName: ${{ values.name }}-tls
