@@ -25,7 +25,7 @@ spec:
               --ServerApp.port=8888
               --ServerApp.token=''
               --ServerApp.password=''
-              --ServerApp.base_url=/notebook/${{ values.name }}/${{ values.namespace }}
+              --ServerApp.base_url=/notebook/${{ values.namespace }}/${{ values.name }}
               --ServerApp.quit_button=False
           - name: JUPYTER_IMAGE
             value: image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/s2i-minimal-notebook:2024.1
