@@ -71,7 +71,7 @@ spec:
           image: 'image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/s2i-minimal-notebook:2024.1'
           workingDir: /opt/app-root/src
       enableServiceLinks: false
-      serviceAccountName: ${{ values.name }}
+      serviceAccountName: default
       volumes:
         - name: ${{ values.name }}
           persistentVolumeClaim:
