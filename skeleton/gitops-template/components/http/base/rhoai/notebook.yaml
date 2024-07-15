@@ -6,12 +6,14 @@ metadata:
     notebooks.opendatahub.io/last-size-selection: Small
     notebooks.opendatahub.io/oauth-logout-url: https://rhods-dashboard-redhat-ods-applications.${{ values.clusterURL }}/projects/${{ values.namespace }}?notebookLogout=${{ values.name }}
     opendatahub.io/image-display-name: ${{ values.name }}
+    opendatahub.io/username: 'kube:admin'
   name: ${{ values.name }}
   namespace: ${{ values.namespace }}
   labels:
     app: ${{ values.name }}
     opendatahub.io/dashboard: 'true'
     opendatahub.io/odh-managed: 'true'
+    opendatahub.io/user: kube-3aadmin
 spec:
   template:
     spec:
@@ -27,7 +29,7 @@ spec:
               --ServerApp.password=''
               --ServerApp.base_url=/notebook/${{ values.namespace }}/${{ values.name }}
               --ServerApp.quit_button=False
-              --ServerApp.tornado_settings={"hub_host":"https://rhods-dashboard-redhat-ods-applications.${{ values.clusterURL }}","hub_prefix":"/projects/rhtap-app"}
+              --ServerApp.tornado_settings={"user":"kube-3aadmin","hub_host":"https://rhods-dashboard-redhat-ods-applications.${{ values.clusterURL }}","hub_prefix":"/projects/rhtap-app"}
           - name: JUPYTER_IMAGE
             value: image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/s2i-minimal-notebook:2024.1
           - name: MODEL_ENDPOINT
