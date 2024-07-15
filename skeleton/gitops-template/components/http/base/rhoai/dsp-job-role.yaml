@@ -20,7 +20,7 @@ rules:
       - list
       - watch
     apiGroups:
-      - "apps/v1"
+      - "apps"
     resources:
       - statefulsets
   - apiGroups: [""]
