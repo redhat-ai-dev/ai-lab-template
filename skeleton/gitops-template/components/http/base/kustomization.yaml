@@ -19,3 +19,6 @@ resources:
 {%- if values.rhoaiSelected %}
 - rhoai/
 {%- endif %}
+{%- if values.runAsRoot %} # requires anyuid scc
+- anyuid-scc-to-defaultsc.yaml
+{%- endif %}
