@@ -72,11 +72,11 @@ spec:
           image: 'image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/s2i-minimal-notebook:2024.1'
           workingDir: /opt/app-root/src
       enableServiceLinks: false
-      serviceAccountName: default
+      serviceAccountName: ${{ values.name }}
       volumes:
         - name: ${{ values.name }}
           persistentVolumeClaim:
-            claimName: ${{ values.name }}
+            claimName: ${{ values.name }}-rhoai
         - emptyDir:
             medium: Memory
           name: shm
