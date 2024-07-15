@@ -4,7 +4,7 @@ metadata:
   annotations:
     notebooks.opendatahub.io/inject-oauth: 'true'
     notebooks.opendatahub.io/last-size-selection: Small
-    notebooks.opendatahub.io/oauth-logout-url: https://rhods-dashboard-redhat-ods-applications${{ values.clusterURL }}/projects/${{ values.namespace }}?notebookLogout=${{ values.name }}
+    notebooks.opendatahub.io/oauth-logout-url: https://rhods-dashboard-redhat-ods-applications.${{ values.clusterURL }}/projects/${{ values.namespace }}?notebookLogout=${{ values.name }}
     opendatahub.io/image-display-name: ${{ values.name }}
   name: ${{ values.name }}
   namespace: ${{ values.namespace }}
@@ -89,7 +89,7 @@ spec:
         - --email-domain=*
         - --skip-provider-button
         - --openshift-sar={"verb":"get","resource":"notebooks","resourceAPIGroup":"kubeflow.org","resourceName":"${{ values.name }}","namespace":"$(NAMESPACE)"}
-        - --logout-url=https://rhods-dashboard-redhat-ods-applications${{ values.clusterURL }}/projects/${{ values.namespace }}?notebookLogout=${{ values.name }}
+        - --logout-url=https://rhods-dashboard-redhat-ods-applications.${{ values.clusterURL }}/projects/${{ values.namespace }}?notebookLogout=${{ values.name }}
         env:
         - name: NAMESPACE
           valueFrom:
