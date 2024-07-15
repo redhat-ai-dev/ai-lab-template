@@ -134,7 +134,7 @@ spec:
             - required:
                 - clusterURL
               properties:
-                hostType:
+                rhoaiSelected:
                     const: true
                 clusterURL:
                   title: Cluster Routing Prefix
