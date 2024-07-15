@@ -128,6 +128,12 @@ spec:
           type: boolean
           default: false
           ui:help: If you select this field, you must ensure that Red Hat OpenShift AI has been installed on your cluster.
+        rhoaiUser:
+          title: OpenShift AI Username
+          description: The OpenShift AI user to create the workbench under.
+          default: kube:admin
+          type: string
+          ui:help: ""
       dependencies:
         rhoaiSelected:
           oneOf:
@@ -260,6 +266,7 @@ spec:
           # for RHOAI
           rhoaiSelected: ${{ parameters.rhoaiSelected }}
           clusterURL: ${{ parameters.clusterURL }}
+          rhoaiUser: ${{ parameters.rhoaiUser }}
     - action: fs:rename
       id: renameComponentDir
       name: Rename Component Directory

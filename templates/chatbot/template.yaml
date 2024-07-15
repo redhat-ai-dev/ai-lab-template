@@ -141,6 +141,12 @@ spec:
                   description: The routing prefixed used by your cluster. It should start with "apps", e.g. "apps.test-cluster.devcluster.openshift.com"
                   type: string
                   ui:help: ""
+                rhoaiUser:
+                  title: OpenShift AI Username
+                  description: The OpenShift AI user to create the workbench under.
+                  default: kube:admin
+                  type: string
+                  ui:help: ""
   # These steps are executed in the scaffolder backend, using data that we gathered
   # via the parameters above.
   steps:
@@ -260,6 +266,7 @@ spec:
           # for RHOAI
           rhoaiSelected: ${{ parameters.rhoaiSelected }}
           clusterURL: ${{ parameters.clusterURL }}
+          rhoaiUser: ${{ parameters.rhoaiUser }}
     - action: fs:rename
       id: renameComponentDir
       name: Rename Component Directory

@@ -2,46 +2,40 @@ apiVersion: kubeflow.org/v1
 kind: Notebook
 metadata:
   annotations:
-    notebooks.opendatahub.io/inject-oauth: 'true'
+    notebooks.opendatahub.io/inject-oauth: "true"
+    notebooks.opendatahub.io/last-image-selection: s2i-generic-data-science-notebook:2023.2
     notebooks.opendatahub.io/last-size-selection: Small
     notebooks.opendatahub.io/oauth-logout-url: https://rhods-dashboard-redhat-ods-applications.${{ values.clusterURL }}/projects/${{ values.namespace }}?notebookLogout=${{ values.name }}
-    opendatahub.io/image-display-name: ${{ values.name }}
-    opendatahub.io/username: 'kube:admin'
-  name: ${{ values.name }}
-  namespace: ${{ values.namespace }}
+    opendatahub.io/accelerator-name: ""
+    opendatahub.io/image-display-name: Standard Data Science
+    openshift.io/description: ${{ values.name }}
+    openshift.io/display-name: ${{ values.name }}
+    backstage.io/kubernetes-id: ${{ values.name }}
+  generation: 1
   labels:
     app: ${{ values.name }}
-    opendatahub.io/dashboard: 'true'
-    opendatahub.io/odh-managed: 'true'
-    opendatahub.io/user: kube-3aadmin
+    opendatahub.io/dashboard: "true"
+    opendatahub.io/odh-managed: "true"
+  name: ${{ values.name }}
+  namespace: ${{ values.namespace }}
 spec:
   template:
     spec:
+      affinity: {}
       containers:
-      - name: ${{ values.name }}
-        image: image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/s2i-minimal-notebook:2024.1
+      - env:
+        - name: NOTEBOOK_ARGS
+          value: |-
+            --ServerApp.port=8888
+                              --ServerApp.token=''
+                              --ServerApp.password=''
+                              --ServerApp.base_url=/notebook/${{ values.namespace }}/${{ values.name }}
+                              --ServerApp.quit_button=False
+                              --ServerApp.tornado_settings={"user":"${{ values.rhoaiUser }}","hub_host":"https://rhods-dashboard-redhat-ods-applications.${{ values.clusterURL }}","hub_prefix":"/projects/${{ values.namespacce }}"}
+        - name: JUPYTER_IMAGE
+          value: image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/s2i-generic-data-science-notebook:2023.2
+        image: image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/s2i-generic-data-science-notebook:2023.2
         imagePullPolicy: Always
-        env:
-          - name: NOTEBOOK_ARGS
-            value: |-
-              --ServerApp.port=8888
-              --ServerApp.token=''
-              --ServerApp.password=''
-              --ServerApp.base_url=/notebook/${{ values.namespace }}/${{ values.name }}
-              --ServerApp.quit_button=False
-              --ServerApp.tornado_settings={"user":"kube-3aadmin","hub_host":"https://rhods-dashboard-redhat-ods-applications.${{ values.clusterURL }}","hub_prefix":"/projects/rhtap-app"}
-          - name: JUPYTER_IMAGE
-            value: image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/s2i-minimal-notebook:2024.1
-          - name: MODEL_ENDPOINT
-            value: http://${{ values.name }}-model-server.${{ values.namespace }}.svc.cluster.local:${{ values.modelServicePort }}
-          {%- if values.vllmSelected %}
-          - name: MODEL_NAME
-            value: "${{ values.vllmModelName }}"
-          {%- endif %}
-        ports:
-        - containerPort: 8888
-          name: notebook-port
-          protocol: TCP
         livenessProbe:
           failureThreshold: 3
           httpGet:
@@ -52,6 +46,11 @@ spec:
           periodSeconds: 5
           successThreshold: 1
           timeoutSeconds: 1
+        name: ${{ values.name }}
+        ports:
+        - containerPort: 8888
+          name: notebook-port
+          protocol: TCP
         readinessProbe:
           failureThreshold: 3
           httpGet:
@@ -75,10 +74,7 @@ spec:
         - mountPath: /dev/shm
           name: shm
         workingDir: /opt/app-root/src
-      - name: oauth-proxy
-        image: registry.redhat.io/openshift4/ose-oauth-proxy@sha256:4bef31eb993feb6f1096b51b4876c65a6fb1f4401fee97fa4f4542b6b7c9bc46
-        imagePullPolicy: Always
-        args:
+      - args:
         - --provider=openshift
         - --https-address=:8443
         - --http-address=
@@ -98,10 +94,8 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-        ports:
-        - containerPort: 8443
-          name: oauth-proxy
-          protocol: TCP
+        image: registry.redhat.io/openshift4/ose-oauth-proxy@sha256:4bef31eb993feb6f1096b51b4876c65a6fb1f4401fee97fa4f4542b6b7c9bc46
+        imagePullPolicy: Always
         livenessProbe:
           failureThreshold: 3
           httpGet:
@@ -112,6 +106,11 @@ spec:
           periodSeconds: 5
           successThreshold: 1
           timeoutSeconds: 1
+        name: oauth-proxy
+        ports:
+        - containerPort: 8443
+          name: oauth-proxy
+          protocol: TCP
         readinessProbe:
           failureThreshold: 3
           httpGet:
