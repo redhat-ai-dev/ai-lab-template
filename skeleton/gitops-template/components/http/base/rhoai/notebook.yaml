@@ -110,8 +110,10 @@ spec:
               protocol: TCP
           imagePullPolicy: Always
           volumeMounts:
-            - mountPath: /etc/oauth/config
-              name: oauth-config
+          - mountPath: /etc/oauth/config
+            name: oauth-config
+          - mountPath: /etc/tls/private
+            name: tls-certificates
           image: 'registry.redhat.io/openshift4/ose-oauth-proxy@sha256:4bef31eb993feb6f1096b51b4876c65a6fb1f4401fee97fa4f4542b6b7c9bc46'
           args:
             - '--provider=openshift'
