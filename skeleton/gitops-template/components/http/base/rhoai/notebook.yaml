@@ -4,19 +4,20 @@ metadata:
   annotations:
     notebooks.opendatahub.io/inject-oauth: 'true'
     opendatahub.io/image-display-name: Minimal Python
-    notebooks.opendatahub.io/oauth-logout-url: 'https://rhods-dashboard-redhat-ods-applications.${{ values.clusterURL }}/projects/${{ values.namespace }}?notebookLogout=${{ values.name }}'
+    notebooks.opendatahub.io/oauth-logout-url: 'https://rhods-dashboard-redhat-ods-applications.apps.jcollier-rhoaijul1521.devcluster.openshift.com/projects/${{ values.namespace }}?notebookLogout=${{ values.name }}'
     opendatahub.io/accelerator-name: ''
     openshift.io/description: ''
     openshift.io/display-name: ${{ values.name }}
     notebooks.opendatahub.io/last-image-selection: 's2i-minimal-notebook:2024.1'
     notebooks.opendatahub.io/last-size-selection: Small
-    opendatahub.io/username: 'kube:admin'
+    opendatahub.io/username: '${{ values.rhoaiUser }}'
   name: ${{ values.name }}
   namespace: ${{ values.namespace }}
   labels:
     app: ${{ values.name }}
     opendatahub.io/dashboard: 'true'
     opendatahub.io/odh-managed: 'true'
+    opendatahub.io/user: ${{ values.rhoaiUser }}
 spec:
   template:
     spec:
@@ -58,6 +59,7 @@ spec:
                                   --ServerApp.password=''
                                   --ServerApp.base_url=/notebook/${{ values.namespace }}/${{ values.name }}
                                   --ServerApp.quit_button=False
+                                  --ServerApp.tornado_settings={"user":"kube-3aadmin","hub_host":"https://rhods-dashboard-redhat-ods-applications.${{ values.namespace }}","hub_prefix":"/projects/${{ values.namespace }}"}
             - name: JUPYTER_IMAGE
               value: 'image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/s2i-minimal-notebook:2024.1'
           ports:
@@ -130,7 +132,7 @@ spec:
             - '--email-domain=*'
             - '--skip-provider-button'
             - '--openshift-sar={"verb":"get","resource":"notebooks","resourceAPIGroup":"kubeflow.org","resourceName":"${{ values.name }}","namespace":"$(NAMESPACE)"}'
-            - '--logout-url=https://rhods-dashboard-redhat-ods-applications.${{ values.clusterURL }}/projects/${{ values.namespace }}?notebookLogout=${{ values.name }}'
+            - '--logout-url=https://rhods-dashboard-redhat-ods-applications.apps.jcollier-rhoaijul1521.devcluster.openshift.com/projects/${{ values.namespace }}?notebookLogout=${{ values.name }}'
       enableServiceLinks: false
       serviceAccountName: ${{ values.name }}
       volumes:
