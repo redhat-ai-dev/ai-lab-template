@@ -131,7 +131,7 @@ spec:
             - '--openshift-sar={"verb":"get","resource":"notebooks","resourceAPIGroup":"kubeflow.org","resourceName":"${{ values.name }}","namespace":"$(NAMESPACE)"}'
             - '--logout-url=https://rhods-dashboard-redhat-ods-applications.${{ values.clusterURL }}/projects/${{ values.namespace }}?notebookLogout=${{ values.name }}'
       enableServiceLinks: false
-      serviceAccountName: {{ values.name }}
+      serviceAccountName: ${{ values.name }}
       volumes:
         - name: ${{ values.name }}
           persistentVolumeClaim:
@@ -142,8 +142,8 @@ spec:
         - name: oauth-config
           secret:
             defaultMode: 420
-            secretName: {{ values.name }}-oauth-config
+            secretName: ${{ values.name }}-oauth-config
         - name: tls-certificates
           secret:
             defaultMode: 420
-            secretName: {{ values.name }}-tls
+            secretName: ${{ values.name }}-tls
