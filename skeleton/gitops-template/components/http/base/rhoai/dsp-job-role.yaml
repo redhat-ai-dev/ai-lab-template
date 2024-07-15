@@ -14,3 +14,18 @@ rules:
       - ""
     resources:
       - namespaces
+  # The following roles are needed to ensure the dsp clone job can execute commands in the RHOAI workbench
+  - verbs:
+      - get
+      - list
+      - watch
+    apiGroups:
+      - "apps/v1"
+    resources:
+      - statefulsets
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "list"]
+  - apiGroups: [""]
+    resources: ["pods/exec"]
+    verbs: ["get", "create"]
