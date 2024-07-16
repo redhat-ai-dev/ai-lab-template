@@ -45,7 +45,24 @@ rules:
   - verbs:
       - get
       - list
+      - delete
+      - create
+      - watch
+      - update
+      - patch
     apiGroups:
       - ""
     resources:
       - serviceaccounts
+  - verbs:
+      - get
+      - create
+      - list
+      - delete
+      - update
+      - watch
+      - patch
+    apiGroups:
+      - ""
+    resources:
+      - persistentvolumeclaims
