@@ -37,6 +37,7 @@ rules:
       - delete
       - update
       - patch
+      - create
     apiGroups:
       - "kubeflow.org"
     resources:
