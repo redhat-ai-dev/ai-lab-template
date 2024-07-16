@@ -11,11 +11,105 @@ spec:
       containers:
       - name: initialize-dsp
         image: quay.io/redhat-appstudio/appstudio-utils:5bd7d6cb0b17f9f2eab043a8ad16ba3d90551bc2@sha256:8c7fcf86af40c71aeb58e4279625c8308af5144e2f6b8e28b0ec7e795260e5f7
+
         command:
         - /bin/bash
         - -c
         - |
+          # Label the namespace as a DataScienceProject
           NS=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
           oc label ns $NS opendatahub.io/dashboard=true --overwrite
+
+          # Retrieve the UID for the notebook SA, and mark the notebook as owned by it for garbage collection purposes
+          SA_UID=$(oc get sa ${{ values.name }} -o json | jq -r .metadata.uid)
+          oc apply -f |
+            apiVersion: kubeflow.org/v1
+            kind: Notebook
+            metadata:
+              annotations:
+                notebooks.opendatahub.io/inject-oauth: 'true'
+                opendatahub.io/image-display-name: Minimal Python
+                notebooks.opendatahub.io/oauth-logout-url: https://rhods-dashboard-redhat-ods-applications.${{ values.clusterURL }}/projects/${{ values.namespace }}?notebookLogout=${{ values.name }}
+                opendatahub.io/accelerator-name: ''
+                openshift.io/description: ''
+                openshift.io/display-name: ${{ values.name }}
+                notebooks.opendatahub.io/last-image-selection: 's2i-minimal-notebook:2024.1'
+                notebooks.opendatahub.io/last-size-selection: Small
+              name: ${{ values.name }}
+              namespace: ${{ values.namespace }}
+              ownerReferences:
+                - apiVersion: v1
+                  kind: ServiceAccount
+                  name: ${{ values.name }}
+                  uid: $SA_UID
+              labels:
+                app: ${{ values.name }}
+                opendatahub.io/dashboard: 'true'
+                opendatahub.io/odh-managed: 'true'
+            spec:
+              template:
+                spec:
+                  affinity: {}
+                  containers:
+                    - resources:
+                        limits:
+                          cpu: '2'
+                          memory: 8Gi
+                        requests:
+                          cpu: '1'
+                          memory: 8Gi
+                      readinessProbe:
+                        failureThreshold: 3
+                        httpGet:
+                          path: /notebook/${{ values.namespace }}/${{ values.name }}/api
+                          port: notebook-port
+                          scheme: HTTP
+                        initialDelaySeconds: 10
+                        periodSeconds: 5
+                        successThreshold: 1
+                        timeoutSeconds: 1
+                      name: ${{ values.name }}
+                      livenessProbe:
+                        failureThreshold: 3
+                        httpGet:
+                          path: /notebook/${{ values.namespace }}/${{ values.name }}/api
+                          port: notebook-port
+                          scheme: HTTP
+                        initialDelaySeconds: 10
+                        periodSeconds: 5
+                        successThreshold: 1
+                        timeoutSeconds: 1
+                      env:
+                        - name: NOTEBOOK_ARGS
+                          value: |-
+                            --ServerApp.port=8888
+                                              --ServerApp.token=''
+                                              --ServerApp.password=''
+                                              --ServerApp.base_url=/notebook/${{ values.namespace }}/${{ values.name }}
+                                              --ServerApp.quit_button=False
+                        - name: JUPYTER_IMAGE
+                          value: 'image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/s2i-minimal-notebook:2024.1'
+                      ports:
+                        - containerPort: 8888
+                          name: notebook-port
+                          protocol: TCP
+                      imagePullPolicy: Always
+                      volumeMounts:
+                        - mountPath: /opt/app-root/src
+                          name: ${{ values.name }}
+                        - mountPath: /dev/shm
+                          name: shm
+                      image: 'image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/s2i-minimal-notebook:2024.1'
+                      workingDir: /opt/app-root/src
+                  enableServiceLinks: false
+                  serviceAccountName: ${{ values.name }}
+                  volumes:
+                    - name: ${{ values.name }}-rhoai
+                      persistentVolumeClaim:
+                        claimName: ${{ values.name }}
+                    - emptyDir:
+                        medium: Memory
+                      name: shm
+          
           
       restartPolicy: Never
