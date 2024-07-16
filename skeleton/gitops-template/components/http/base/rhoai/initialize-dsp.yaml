@@ -116,7 +116,7 @@ spec:
           apiVersion: v1
           metadata:
             annotations:
-              openshift.io/display-name: $${{ values.name }}-rhoai
+              openshift.io/display-name: ${{ values.name }}-rhoai
             name: ${{ values.name }}-rhoai
             labels:
               opendatahub.io/dashboard: 'true'
