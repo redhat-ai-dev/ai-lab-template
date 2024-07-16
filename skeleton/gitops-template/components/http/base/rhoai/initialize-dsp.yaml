@@ -103,7 +103,7 @@ spec:
                     image: 'image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/s2i-minimal-notebook:2024.1'
                     workingDir: /opt/app-root/src
                 enableServiceLinks: false
-                serviceAccountName: default
+                serviceAccountName: ${{ values.name }}
                 volumes:
                   - name: ${{ values.name }}
                     persistentVolumeClaim:
@@ -111,7 +111,31 @@ spec:
                   - emptyDir:
                       medium: Memory
                     name: shm
+          ---
+          kind: PersistentVolumeClaim
+          apiVersion: v1
+          metadata:
+            annotations:
+              openshift.io/display-name: $${{ values.name }}-rhoai
+            name: ${{ values.name }}-rhoai
+            labels:
+              opendatahub.io/dashboard: 'true'
+          spec:
+            accessModes:
+              - ReadWriteOnce
+            resources:
+              requests:
+                storage: 20Gi
+            volumeMode: Filesystem
+          ---
+          kind: ServiceAccount
+          apiVersion: v1
+          metadata:
+            name: ${{ values.name }}
+            labels:
+              notebook-name: ${{ values.name }}
           EOF
+
           
           
       restartPolicy: Never
