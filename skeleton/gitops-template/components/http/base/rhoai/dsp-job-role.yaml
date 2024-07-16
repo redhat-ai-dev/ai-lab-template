@@ -41,3 +41,10 @@ rules:
       - "kubeflow.org"
     resources:
       - notebooks
+  - verbs:
+      - get
+      - list
+    apiGroups:
+      - ""
+    resources:
+      - serviceaccounts
