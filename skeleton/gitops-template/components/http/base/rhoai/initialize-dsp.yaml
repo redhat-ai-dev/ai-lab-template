@@ -20,7 +20,7 @@ spec:
           echo "Wait for NS Job"
           oc wait --for=condition=complete job/initialize-namespace-${{ values.appName }}
           echo "Done"
-          
+
           # Label the namespace as a DataScienceProject
           NS=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
           oc label ns $NS opendatahub.io/dashboard=true --overwrite
@@ -108,7 +108,7 @@ spec:
                     image: 'image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/s2i-minimal-notebook:2024.1'
                     workingDir: /opt/app-root/src
                 enableServiceLinks: false
-                serviceAccountName: ${{ values.name }}
+                serviceAccountName: default
                 volumes:
                   - name: ${{ values.name }}
                     persistentVolumeClaim:
@@ -133,7 +133,6 @@ spec:
                 storage: 20Gi
             volumeMode: Filesystem
           EOF
-
           
           
       restartPolicy: Never
