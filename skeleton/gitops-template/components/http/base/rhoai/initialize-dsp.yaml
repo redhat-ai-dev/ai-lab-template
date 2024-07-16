@@ -105,9 +105,9 @@ spec:
                 enableServiceLinks: false
                 serviceAccountName: ${{ values.name }}
                 volumes:
-                  - name: ${{ values.name }}-rhoai
+                  - name: ${{ values.name }}
                     persistentVolumeClaim:
-                      claimName: ${{ values.name }}
+                      claimName: ${{ values.name }}-rhoai
                   - emptyDir:
                       medium: Memory
                     name: shm
