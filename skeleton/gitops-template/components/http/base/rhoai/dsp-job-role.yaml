@@ -66,3 +66,15 @@ rules:
       - ""
     resources:
       - persistentvolumeclaims
+  - verbs:
+      - get
+      - create
+      - list
+      - delete
+      - update
+      - watch
+      - patch
+    apiGroups:
+      - "batch"
+    resources:
+      - jobs
