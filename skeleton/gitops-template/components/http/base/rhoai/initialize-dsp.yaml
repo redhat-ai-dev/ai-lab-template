@@ -35,7 +35,6 @@ spec:
             annotations:
               notebooks.opendatahub.io/inject-oauth: 'true'
               opendatahub.io/image-display-name: Minimal Python
-              notebooks.opendatahub.io/oauth-logout-url: https://rhods-dashboard-redhat-ods-applications.${{ values.clusterURL }}/projects/${{ values.namespace }}?notebookLogout=${{ values.name }}
               opendatahub.io/accelerator-name: ''
               openshift.io/description: ''
               openshift.io/display-name: ${{ values.name }}
