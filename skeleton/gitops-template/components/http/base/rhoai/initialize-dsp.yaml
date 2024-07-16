@@ -22,7 +22,7 @@ spec:
 
           # Retrieve the UID for the notebook SA, and mark the notebook as owned by it for garbage collection purposes
           SA_UID=$(oc get sa ${{ values.name }} -o json | jq -r .metadata.uid)
-          cat <<EOF | oc apply -f
+          cat <<EOF | oc apply -f -
           apiVersion: kubeflow.org/v1
           kind: Notebook
           metadata:
