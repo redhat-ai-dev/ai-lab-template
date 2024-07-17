@@ -250,7 +250,6 @@ spec:
           maxModelLength: 6144
           # for RHOAI
           rhoaiSelected: ${{ parameters.rhoaiSelected }}
-          # runAsRoot: 
     - action: fs:rename
       id: renameComponentDir
       name: Rename Component Directory

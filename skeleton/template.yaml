@@ -250,7 +250,6 @@ spec:
           maxModelLength: ${VLLM_MAX_MODEL_LEN}
           # for RHOAI
           rhoaiSelected: ${{ parameters.rhoaiSelected }}
-          # runAsRoot: ${MODEL_SERVER_RUN_AS_ROOT}
     - action: fs:rename
       id: renameComponentDir
       name: Rename Component Directory

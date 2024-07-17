@@ -7,12 +7,11 @@ export APP_PORT=8501
 export MODEL_SERVICE_CONTAINER="quay.io/ai-lab/llamacpp_python:latest"
 export MODEL_SERVICE_PORT=8001
 
+# vllm configurations
 export SUPPORT_VLLM=true
 export VLLM_CONTAINER="quay.io/rh-aiservices-bu/vllm-openai-ubi9:0.4.2"
 export VLLM_MODEL_NAME="instructlab/granite-7b-lab"
 export VLLM_MAX_MODEL_LEN=4096
-
-# export MODEL_SERVER_RUN_AS_ROOT=false
 
 # for gitlab case, since gitlab does not have pipeline webhook pre-set to trigger the initial build
 export APP_INTERFACE_CONTAINER="quay.io/redhat-ai-dev/chatbot:latest"
