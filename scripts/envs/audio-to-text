@@ -4,7 +4,7 @@ export APP_DESC="Audio to Text Application example with AI enabled audio transcr
 export APP_TAGS='["ai", "whispercpp", "python", "asr"]'
 export INIT_CONTAINER="quay.io/redhat-ai-dev/whisper-small:latest"
 export APP_PORT=8501
-export MODEL_SERVICE_CONTAINER="quay.io/ai-lab/whispercpp:latest"
+export MODEL_SERVICE_CONTAINER="quay.io/redhat-ai-dev/whispercpp:latest"
 export MODEL_SERVICE_PORT=8001
 export SUPPORT_VLLM=false
 

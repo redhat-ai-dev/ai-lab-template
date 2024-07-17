@@ -136,7 +136,7 @@ spec:
           srcRepoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}
           appContainer: ${{ 'quay.io/redhat-ai-dev/ai-template-bootstrap-app:latest' if parameters.hostType === 'GitHub' else 'quay.io/redhat-ai-dev/audio-to-text:latest' }}
           appPort: 8501
-          modelServiceContainer: quay.io/ai-lab/whispercpp:latest
+          modelServiceContainer: quay.io/redhat-ai-dev/whispercpp:latest
           modelServicePort: 8001          
     # Renders all the template variables into the files and directory names and content, and places the result in the workspace.
     - id: fetch-skeleton
@@ -227,7 +227,7 @@ spec:
           initContainer: quay.io/redhat-ai-dev/whisper-small:latest
           appContainer: ${{ 'quay.io/redhat-ai-dev/ai-template-bootstrap-app:latest' if parameters.hostType === 'GitHub' else 'quay.io/redhat-ai-dev/audio-to-text:latest' }}
           appPort: 8501
-          modelServiceContainer: quay.io/ai-lab/whispercpp:latest
+          modelServiceContainer: quay.io/redhat-ai-dev/whispercpp:latest
           modelServicePort: 8001
           # for vllm
           vllmSelected: ${{ parameters.modelServer === 'vLLM' }}
