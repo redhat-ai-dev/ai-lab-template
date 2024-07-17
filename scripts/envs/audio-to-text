@@ -8,7 +8,7 @@ export MODEL_SERVICE_CONTAINER="quay.io/redhat-ai-dev/whispercpp:latest"
 export MODEL_SERVICE_PORT=8001
 export SUPPORT_VLLM=false
 
-export MODEL_SERVER_RUN_AS_ROOT=true
+# export MODEL_SERVER_RUN_AS_ROOT=true
 
 # for gitlab case, since gitlab does not have pipeline webhook pre-set to trigger the initial build
 export APP_INTERFACE_CONTAINER="quay.io/redhat-ai-dev/audio-to-text:latest"

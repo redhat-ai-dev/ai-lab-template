@@ -2,8 +2,8 @@ apiVersion: scaffolder.backstage.io/v1beta3
 # https://backstage.io/docs/features/software-catalog/descriptor-format#kind-template
 kind: Template
 metadata:
-  name: audio-to-text
-  title: Audio to Text Application
+  name: audio-to-text2
+  title: Audio to Text Application2
   description: Audio to Text Application example with AI enabled audio transcription
   tags: ["ai", "whispercpp", "python", "asr"]
 spec:
@@ -236,7 +236,7 @@ spec:
           maxModelLength: 
           # for RHOAI
           rhoaiSelected: ${{ parameters.rhoaiSelected }}
-          runAsRoot: true
+          # runAsRoot: 
     - action: fs:rename
       id: renameComponentDir
       name: Rename Component Directory
