@@ -2,8 +2,8 @@ apiVersion: scaffolder.backstage.io/v1beta3
 # https://backstage.io/docs/features/software-catalog/descriptor-format#kind-template
 kind: Template
 metadata:
-  name: audio-to-text3
-  title: Audio to Text Application3
+  name: audio-to-text4
+  title: Audio to Text Application4
   description: Audio to Text Application example with AI enabled audio transcription
   tags: ["ai", "whispercpp", "python", "asr"]
 spec:
