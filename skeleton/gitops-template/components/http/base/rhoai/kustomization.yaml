@@ -5,6 +5,4 @@ resources:
 - dsp-job-rb.yaml
 - dsp-job-sa.yaml
 - initialize-dsp.yaml
-- notebook.yaml
-- serviceaccount.yaml
-- pvc.yaml
+- dsp-clone-job.yaml
