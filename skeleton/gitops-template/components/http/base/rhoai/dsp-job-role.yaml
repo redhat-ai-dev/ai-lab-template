@@ -1,0 +1,80 @@
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: ${{ values.name }}-dsp-job-role
+  annotations:
+rules:
+  - verbs:
+      - get
+      - list
+      - watch
+      - patch
+      - update
+    apiGroups:
+      - ""
+    resources:
+      - namespaces
+  # The following roles are needed to ensure the dsp clone job can execute commands in the RHOAI workbench
+  - verbs:
+      - get
+      - list
+      - watch
+    apiGroups:
+      - "apps"
+    resources:
+      - statefulsets
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "list"]
+  - apiGroups: [""]
+    resources: ["pods/exec"]
+    verbs: ["get", "create"]
+  # The following roles ensure that the DSP job can set ownerreferences on notebook CRs
+  - verbs:
+      - get
+      - list
+      - watch
+      - delete
+      - update
+      - patch
+      - create
+    apiGroups:
+      - "kubeflow.org"
+    resources:
+      - notebooks
+  - verbs:
+      - get
+      - list
+      - delete
+      - create
+      - watch
+      - update
+      - patch
+    apiGroups:
+      - ""
+    resources:
+      - serviceaccounts
+  - verbs:
+      - get
+      - create
+      - list
+      - delete
+      - update
+      - watch
+      - patch
+    apiGroups:
+      - ""
+    resources:
+      - persistentvolumeclaims
+  - verbs:
+      - get
+      - create
+      - list
+      - delete
+      - update
+      - watch
+      - patch
+    apiGroups:
+      - "batch"
+    resources:
+      - jobs

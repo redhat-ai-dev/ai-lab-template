@@ -1,0 +1,12 @@
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: ${{ values.name }}-dsp-job-rolebinding
+subjects:
+  - kind: ServiceAccount
+    name: ${{ values.name }}-dsp-job
+    namespace: ${{ values.namespace }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: ${{ values.name }}-dsp-job-role
