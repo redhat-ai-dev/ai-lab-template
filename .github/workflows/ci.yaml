@@ -1,0 +1,25 @@
+name: CI
+
+# Triggers the workflow on push or pull request events but only for the main branch
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  verify-dependencies:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4.1.7
+
+      - name: Run generate.sh and verify dependencies
+        run: |
+          bash generate.sh
+          if [[ ! -z $(git status -s) ]]
+          then
+            echo 'The script `./generate.sh` did introduce changes, which should ideally be checked in as part of the PR.'
+            git status
+            exit 1
+          fi

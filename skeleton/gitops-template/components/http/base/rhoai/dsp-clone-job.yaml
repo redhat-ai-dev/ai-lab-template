@@ -1,0 +1,21 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: dsp-clone-job-${{ values.appName }}
+spec:  
+  template:         
+    metadata:
+      name: dsp-clone-job-${{ values.appName }}
+    spec:  
+      serviceAccountName: ${{ values.name }}-dsp-job
+      containers:
+      - name: initialize-dsp
+        image: quay.io/redhat-appstudio/appstudio-utils:5bd7d6cb0b17f9f2eab043a8ad16ba3d90551bc2@sha256:8c7fcf86af40c71aeb58e4279625c8308af5144e2f6b8e28b0ec7e795260e5f7
+        command:
+        - /bin/bash
+        - -c
+        - |
+          NS=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
+          oc wait -l statefulset=${{ values.name }}-notebook --for=condition=ready pod --timeout=300s
+          oc exec  StatefulSet/${{ values.name }}-notebook -- git clone ${{ values.srcRepoURL }}
+      restartPolicy: Never

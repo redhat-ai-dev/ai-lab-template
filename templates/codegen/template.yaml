@@ -15,7 +15,9 @@ spec:
       required:
         - name
         - owner
+      # SED_MODEL_SERVER_START
         - modelServer
+      # SED_MODEL_SERVER_END
       properties:
         name:
           title: Name
@@ -35,6 +37,7 @@ spec:
           ui:options:
             catalogFilter:
               kind: [Group, User]
+        # SED_MODEL_SERVER_START
         modelServer:
           title: Large Language Model(LLM) Server 
           description: The model server container to use
@@ -44,6 +47,7 @@ spec:
             - vLLM
           default: llama.cpp
           ui:help: If you choose vLLM, ensure your cluster has Nvidia GPU supported, and is with enough cpu and memory
+        # SED_MODEL_SERVER_END
     - title: Application Repository Information
       required:
         - hostType
@@ -239,11 +243,13 @@ spec:
           appPort: 8501
           modelServiceContainer: quay.io/ai-lab/llamacpp_python:latest
           modelServicePort: 8001
+          # SED_MODEL_SERVER_START
           # for vllm
           vllmSelected: ${{ parameters.modelServer === 'vLLM' }}
           vllmModelServiceContainer: quay.io/rh-aiservices-bu/vllm-openai-ubi9:0.4.2
           vllmModelName: Nondzu/Mistral-7B-code-16k-qlora
           maxModelLength: 6144
+          # SED_MODEL_SERVER_END
           # for RHOAI
           rhoaiSelected: ${{ parameters.rhoaiSelected }}
     - action: fs:rename
