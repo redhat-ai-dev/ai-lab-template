@@ -243,11 +243,13 @@ spec:
           appPort: ${APP_PORT}
           modelServiceContainer: ${MODEL_SERVICE_CONTAINER}
           modelServicePort: ${MODEL_SERVICE_PORT}
+          # SED_MODEL_SERVER_START
           # for vllm
           vllmSelected: ${{ parameters.modelServer === 'vLLM' }}
           vllmModelServiceContainer: ${VLLM_CONTAINER}
           vllmModelName: ${VLLM_MODEL_NAME}
           maxModelLength: ${VLLM_MAX_MODEL_LEN}
+          # SED_MODEL_SERVER_END
           # for RHOAI
           rhoaiSelected: ${{ parameters.rhoaiSelected }}
     - action: fs:rename

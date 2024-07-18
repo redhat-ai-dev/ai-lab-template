@@ -229,11 +229,6 @@ spec:
           appPort: 8501
           modelServiceContainer: quay.io/redhat-ai-dev/whispercpp:latest
           modelServicePort: 8001
-          # for vllm
-          vllmSelected: ${{ parameters.modelServer === 'vLLM' }}
-          vllmModelServiceContainer: 
-          vllmModelName: 
-          maxModelLength: 
           # for RHOAI
           rhoaiSelected: ${{ parameters.rhoaiSelected }}
     - action: fs:rename
