@@ -2,10 +2,10 @@ apiVersion: scaffolder.backstage.io/v1beta3
 # https://backstage.io/docs/features/software-catalog/descriptor-format#kind-template
 kind: Template
 metadata:
-  name: sed.edit.NAME
-  title: sed.edit.TITLE
-  description: sed.edit.DESCRIPTION
-  tags: sed.edit.APPTAGS
+  name: audio-to-text
+  title: Audio to Text Application
+  description: Audio to Text Application example with AI enabled audio transcription
+  tags: ["ai", "whispercpp", "python", "asr"]
 spec:
   type: service
   # These parameters are used to generate the input form in the frontend, and are
@@ -15,9 +15,6 @@ spec:
       required:
         - name
         - owner
-      # SED_MODEL_SERVER_START
-        - modelServer
-      # SED_MODEL_SERVER_END
       properties:
         name:
           title: Name
@@ -37,17 +34,6 @@ spec:
           ui:options:
             catalogFilter:
               kind: [Group, User]
-        # SED_MODEL_SERVER_START
-        modelServer:
-          title: Large Language Model(LLM) Server 
-          description: The model server container to use
-          type: string
-          enum:
-            - llama.cpp
-            - vLLM
-          default: llama.cpp
-          ui:help: If you choose vLLM, ensure your cluster has Nvidia GPU supported, and is with enough cpu and memory
-        # SED_MODEL_SERVER_END
     - title: Application Repository Information
       required:
         - hostType
@@ -107,7 +93,7 @@ spec:
           title: Image Registry
           type: string
           description: The image registry host
-          default: ${QUAY__DEFAULT__HOST}
+          default: quay.io
           ui:help: "You can also provide the on-prem registry host, example: quay-tv2pb.apps.cluster-tv2pb.sandbox1194.opentlc.com"
         imageOrg:
           title: Image Organization
@@ -122,7 +108,7 @@ spec:
         namespace:
           title: Deployment Namespace
           type: string
-          default: ${DEFAULT__DEPLOYMENT__NAMESPACE__PREFIX}
+          default: rhtap-app
           ui:autofocus: true
           ui:options:
             rows: 5
@@ -148,10 +134,10 @@ spec:
           namespace: ${{ parameters.namespace }}
           repoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops
           srcRepoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}
-          appContainer: ${{ 'quay.io/redhat-ai-dev/ai-template-bootstrap-app:latest' if parameters.hostType === 'GitHub' else '${APP_INTERFACE_CONTAINER}' }}
-          appPort: ${APP_PORT}
-          modelServiceContainer: ${MODEL_SERVICE_CONTAINER}
-          modelServicePort: ${MODEL_SERVICE_PORT}          
+          appContainer: ${{ 'quay.io/redhat-ai-dev/ai-template-bootstrap-app:latest' if parameters.hostType === 'GitHub' else 'quay.io/redhat-ai-dev/audio-to-text:latest' }}
+          appPort: 8501
+          modelServiceContainer: quay.io/redhat-ai-dev/whispercpp:latest
+          modelServicePort: 8001          
     # Renders all the template variables into the files and directory names and content, and places the result in the workspace.
     - id: fetch-skeleton
       name: Fetch Skeleton
@@ -162,12 +148,12 @@ spec:
         values:
           name: ${{ parameters.name }}
           namespace: ${{ parameters.namespace }}
-          description: sed.edit.CATALOG_DESCRIPTION 
-          dockerfile: sed.edit.DOCKERFILE
-          buildContext: sed.edit.BUILDCONTEXT
+          description: Secure Supply Chain Example for Audio to Text Application example with AI enabled audio transcription 
+          dockerfile: Containerfile
+          buildContext: .
           gitopsSecretName: ${{ 'gitops-auth-secret' if parameters.hostType === 'GitHub' else 'gitlab-auth-secret' }}
           image: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
-          tags: 'sed.edit.APPTAGS'
+          tags: '["ai", "whispercpp", "python", "asr"]'
           owner: ${{ parameters.owner }} 
           repoSlug: '${{ parameters.imageOrg }}/${{ parameters.imageName }}'
           defaultBranch: ${{ parameters.branch }} 
@@ -220,8 +206,8 @@ spec:
           appName: ${{ parameters.name }}-gitops # for now just use the component name, since it's single component app
           description: This is GitOps manifest for ${{ parameters.name }}
           namespace: ${{ parameters.namespace }}
-          rhtapNamespace: ${RHTAP__DEFAULT__NAMESPACE}
-          defaultDeployNamespace: ${DEFAULT__DEPLOYMENT__NAMESPACE__PREFIX}
+          rhtapNamespace: rhtap
+          defaultDeployNamespace: rhtap-app
           # example: github.com?owner=<owner>&repo=<srcRepo>, the gitops repo name will be <srcRepo>-gitops
           repoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops
           srcRepoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}
@@ -230,26 +216,19 @@ spec:
           image: quay.io/redhat-appstudio/dance-bootstrap-app:latest # bootstrap app image as placeholder
           # actual src image, should be used by tekton PR pipeline to update the image in gitops repo
           srcImage: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
-          argoNS: ${ARGOCD__DEFAULT__NAMESPACE}
-          argoProject: ${ARGOCD__DEFAULT__PROJECT}
+          argoNS: rhtap
+          argoProject: default
           secretRef: ${{ parameters.hostType === 'GitLab' }}
-          gitSecret: ${GIT__SECRET__DEFAULT__NAME}
-          gitSecretKey: ${GIT__SECRET__DEFAULT__KEY}
-          webhookSecret: ${WEBHOOK__SECRET__DEFAULT__NAME}
-          webhookSecretKey: ${WEBHOOK__SECRET__DEFAULT__KEY}
+          gitSecret: gitlab-auth-secret
+          gitSecretKey: password
+          webhookSecret: pipelines-secret
+          webhookSecretKey: webhook.secret
           defaultBranch: main
-          initContainer: ${INIT_CONTAINER}
-          appContainer: ${{ 'quay.io/redhat-ai-dev/ai-template-bootstrap-app:latest' if parameters.hostType === 'GitHub' else '${APP_INTERFACE_CONTAINER}' }}
-          appPort: ${APP_PORT}
-          modelServiceContainer: ${MODEL_SERVICE_CONTAINER}
-          modelServicePort: ${MODEL_SERVICE_PORT}
-          # SED_MODEL_SERVER_START
-          # for vllm
-          vllmSelected: ${{ parameters.modelServer === 'vLLM' }}
-          vllmModelServiceContainer: ${VLLM_CONTAINER}
-          vllmModelName: ${VLLM_MODEL_NAME}
-          maxModelLength: ${VLLM_MAX_MODEL_LEN}
-          # SED_MODEL_SERVER_END
+          initContainer: quay.io/redhat-ai-dev/whisper-small:latest
+          appContainer: ${{ 'quay.io/redhat-ai-dev/ai-template-bootstrap-app:latest' if parameters.hostType === 'GitHub' else 'quay.io/redhat-ai-dev/audio-to-text:latest' }}
+          appPort: 8501
+          modelServiceContainer: quay.io/redhat-ai-dev/whispercpp:latest
+          modelServicePort: 8001
           # for RHOAI
           rhoaiSelected: ${{ parameters.rhoaiSelected }}
     - action: fs:rename
@@ -308,8 +287,8 @@ spec:
       input:
         appName: ${{ parameters.name }}-app-of-apps
         # name set in rhdh config
-        argoInstance: ${ARGOCD__DEFAULT__INSTANCE}
-        namespace: ${ARGOCD__DEFAULT__NAMESPACE}
+        argoInstance: default
+        namespace: rhtap
         repoUrl: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops.git
         path: './app-of-apps'
     # PR with empty commit

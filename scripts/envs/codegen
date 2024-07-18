@@ -6,9 +6,13 @@ export INIT_CONTAINER="quay.io/redhat-ai-dev/mistral-7b-code-16k-qlora:latest"
 export APP_PORT=8501
 export MODEL_SERVICE_CONTAINER="quay.io/ai-lab/llamacpp_python:latest"
 export MODEL_SERVICE_PORT=8001
+
+# vllm configurations
+export SUPPORT_VLLM=true
 export VLLM_CONTAINER="quay.io/rh-aiservices-bu/vllm-openai-ubi9:0.4.2"
 export VLLM_MODEL_NAME="Nondzu/Mistral-7B-code-16k-qlora"
 export VLLM_MAX_MODEL_LEN=6144
+
 
 # for gitlab case, since gitlab does not have pipeline webhook pre-set to trigger the initial build
 export APP_INTERFACE_CONTAINER="quay.io/redhat-ai-dev/codegen:latest"

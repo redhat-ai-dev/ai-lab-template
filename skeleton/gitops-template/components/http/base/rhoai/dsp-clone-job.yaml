@@ -16,6 +16,6 @@ spec:
         - -c
         - |
           NS=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
-          oc wait -l statefulset=${{ values.name }} --for=condition=ready pod --timeout=300s
-          oc exec  StatefulSet/${{ values.name }} -- git clone ${{ values.srcRepoURL }}
+          oc wait -l statefulset=${{ values.name }}-notebook --for=condition=ready pod --timeout=300s
+          oc exec  StatefulSet/${{ values.name }}-notebook -- git clone ${{ values.srcRepoURL }}
       restartPolicy: Never

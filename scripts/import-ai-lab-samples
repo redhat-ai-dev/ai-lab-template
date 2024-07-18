@@ -46,6 +46,10 @@ for f in */; do
         sed -i "s!sed.edit.APPTAGS!$APP_TAGS!g" $DEST/template.yaml
         sed -i "s!sed.edit.CATALOG_DESCRIPTION!Secure Supply Chain Example for $APP_DESC!g" $DEST/template.yaml
 
+        if [ $SUPPORT_VLLM == false ]; then
+            sed -i '/# SED_MODEL_SERVER_START/,/# SED_MODEL_SERVER_END/d' $DEST/template.yaml
+        fi
+
         source $ROOT_DIR/properties
         cat $DEST/template.yaml | envsubst > $DEST/new-template.yaml
         mv $DEST/new-template.yaml $DEST/template.yaml

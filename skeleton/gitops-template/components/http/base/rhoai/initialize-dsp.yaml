@@ -37,10 +37,10 @@ spec:
               opendatahub.io/image-display-name: Minimal Python
               opendatahub.io/accelerator-name: ''
               openshift.io/description: ''
-              openshift.io/display-name: ${{ values.name }}
+              openshift.io/display-name: ${{ values.name }}-notebook
               notebooks.opendatahub.io/last-image-selection: 's2i-minimal-notebook:2024.1'
               notebooks.opendatahub.io/last-size-selection: Small
-            name: ${{ values.name }}
+            name: ${{ values.name }}-notebook
             namespace: ${{ values.namespace }}
             ownerReferences:
               - apiVersion: v1
@@ -48,7 +48,7 @@ spec:
                 name: ${{ values.name }}-dsp-job
                 uid: $SA_UID
             labels:
-              app: ${{ values.name }}
+              app: ${{ values.name }}-notebook
               opendatahub.io/dashboard: 'true'
               opendatahub.io/odh-managed: 'true'
           spec:
@@ -66,18 +66,18 @@ spec:
                     readinessProbe:
                       failureThreshold: 3
                       httpGet:
-                        path: /notebook/${{ values.namespace }}/${{ values.name }}/api
+                        path: /notebook/${{ values.namespace }}/${{ values.name }}-notebook/api
                         port: notebook-port
                         scheme: HTTP
                       initialDelaySeconds: 10
                       periodSeconds: 5
                       successThreshold: 1
                       timeoutSeconds: 1
-                    name: ${{ values.name }}
+                    name: ${{ values.name }}-notebook
                     livenessProbe:
                       failureThreshold: 3
                       httpGet:
-                        path: /notebook/${{ values.namespace }}/${{ values.name }}/api
+                        path: /notebook/${{ values.namespace }}/${{ values.name }}-notebook/api
                         port: notebook-port
                         scheme: HTTP
                       initialDelaySeconds: 10
@@ -90,7 +90,7 @@ spec:
                           --ServerApp.port=8888
                                             --ServerApp.token=''
                                             --ServerApp.password=''
-                                            --ServerApp.base_url=/notebook/${{ values.namespace }}/${{ values.name }}
+                                            --ServerApp.base_url=/notebook/${{ values.namespace }}/${{ values.name }}-notebook
                                             --ServerApp.quit_button=False
                       - name: JUPYTER_IMAGE
                         value: 'image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/s2i-minimal-notebook:2024.1'
@@ -107,17 +107,17 @@ spec:
                     imagePullPolicy: Always
                     volumeMounts:
                       - mountPath: /opt/app-root/src
-                        name: ${{ values.name }}
+                        name: ${{ values.name }}-notebook
                       - mountPath: /dev/shm
                         name: shm
                     image: 'image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/s2i-minimal-notebook:2024.1'
                     workingDir: /opt/app-root/src
                 enableServiceLinks: false
-                serviceAccountName: ${{ values.name }}
+                serviceAccountName: ${{ values.name }}-notebook
                 volumes:
-                  - name: ${{ values.name }}
+                  - name: ${{ values.name }}-notebook
                     persistentVolumeClaim:
-                      claimName: ${{ values.name }}-rhoai
+                      claimName: ${{ values.name }}-notebook-rhoai
                   - emptyDir:
                       medium: Memory
                     name: shm
@@ -126,8 +126,8 @@ spec:
           apiVersion: v1
           metadata:
             annotations:
-              openshift.io/display-name: ${{ values.name }}-rhoai
-            name: ${{ values.name }}-rhoai
+              openshift.io/display-name: ${{ values.name }}-notebook-rhoai
+            name: ${{ values.name }}-notebook-rhoai
             ownerReferences:
               - apiVersion: v1
                 kind: ServiceAccount
