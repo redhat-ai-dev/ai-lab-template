@@ -50,7 +50,7 @@ On `Deployment information` Page, provide your Quay host in the `Image Registry`
  
 ## Contributing
 
-The templates are found in `./templates` and reference reusable content in `./skeleton`.  
+The templates are found in [./templates](./templates)  and reference reusable content in [./skeleton](./skeleton).  
 
 The templates are maintained by importing external samples into the software template format. This allows the external samples to be used standalone, developed, and evolved and then imported.
 
@@ -59,7 +59,9 @@ The pipelines are also maintained externally to allow standalone use outside of 
 To update the templates from these or any new samples you update the list of imported repos and run the following. 
 
 
- `./generate.sh` to generate all the templates before commit to this repository.
+ [./generate.sh](./generate.sh) to generate all the templates before commit to this repository.
+
+ [import-ai-lab-samples](./scripts/import-ai-lab-samples) and [import-gitops-template](./scripts/import-gitops-template) take `REPO` and `BRANCH` as args when running the scripts, repourl and branch name can be passed in as first and second arguments respectively. 
 
 
 
