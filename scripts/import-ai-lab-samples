@@ -4,8 +4,8 @@ ROOT_DIR=$(realpath $SCRIPTDIR/..)
 SKELETON_DIR=$ROOT_DIR/skeleton
 TEMPLATE_DIR=$ROOT_DIR/templates
 
-REPO="${1:-https://github.com/redhat-ai-dev/ai-lab-samples}"
-BRANCH="${2:-main}"
+REPO="${SAMPLE_REPO:-https://github.com/redhat-ai-dev/ai-lab-samples}"
+BRANCH="${SAMPLE_BRANCH:-main}"
 DIRNAME=$(basename $REPO)
 
 mkdir -p $SCRIPTDIR/samples 
@@ -17,7 +17,7 @@ else
     (cd $SCRIPTDIR/samples;  git clone $REPO 2>&1 > /dev/null)
 fi
 
-(cd $REPONAME; git checkout $BRANCH; git pull)
+(cd $SAMPLE_DIR; git checkout $BRANCH; git pull)
 
 
 cd $SAMPLE_DIR
