@@ -19,6 +19,11 @@ resources:
 - route.yaml
 - service.yaml
 - model-config.yaml
+{%- if values.dbRequired %}
+- deployment-database.yaml
+- service-database.yaml
+- database-config.yaml
+{%- endif %}
 {%- if values.rhoaiSelected %}
 - rhoai/
 {%- endif %}
