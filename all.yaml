@@ -7,3 +7,4 @@ spec:
   targets:
     - ./templates/codegen/template.yaml
     - ./templates/chatbot/template.yaml
+    - ./templates/audio-to-text/template.yaml
