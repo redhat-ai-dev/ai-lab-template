@@ -94,12 +94,9 @@ spec:
                                             --ServerApp.quit_button=False
                       - name: JUPYTER_IMAGE
                         value: 'image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/s2i-minimal-notebook:2024.1'
-                      - name: MODEL_ENDPOINT
-                        value: http://${{ values.name }}-model-server.${{ values.namespace }}.svc.cluster.local:${{ values.modelServicePort }}
-                      {%- if values.vllmSelected %}
-                      - name: MODEL_NAME
-                        value: "${{ values.vllmModelName }}"
-                      {%- endif %}
+                    envFrom:
+                    - configMapRef:
+                        name: ${{ values.name }}-model-config
                     ports:
                       - containerPort: 8888
                         name: notebook-port

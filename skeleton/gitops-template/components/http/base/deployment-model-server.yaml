@@ -26,7 +26,7 @@ spec:
       initContainers:
       - name: model-file
         image: ${{ values.initContainer }}
-        command: ['/usr/bin/install', "/model/model.file", "/shared/"]
+        command: ${{ values.command }}
         volumeMounts:
         - name: model-file
           mountPath: /shared
