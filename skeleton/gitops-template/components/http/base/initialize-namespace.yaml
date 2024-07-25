@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1
 kind: PipelineRun
 metadata:
-  generateName: rhtap-dev-namespace-setup-
+  name: ${{ values.name }}-rhtap-dev-namespace-setup
 spec:
   pipelineSpec:
     tasks:
