@@ -225,7 +225,7 @@ spec:
           webhookSecretKey: webhook.secret
           defaultBranch: main
           initContainer: quay.io/redhat-ai-dev/detr-resnet-101:latest
-          command: ['cp', '-R', '/model/detr-resnet-101', '/shared/detr-resnet-101']
+          command: "['cp', '-R', '/model/detr-resnet-101', '/shared/detr-resnet-101']"
           appContainer: ${{ 'quay.io/redhat-ai-dev/ai-template-bootstrap-app:latest' if parameters.hostType === 'GitHub' else 'quay.io/redhat-ai-dev/object_detection:latest' }}
           appPort: 8501
           modelServiceContainer: quay.io/ai-lab/object_detection_python:latest
