@@ -225,7 +225,8 @@ spec:
           webhookSecretKey: webhook.secret
           defaultBranch: main
           initContainer: quay.io/redhat-ai-dev/whisper-small:latest
-          command: "['/usr/bin/install', '/model/model.file', '/shared/']"
+          modelInitCommand: "['/usr/bin/install', '/model/model.file', '/shared/']"
+          modelPath: "/model/model.file"
           appContainer: ${{ 'quay.io/redhat-ai-dev/ai-template-bootstrap-app:latest' if parameters.hostType === 'GitHub' else 'quay.io/redhat-ai-dev/audio-to-text:latest' }}
           appPort: 8501
           modelServiceContainer: quay.io/redhat-ai-dev/whispercpp:latest

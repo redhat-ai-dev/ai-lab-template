@@ -4,8 +4,9 @@ export APP_DESC="AI enabled Object Detection Application example using DEtection
 export APP_TAGS='["ai", "detr", "python"]'
 export INIT_CONTAINER="quay.io/redhat-ai-dev/detr-resnet-101:latest"
 export INIT_CONTAINER_COMMAND="['cp', '-R', '/model/detr-resnet-101', '/shared/detr-resnet-101']"
+export MODEL_PATH="/model/detr-resnet-101"
 export APP_PORT=8501
-export MODEL_SERVICE_CONTAINER="quay.io/ai-lab/object_detection_python:latest"
+export MODEL_SERVICE_CONTAINER="quay.io/redhat-ai-dev/object_detection_python:latest"
 export MODEL_SERVICE_PORT=8000
 
 # vllm configurations
