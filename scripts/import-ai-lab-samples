@@ -4,12 +4,8 @@ ROOT_DIR=$(realpath $SCRIPTDIR/..)
 SKELETON_DIR=$ROOT_DIR/skeleton
 TEMPLATE_DIR=$ROOT_DIR/templates
 
-# REPO="${SAMPLE_REPO:-https://github.com/redhat-ai-dev/ai-lab-samples}"
-# BRANCH="${SAMPLE_BRANCH:-main}"
-# DIRNAME=$(basename $REPO)
-
-REPO="${SAMPLE_REPO:-https://github.com/yangcao77/ai-lab-samples}"
-BRANCH="add-object-detection"
+REPO="${SAMPLE_REPO:-https://github.com/redhat-ai-dev/ai-lab-samples}"
+BRANCH="${SAMPLE_BRANCH:-main}"
 DIRNAME=$(basename $REPO)
 
 mkdir -p $SCRIPTDIR/samples 
