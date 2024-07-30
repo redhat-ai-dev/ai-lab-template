@@ -60,7 +60,7 @@ spec:
                 modelEndpoint:
                   title: Model Server Endpoint
                   type: string
-                  ui:help: "The endpoint for an existing model server."
+                  description: "The endpoint for an existing model server."
                 modelName:
                   title: Model Name
                   type: string
