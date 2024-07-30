@@ -34,6 +34,29 @@ spec:
           ui:options:
             catalogFilter:
               kind: [Group, User]
+        modelServer:
+          title: Model Server 
+          description: The model server to use for audio to text transcription
+          type: string
+          enum:
+            - whisper.cpp
+            - Existing model server
+          default: whisper.cpp
+      dependencies:
+        modelServer:
+          oneOf:
+            - required:
+                - modelEndpoint
+              properties:
+                modelServer:
+                    const: Existing model server
+                modelEndpoint:
+                  title: Model Server Endpoint
+                  type: string
+                  description: "The endpoint for an existing model server. The model deployed on the server must support automatic speech recognition."
+            - properties:
+                modelServer:
+                    const: whisper.cpp
     - title: Application Repository Information
       required:
         - hostType
@@ -229,6 +252,8 @@ spec:
           appPort: 8501
           modelServiceContainer: quay.io/redhat-ai-dev/whispercpp:latest
           modelServicePort: 8001
+          existingModelServer: ${{ parameters.modelServer === 'Existing model server' }}
+          modelEndpoint: ${{ parameters.modelEndpoint }}
           # for RHOAI
           rhoaiSelected: ${{ parameters.rhoaiSelected }}
     - action: fs:rename
