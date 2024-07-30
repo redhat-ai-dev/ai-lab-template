@@ -2,10 +2,10 @@ apiVersion: scaffolder.backstage.io/v1beta3
 # https://backstage.io/docs/features/software-catalog/descriptor-format#kind-template
 kind: Template
 metadata:
-  name: audio-to-text
-  title: Audio to Text Application
-  description: Audio to Text Application example with AI enabled audio transcription
-  tags: ["ai", "whispercpp", "python", "asr"]
+  name: object-detection
+  title: Object Detection Application
+  description: AI enabled Object Detection Application example using DEtection TRansformer(DETR) model to detect objects in an image
+  tags: ["ai", "detr", "python"]
 spec:
   type: service
   # These parameters are used to generate the input form in the frontend, and are
@@ -34,29 +34,6 @@ spec:
           ui:options:
             catalogFilter:
               kind: [Group, User]
-        modelServer:
-          title: Model Server 
-          description: The model server to use for audio to text transcription
-          type: string
-          enum:
-            - whisper.cpp
-            - Existing model server
-          default: whisper.cpp
-      dependencies:
-        modelServer:
-          oneOf:
-            - required:
-                - modelEndpoint
-              properties:
-                modelServer:
-                    const: Existing model server
-                modelEndpoint:
-                  title: Model Server Endpoint
-                  type: string
-                  description: "The endpoint for an existing model server. The model deployed on the server must support automatic speech recognition."
-            - properties:
-                modelServer:
-                    const: whisper.cpp
     - title: Application Repository Information
       required:
         - hostType
@@ -157,10 +134,10 @@ spec:
           namespace: ${{ parameters.namespace }}
           repoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops
           srcRepoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}
-          appContainer: ${{ 'quay.io/redhat-ai-dev/ai-template-bootstrap-app:latest' if parameters.hostType === 'GitHub' else 'quay.io/redhat-ai-dev/audio-to-text:latest' }}
+          appContainer: ${{ 'quay.io/redhat-ai-dev/ai-template-bootstrap-app:latest' if parameters.hostType === 'GitHub' else 'quay.io/redhat-ai-dev/object_detection:latest' }}
           appPort: 8501
-          modelServiceContainer: quay.io/redhat-ai-dev/whispercpp:latest
-          modelServicePort: 8001          
+          modelServiceContainer: quay.io/redhat-ai-dev/object_detection_python:latest
+          modelServicePort: 8000          
     # Renders all the template variables into the files and directory names and content, and places the result in the workspace.
     - id: fetch-skeleton
       name: Fetch Skeleton
@@ -171,12 +148,12 @@ spec:
         values:
           name: ${{ parameters.name }}
           namespace: ${{ parameters.namespace }}
-          description: Secure Supply Chain Example for Audio to Text Application example with AI enabled audio transcription 
+          description: Secure Supply Chain Example for AI enabled Object Detection Application example using DEtection TRansformer(DETR) model to detect objects in an image 
           dockerfile: Containerfile
           buildContext: .
           gitopsSecretName: ${{ 'gitops-auth-secret' if parameters.hostType === 'GitHub' else 'gitlab-auth-secret' }}
           image: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
-          tags: '["ai", "whispercpp", "python", "asr"]'
+          tags: '["ai", "detr", "python"]'
           owner: ${{ parameters.owner }} 
           repoSlug: '${{ parameters.imageOrg }}/${{ parameters.imageName }}'
           defaultBranch: ${{ parameters.branch }} 
@@ -247,15 +224,13 @@ spec:
           webhookSecret: pipelines-secret
           webhookSecretKey: webhook.secret
           defaultBranch: main
-          initContainer: quay.io/redhat-ai-dev/whisper-small:latest
-          modelInitCommand: "['/usr/bin/install', '/model/model.file', '/shared/']"
-          modelPath: "/model/model.file"
-          appContainer: ${{ 'quay.io/redhat-ai-dev/ai-template-bootstrap-app:latest' if parameters.hostType === 'GitHub' else 'quay.io/redhat-ai-dev/audio-to-text:latest' }}
+          initContainer: quay.io/redhat-ai-dev/detr-resnet-101:latest
+          modelInitCommand: "['cp', '-R', '/model/detr-resnet-101', '/shared/detr-resnet-101']"
+          modelPath: "/model/detr-resnet-101"
+          appContainer: ${{ 'quay.io/redhat-ai-dev/ai-template-bootstrap-app:latest' if parameters.hostType === 'GitHub' else 'quay.io/redhat-ai-dev/object_detection:latest' }}
           appPort: 8501
-          modelServiceContainer: quay.io/redhat-ai-dev/whispercpp:latest
-          modelServicePort: 8001
-          existingModelServer: ${{ parameters.modelServer === 'Existing model server' }}
-          modelEndpoint: ${{ parameters.modelEndpoint }}
+          modelServiceContainer: quay.io/redhat-ai-dev/object_detection_python:latest
+          modelServicePort: 8000
           # for RHOAI
           rhoaiSelected: ${{ parameters.rhoaiSelected }}
     - action: fs:rename

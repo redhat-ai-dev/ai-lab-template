@@ -26,7 +26,7 @@ spec:
       initContainers:
       - name: model-file
         image: ${{ values.initContainer }}
-        command: ['/usr/bin/install', "/model/model.file", "/shared/"]
+        command: ${{ values.modelInitCommand }}
         volumeMounts:
         - name: model-file
           mountPath: /shared
@@ -58,7 +58,7 @@ spec:
         - name: PORT
           value: "${{ values.modelServicePort }}"
         - name: MODEL_PATH
-          value: /model/model.file
+          value: ${{ values.modelPath }}
         - name: CHAT_FORMAT
           value: openchat
         image: ${{ values.modelServiceContainer }}

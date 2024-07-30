@@ -264,6 +264,8 @@ spec:
           webhookSecretKey: ${WEBHOOK__SECRET__DEFAULT__KEY}
           defaultBranch: main
           initContainer: ${INIT_CONTAINER}
+          modelInitCommand: "${INIT_CONTAINER_COMMAND}"
+          modelPath: "${MODEL_PATH}"
           appContainer: ${{ 'quay.io/redhat-ai-dev/ai-template-bootstrap-app:latest' if parameters.hostType === 'GitHub' else '${APP_INTERFACE_CONTAINER}' }}
           appPort: ${APP_PORT}
           modelServiceContainer: ${MODEL_SERVICE_CONTAINER}
