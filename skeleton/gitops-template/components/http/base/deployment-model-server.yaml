@@ -58,7 +58,7 @@ spec:
         - name: PORT
           value: "${{ values.modelServicePort }}"
         - name: MODEL_PATH
-          value: ${{ values.modelPath }}
+          value: /model/model.file
         - name: CHAT_FORMAT
           value: openchat
         image: ${{ values.modelServiceContainer }}
