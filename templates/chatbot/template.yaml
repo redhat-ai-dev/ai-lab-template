@@ -239,6 +239,8 @@ spec:
           webhookSecretKey: webhook.secret
           defaultBranch: main
           initContainer: quay.io/redhat-ai-dev/granite-7b-lab:latest
+          modelInitCommand: "['/usr/bin/install', '/model/model.file', '/shared/']"
+          modelPath: "/model/model.file"
           appContainer: ${{ 'quay.io/redhat-ai-dev/ai-template-bootstrap-app:latest' if parameters.hostType === 'GitHub' else 'quay.io/redhat-ai-dev/chatbot:latest' }}
           appPort: 8501
           modelServiceContainer: quay.io/ai-lab/llamacpp_python:latest

@@ -23,15 +23,11 @@ spec:
         app.kubernetes.io/instance:  ${{ values.name }}
     spec:
       containers:
-      - env:
-        - name: MODEL_ENDPOINT
-          value: http://${{ values.name }}-model-server:${{ values.modelServicePort }}
-        {%- if values.vllmSelected %}
-        - name: MODEL_NAME
-          value: "${{ values.vllmModelName }}"
-        {%- endif %}
-        image:  ${{ values.appContainer }}
+      - image:  ${{ values.appContainer }}
         name: app-inference
+        envFrom:
+        - configMapRef:
+            name: ${{ values.name }}-model-config
         ports:
         - containerPort: ${{ values.appPort }}
         securityContext:
