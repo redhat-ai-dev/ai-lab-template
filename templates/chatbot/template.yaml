@@ -45,8 +45,33 @@ spec:
           enum:
             - llama.cpp
             - vLLM
+            - Existing model server
           default: llama.cpp
           ui:help: If you choose vLLM, ensure your cluster has Nvidia GPU supported, and is with enough cpu and memory
+      dependencies:
+        modelServer:
+          oneOf:
+            - required:
+                - modelEndpoint
+                - modelName
+              properties:
+                modelServer:
+                    const: Existing model server
+                modelEndpoint:
+                  title: Model Server Endpoint
+                  type: string
+                  ui:help: "The endpoint for an existing model server."
+                modelName:
+                  title: Model Name
+                  type: string
+                  ui:help: "The name of the model deployed on the model server you would like to use."
+            - properties:
+                modelServer:
+                    const: vLLM
+            - properties:
+                modelServer:
+                    const: llama.cpp
+
         # SED_MODEL_SERVER_END
     - title: Application Repository Information
       required:
@@ -247,8 +272,10 @@ spec:
           # for vllm
           vllmSelected: ${{ parameters.modelServer === 'vLLM' }}
           vllmModelServiceContainer: quay.io/rh-aiservices-bu/vllm-openai-ubi9:0.4.2
-          vllmModelName: instructlab/granite-7b-lab
+          modelName: ${{ parameters.modelName if parameters.modelServer === 'Existing model server' else 'instructlab/granite-7b-lab' }}
           maxModelLength: 4096
+          existingModelServer: ${{ parameters.modelServer === 'Existing model server' }}
+          modelEndpoint: ${{ parameters.modelEndpoint }}
           # SED_MODEL_SERVER_END
           # for RHOAI
           rhoaiSelected: ${{ parameters.rhoaiSelected }}
