@@ -15,6 +15,7 @@ spec:
       required:
         - name
         - owner
+        - modelServer
       properties:
         name:
           title: Name
@@ -35,13 +36,14 @@ spec:
             catalogFilter:
               kind: [Group, User]
         modelServer:
-          title: Model Server 
-          description: The model server to use for audio to text transcription
+          # SED_ASR_MODEL_SERVER_START
+          title: ASR Model Server
+          description: The model server container to use. The deployed model on the server must support automatic speech recognition (ASR).
           type: string
           enum:
             - whisper.cpp
+          # SED_ASR_MODEL_SERVER_END
             - Existing model server
-          default: whisper.cpp
       dependencies:
         modelServer:
           oneOf:
@@ -53,10 +55,13 @@ spec:
                 modelEndpoint:
                   title: Model Server Endpoint
                   type: string
-                  description: "The endpoint for an existing model server. The model deployed on the server must support automatic speech recognition."
+                  description: "The endpoint for an existing model server."
+            # SED_ASR_MODEL_SERVER_START
             - properties:
                 modelServer:
                     const: whisper.cpp
+            # SED_ASR_MODEL_SERVER_END
+
     - title: Application Repository Information
       required:
         - hostType

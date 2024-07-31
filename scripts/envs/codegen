@@ -9,8 +9,11 @@ export APP_PORT=8501
 export MODEL_SERVICE_CONTAINER="quay.io/ai-lab/llamacpp_python:latest"
 export MODEL_SERVICE_PORT=8001
 
-# vllm configurations
-export SUPPORT_VLLM=true
+# model configurations
+export SUPPORT_LLM=true
+export SUPPORT_ASR=false
+export SUPPORT_DETR=false
+
 export VLLM_CONTAINER="quay.io/rh-aiservices-bu/vllm-openai-ubi9:0.4.2"
 export VLLM_MODEL_NAME="Nondzu/Mistral-7B-code-16k-qlora"
 export VLLM_MAX_MODEL_LEN=6144
