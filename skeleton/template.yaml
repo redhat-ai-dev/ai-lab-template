@@ -40,7 +40,7 @@ spec:
           title: Large Language Model(LLM) Server
           description: The model server container to use
           ui:help: If you choose vLLM, ensure your cluster has Nvidia GPU supported, and is with enough cpu and memory
-          SED_ASR_MODEL_SERVER_START
+          default: llama.cpp
           type: string
           enum:
             - vLLM
@@ -50,6 +50,7 @@ spec:
           title: ASR Model Server
           description: The model server container to use. The deployed model on the server must support automatic speech recognition (ASR).
           type: string
+          default: whisper.cpp
           enum:
             - whisper.cpp
           # SED_ASR_MODEL_SERVER_END
@@ -57,6 +58,7 @@ spec:
           title: DETR Model Server
           description: The model server container to use. The deployed model on the server must support object detection.
           type: string
+          default: detr-resnet-50
           enum:
             - detr-resnet-50
           # SED_DETR_MODEL_SERVER_END

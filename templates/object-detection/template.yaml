@@ -40,6 +40,7 @@ spec:
           title: DETR Model Server
           description: The model server container to use. The deployed model on the server must support object detection.
           type: string
+          default: detr-resnet-50
           enum:
             - detr-resnet-50
           # SED_DETR_MODEL_SERVER_END
