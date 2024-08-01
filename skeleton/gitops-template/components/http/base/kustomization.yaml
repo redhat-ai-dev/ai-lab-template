@@ -11,8 +11,10 @@ resources:
 {%- if values.vllmSelected %}
 - pvc.yaml
 {%- endif %}
+{%- if not values.existingModelServer %}
 - deployment-model-server.yaml
 - service-model-server.yaml
+{%- endif %}
 - deployment.yaml
 - route.yaml
 - service.yaml

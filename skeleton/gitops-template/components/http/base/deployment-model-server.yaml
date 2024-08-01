@@ -36,7 +36,7 @@ spec:
       - image: ${{ values.vllmModelServiceContainer }}
         args: [
             "--model",
-            "${{ values.vllmModelName }}",
+            "${{ values.modelName }}",
             "--port",
             "${{ values.modelServicePort }}",
             "--download-dir",

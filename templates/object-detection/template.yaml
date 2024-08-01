@@ -15,6 +15,7 @@ spec:
       required:
         - name
         - owner
+        - modelServer
       properties:
         name:
           title: Name
@@ -34,6 +35,34 @@ spec:
           ui:options:
             catalogFilter:
               kind: [Group, User]
+        modelServer:
+          # SED_DETR_MODEL_SERVER_START
+          title: DETR Model Server
+          description: The model server container to use. The deployed model on the server must support object detection.
+          type: string
+          default: detr-resnet-101
+          enum:
+            - detr-resnet-101
+          # SED_DETR_MODEL_SERVER_END
+            - Existing model server
+      dependencies:
+        modelServer:
+          oneOf:
+            - required:
+                - modelEndpoint
+              properties:
+                modelServer:
+                    const: Existing model server
+                modelEndpoint:
+                  title: Model Server Endpoint
+                  type: string
+                  description: "The endpoint for an existing model server."
+            # SED_DETR_MODEL_SERVER_START
+            - properties:
+                modelServer:
+                    const: detr-resnet-101
+            # SED_DETR_MODEL_SERVER_END
+
     - title: Application Repository Information
       required:
         - hostType
@@ -231,6 +260,8 @@ spec:
           appPort: 8501
           modelServiceContainer: quay.io/redhat-ai-dev/object_detection_python:latest
           modelServicePort: 8000
+          existingModelServer: ${{ parameters.modelServer === 'Existing model server' }}
+          modelEndpoint: ${{ parameters.modelEndpoint }}
           # for RHOAI
           rhoaiSelected: ${{ parameters.rhoaiSelected }}
     - action: fs:rename

@@ -15,9 +15,7 @@ spec:
       required:
         - name
         - owner
-      # SED_MODEL_SERVER_START
         - modelServer
-      # SED_MODEL_SERVER_END
       properties:
         name:
           title: Name
@@ -37,17 +35,48 @@ spec:
           ui:options:
             catalogFilter:
               kind: [Group, User]
-        # SED_MODEL_SERVER_START
         modelServer:
-          title: Large Language Model(LLM) Server 
+          # SED_LLM_SERVER_START
+          title: Large Language Model(LLM) Server
           description: The model server container to use
+          ui:help: If you choose vLLM, ensure your cluster has Nvidia GPU supported, and is with enough cpu and memory
+          default: llama.cpp
           type: string
           enum:
-            - llama.cpp
             - vLLM
-          default: llama.cpp
-          ui:help: If you choose vLLM, ensure your cluster has Nvidia GPU supported, and is with enough cpu and memory
-        # SED_MODEL_SERVER_END
+            - llama.cpp
+          # SED_LLM_SERVER_END
+            - Existing model server
+      dependencies:
+        modelServer:
+          oneOf:
+            - required:
+                - modelEndpoint
+                # SED_LLM_SERVER_START
+                - modelName
+                # SED_LLM_SERVER_END
+              properties:
+                modelServer:
+                    const: Existing model server
+                modelEndpoint:
+                  title: Model Server Endpoint
+                  type: string
+                  description: "The endpoint for an existing model server."
+                # SED_LLM_SERVER_START
+                modelName:
+                  title: Model Name
+                  type: string
+                  ui:help: "The name of the model deployed on the model server you would like to use."
+                # SED_LLM_SERVER_END
+            # SED_LLM_SERVER_START
+            - properties:
+                modelServer:
+                    const: vLLM
+            - properties:
+                modelServer:
+                    const: llama.cpp
+            # SED_LLM_SERVER_END
+
     - title: Application Repository Information
       required:
         - hostType
@@ -245,13 +274,15 @@ spec:
           appPort: 8501
           modelServiceContainer: quay.io/ai-lab/llamacpp_python:latest
           modelServicePort: 8001
-          # SED_MODEL_SERVER_START
+          # SED_LLM_SERVER_START
           # for vllm
           vllmSelected: ${{ parameters.modelServer === 'vLLM' }}
           vllmModelServiceContainer: quay.io/rh-aiservices-bu/vllm-openai-ubi9:0.4.2
-          vllmModelName: instructlab/granite-7b-lab
+          modelName: ${{ parameters.modelName if parameters.modelServer === 'Existing model server' else 'instructlab/granite-7b-lab' }}
           maxModelLength: 4096
-          # SED_MODEL_SERVER_END
+          # SED_LLM_SERVER_END
+          existingModelServer: ${{ parameters.modelServer === 'Existing model server' }}
+          modelEndpoint: ${{ parameters.modelEndpoint }}
           # for RHOAI
           rhoaiSelected: ${{ parameters.rhoaiSelected }}
     - action: fs:rename

@@ -3,7 +3,11 @@ kind: ConfigMap
 metadata:
   name: ${{ values.name }}-model-config
 data:
+  {%- if values.existingModelServer %}
+  MODEL_ENDPOINT: "${{ values.modelEndpoint }}"
+  {%- else %}
   MODEL_ENDPOINT: "http://${{ values.name }}-model-server:${{ values.modelServicePort }}"
-  {%- if values.vllmSelected %}
-  MODEL_NAME: "${{ values.vllmModelName }}"
+  {%- endif %}
+  {%- if values.vllmSelected or values.existingModelServer %}
+  MODEL_NAME: "${{ values.modelName }}"
   {%- endif %}
