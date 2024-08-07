@@ -165,6 +165,7 @@ spec:
           srcRepoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}
           appContainer: ${{ 'quay.io/redhat-ai-dev/ai-template-bootstrap-app:latest' if parameters.hostType === 'GitHub' else 'quay.io/redhat-ai-dev/audio-to-text:latest' }}
           appPort: 8501
+          appRunCommand: "streamlit run whisper_client.py"
           modelServiceContainer: quay.io/redhat-ai-dev/whispercpp:latest
           modelServicePort: 8001          
     # Renders all the template variables into the files and directory names and content, and places the result in the workspace.
@@ -185,7 +186,7 @@ spec:
           tags: '["ai", "whispercpp", "python", "asr"]'
           owner: ${{ parameters.owner }} 
           repoSlug: '${{ parameters.imageOrg }}/${{ parameters.imageName }}'
-          defaultBranch: ${{ parameters.branch }} 
+          defaultBranch: ${{ parameters.branch }}
     - id: fetch-github-action
       name: Fetch GitHub Action
       action: fetch:plain
@@ -258,7 +259,6 @@ spec:
           modelPath: "/model/model.file"
           appContainer: ${{ 'quay.io/redhat-ai-dev/ai-template-bootstrap-app:latest' if parameters.hostType === 'GitHub' else 'quay.io/redhat-ai-dev/audio-to-text:latest' }}
           appPort: 8501
-          appRunCommand: streamlit run whisper_client.py
           modelServiceContainer: quay.io/redhat-ai-dev/whispercpp:latest
           modelServicePort: 8001
           existingModelServer: ${{ parameters.modelServer === 'Existing model server' }}
