@@ -272,6 +272,7 @@ spec:
           modelPath: "/model/model.file"
           appContainer: ${{ 'quay.io/redhat-ai-dev/ai-template-bootstrap-app:latest' if parameters.hostType === 'GitHub' else 'quay.io/redhat-ai-dev/chatbot:latest' }}
           appPort: 8501
+          appRunCommand: streamlit run chatbot_ui.py
           modelServiceContainer: quay.io/ai-lab/llamacpp_python:latest
           modelServicePort: 8001
           # SED_LLM_SERVER_START

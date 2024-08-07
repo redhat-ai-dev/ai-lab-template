@@ -298,6 +298,7 @@ spec:
           modelPath: "${MODEL_PATH}"
           appContainer: ${{ 'quay.io/redhat-ai-dev/ai-template-bootstrap-app:latest' if parameters.hostType === 'GitHub' else '${APP_INTERFACE_CONTAINER}' }}
           appPort: ${APP_PORT}
+          appRunCommand: ${APP_RUN_COMMAND}
           modelServiceContainer: ${MODEL_SERVICE_CONTAINER}
           modelServicePort: ${MODEL_SERVICE_PORT}
           # SED_LLM_SERVER_START
