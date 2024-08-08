@@ -1,10 +1,12 @@
 # Running Samples in OpenShift AI
 
-This document will outline how you can run build and run your sample applications within an OpenShfit AI workbench.
+This document will outline how you can run build and run your sample applications within an OpenShift AI workbench.
 
 ## Prerequisites
 
+- Red Hat OpenShift AI installed, and `Create workbench for OpenShift AI` selected during component creation.
 - `oc` cli installed
+   - `oc` can be downloaded from https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable/
 - Permissions to run `oc port-forward` on the cluster, specifically an account with the following roles:
    - `get`, `create`, and `list` for the `pods/portforward` subresource
 
