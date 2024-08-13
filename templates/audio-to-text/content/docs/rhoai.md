@@ -13,15 +13,19 @@ This document will outline how you can run build and run your sample application
 ## Running the Sample
 
 1) While on Console, navigate to the `OpenShift AI`
+
 ![image](./.assets/access-openshift-ai.png)
 
 2) Go to the `Data Science Projects` section and access your application's project
+
 ![image](./.assets/data-science-projects.png)
 
 3) Access the `workbench`
+
 ![image](./.assets/access-workbench.png)
 
 4) Go to `File->Open` and select `Terminal`
+
 ![image](./.assets/open-terminal.png)
 
 5) In the terminal, run `cd ${{ values.name }}` to navigate to your sample app's directory
