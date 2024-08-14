@@ -12,16 +12,27 @@ This document will outline how you can run build and run your sample application
 
 ## Running the Sample
 
-1) Navigate to the OpenShift AI workbench created for your sample application
+1) While on Console, navigate to the `OpenShift AI` by clicking the square "apps" icon on the top-right corner (next to the notifications icon). `Openshift AI` will be listed in the dropdown list
 
-2) Go to `File->Open` and select `Terminal`
+![image](./.assets/access-openshift-ai.png)
+
+2) Go to the `Data Science Projects` section and access your application's project named `{{ values.namespace }}`
+
+![image](./.assets/data-science-projects.png)
+
+3) Access the `workbench` named `{{ values.name }}-notebook`
+
+![image](./.assets/access-workbench.png)
+
+4) Go to `File->Open` and select `Terminal`
+
 ![image](./.assets/open-terminal.png)
 
-3) In the terminal, run `cd ${{ values.name }}` to navigate to your sample app's directory
+5) In the terminal, run `cd ${{ values.name }}` to navigate to your sample app's directory
 
-4) Run `pip install --upgrade -r requirements.txt` to install the dependencies for your application
+6) Run `pip install --upgrade -r requirements.txt` to install the dependencies for your application
 
-5) Run `${{ values.appRunCommand }}` to run the sample in the workbench.
+7) Run `${{ values.appRunCommand }}` to run the sample in the workbench.
 
 ## Accessing the Sample
 
