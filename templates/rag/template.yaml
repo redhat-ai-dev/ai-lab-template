@@ -2,9 +2,9 @@ apiVersion: scaffolder.backstage.io/v1beta3
 # https://backstage.io/docs/features/software-catalog/descriptor-format#kind-template
 kind: Template
 metadata:
-  name: rag
-  title: RAG Chatbot Application
-  description: "RAG Chatbot Application example with an LLM and a Vector database enabled"
+  name: rag2
+  title: RAG2 Chatbot Application
+  description: "RAG2 Chatbot Application example with an LLM and a Vector database enabled"
   tags: ["ai", "llamacpp", "vllm", "python", "rag", "database"]
 spec:
   type: service
@@ -288,7 +288,7 @@ spec:
           # Database is required for the RAG templates
           dbRequired: true
           dbContainer: quay.io/redhat-ai-dev/chroma:latest
-          dbPort: 8050
+          dbPort: 8000
     - action: fs:rename
       id: renameComponentDir
       name: Rename Component Directory
