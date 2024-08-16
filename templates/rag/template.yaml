@@ -2,9 +2,9 @@ apiVersion: scaffolder.backstage.io/v1beta3
 # https://backstage.io/docs/features/software-catalog/descriptor-format#kind-template
 kind: Template
 metadata:
-  name: rag2
-  title: RAG2 Chatbot Application
-  description: "RAG2 Chatbot Application example with an LLM and a Vector database enabled"
+  name: rag
+  title: RAG Chatbot Application
+  description: RAG Chatbot Application example with an LLM and a Vector database enabled
   tags: ["ai", "llamacpp", "vllm", "python", "rag", "database"]
 spec:
   type: service
@@ -177,8 +177,9 @@ spec:
           namespace: ${{ parameters.namespace }}
           repoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops
           srcRepoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}
-          appContainer: ${{ 'quay.io/redhat-ai-dev/ai-template-bootstrap-app:latest' if parameters.hostType === 'GitHub' else 'quay.io/redhat-ai-dev/chatbot:latest' }}
+          appContainer: ${{ 'quay.io/redhat-ai-dev/ai-template-bootstrap-app:latest' if parameters.hostType === 'GitHub' else 'quay.io/redhat-ai-dev/rag:latest' }}
           appPort: 8501
+          appRunCommand: "streamlit run rag_app.py"
           modelServiceContainer: quay.io/ai-lab/llamacpp_python:latest
           modelServicePort: 8001          
     # Renders all the template variables into the files and directory names and content, and places the result in the workspace.
@@ -191,15 +192,15 @@ spec:
         values:
           name: ${{ parameters.name }}
           namespace: ${{ parameters.namespace }}
-          description: Secure Supply Chain Example for RAG Application example with LLM enabled chat applications 
+          description: Secure Supply Chain Example for RAG Chatbot Application example with an LLM and a Vector database enabled 
           dockerfile: Containerfile
           buildContext: .
           gitopsSecretName: ${{ 'gitops-auth-secret' if parameters.hostType === 'GitHub' else 'gitlab-auth-secret' }}
           image: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
-          tags: '["ai", "llamacpp", "vllm", "python"]'
+          tags: '["ai", "llamacpp", "vllm", "python", "rag", "database"]'
           owner: ${{ parameters.owner }} 
           repoSlug: '${{ parameters.imageOrg }}/${{ parameters.imageName }}'
-          defaultBranch: ${{ parameters.branch }} 
+          defaultBranch: ${{ parameters.branch }}
     - id: fetch-github-action
       name: Fetch GitHub Action
       action: fetch:plain
@@ -270,7 +271,7 @@ spec:
           initContainer: quay.io/redhat-ai-dev/granite-7b-lab:latest
           modelInitCommand: "['/usr/bin/install', '/model/model.file', '/shared/']"
           modelPath: "/model/model.file"
-          appContainer: ${{ 'quay.io/redhat-ai-dev/ai-template-bootstrap-app:latest' if parameters.hostType === 'GitHub' else 'quay.io/redhat-ai-dev/chatbot:latest' }}
+          appContainer: ${{ 'quay.io/redhat-ai-dev/ai-template-bootstrap-app:latest' if parameters.hostType === 'GitHub' else 'quay.io/redhat-ai-dev/rag:latest' }}
           appPort: 8501
           modelServiceContainer: quay.io/ai-lab/llamacpp_python:latest
           modelServicePort: 8001
@@ -285,10 +286,12 @@ spec:
           modelEndpoint: ${{ parameters.modelEndpoint }}
           # for RHOAI
           rhoaiSelected: ${{ parameters.rhoaiSelected }}
+          # SED_DB_START
           # Database is required for the RAG templates
           dbRequired: true
           dbContainer: quay.io/redhat-ai-dev/chroma:latest
           dbPort: 8000
+          # SED_DB_END
     - action: fs:rename
       id: renameComponentDir
       name: Rename Component Directory

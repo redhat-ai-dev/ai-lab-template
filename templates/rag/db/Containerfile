@@ -1,2 +1,0 @@
-FROM chromadb/chroma
-RUN chgrp -R 0 /chroma && chmod -R g=u /chroma

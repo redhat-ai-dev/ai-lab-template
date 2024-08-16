@@ -21,3 +21,6 @@ export VLLM_MAX_MODEL_LEN=4096
 
 # for gitlab case, since gitlab does not have pipeline webhook pre-set to trigger the initial build
 export APP_INTERFACE_CONTAINER="quay.io/redhat-ai-dev/chatbot:latest"
+
+# Database configurations
+export SUPPORT_DB=false

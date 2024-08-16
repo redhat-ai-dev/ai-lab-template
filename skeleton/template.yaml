@@ -312,10 +312,12 @@ spec:
           modelEndpoint: ${{ parameters.modelEndpoint }}
           # for RHOAI
           rhoaiSelected: ${{ parameters.rhoaiSelected }}
+          # SED_DB_START
           # Database is required for the RAG templates
           dbRequired: ${SUPPORT_DB}
           dbContainer: ${DB_CONTAINER}
           dbPort: ${DB_PORT}
+          # SED_DB_END
     - action: fs:rename
       id: renameComponentDir
       name: Rename Component Directory

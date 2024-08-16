@@ -62,6 +62,9 @@ for f in */; do
         if [ $SUPPORT_DETR == false ]; then
             sed -i '/# SED_DETR_MODEL_SERVER_START/,/# SED_DETR_MODEL_SERVER_END/d' $DEST/template.yaml
         fi
+        if [ $SUPPORT_DB == false ]; then
+            sed -i '/# SED_DB_START/,/# SED_DB_END/d' $DEST/template.yaml
+        fi
 
         source $ROOT_DIR/properties
         cat $DEST/template.yaml | envsubst > $DEST/new-template.yaml
