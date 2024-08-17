@@ -6,13 +6,11 @@ export APP_RUN_COMMAND="streamlit run object_detection_client.py"
 export INIT_CONTAINER="quay.io/redhat-ai-dev/detr-resnet-101:latest"
 export INIT_CONTAINER_COMMAND="['cp', '-R', '/model/detr-resnet-101', '/shared/detr-resnet-101']"
 export MODEL_PATH="/model/detr-resnet-101"
-export APP_PORT=8501
 export MODEL_SERVICE_CONTAINER="quay.io/redhat-ai-dev/object_detection_python:latest"
 export MODEL_SERVICE_PORT=8000
 
 # model configurations
 export SUPPORT_LLM=false
-export SUPPORT_ASR=false
 export SUPPORT_DETR=true
 
 # for gitlab case, since gitlab does not have pipeline webhook pre-set to trigger the initial build

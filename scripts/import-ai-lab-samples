@@ -40,6 +40,10 @@ for f in */; do
         cp -r $SAMPLE_DIR/README.md  $DEST/content/docs/source-component.md
         cp -r $ROOT_DIR/skeleton/source-repo/.tekton/README.md  $DEST/content/docs/pipelines.md
 
+        # get default env variables
+        source $SCRIPTDIR/envs/base
+
+        # get sample env variables
         source $SCRIPTDIR/envs/$SAMPLENAME
 
         if [ -f $f/Containerfile ]; then
