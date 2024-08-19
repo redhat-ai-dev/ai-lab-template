@@ -39,7 +39,7 @@ spec:
           # SED_LLM_SERVER_START
           title: Large Language Model(LLM) Server
           description: The model server container to use
-          ui:help: If you choose vLLM, ensure your cluster has Nvidia GPU supported, and is with enough cpu and memory
+          ui:help: If you choose vLLM, ensure your cluster has Nvidia GPU supported, and has enough CPU and memory resources
           default: llama.cpp
           type: string
           enum:
@@ -151,7 +151,7 @@ spec:
                   type: string
                   default: gitlab.com
                   ui:help: "You can also provide the on-prem gitlab server, example: gitlab-gitlab.apps.cluster-ljg9z.sandbox219.opentlc.com"
-    - title: Deployment information
+    - title: Deployment Information
       required:
         - imageRegistry
         - imageOrg
@@ -182,7 +182,7 @@ spec:
           ui:options:
             rows: 5
         rhoaiSelected:
-          title: Create workbench for OpenShift AI
+          title: Create Workbench for OpenShift AI
           description: Deploy to OpenShift AI in your app's namespace
           type: boolean
           default: false
@@ -346,7 +346,7 @@ spec:
         protectDefaultBranch: false
         repoVisibility: "public"
     - id: wait-for-github-repository
-      name: Waiting for repository availability
+      name: Waiting for Repository Availability
       action: 'debug:wait'
       input:
         seconds: 3
@@ -406,9 +406,9 @@ spec:
         url: ${{ steps['publish-github'].output.remoteUrl if steps['publish-github'].output else steps['publish-gitlab'].output.remoteUrl }}
       - title: GitOps Repository
         url: ${{ steps['publish-github-gitops'].output.remoteUrl if steps['publish-github-gitops'].output else steps['publish-gitlab-gitops'].output.remoteUrl }}
-      - title: Open Component in catalog
+      - title: Open Component in Catalog
         icon: catalog
         entityRef: ${{ steps['register'].output.entityRef }}
-      - title: Open GitOps Resource in catalog
+      - title: Open GitOps Resource in Catalog
         icon: catalog
         entityRef: ${{ steps['register-gitops'].output.entityRef }}
