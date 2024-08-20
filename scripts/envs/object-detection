@@ -10,7 +10,6 @@ export MODEL_SERVICE_CONTAINER="quay.io/redhat-ai-dev/object_detection_python:la
 export MODEL_SERVICE_PORT=8000
 
 # model configurations
-export SUPPORT_LLM=false
 export SUPPORT_DETR=true
 
 # for gitlab case, since gitlab does not have pipeline webhook pre-set to trigger the initial build

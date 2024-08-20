@@ -6,6 +6,6 @@ export MODEL_PATH="/model/model.file"
 export MODEL_SERVICE_PORT=8001
 
 # model configurations
-export SUPPORT_LLM=true
+export SUPPORT_LLM=false
 export SUPPORT_ASR=false
 export SUPPORT_DETR=false

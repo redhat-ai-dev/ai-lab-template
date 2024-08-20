@@ -7,7 +7,6 @@ export INIT_CONTAINER="quay.io/redhat-ai-dev/whisper-small:latest"
 export MODEL_SERVICE_CONTAINER="quay.io/redhat-ai-dev/whispercpp:latest"
 
 # model configurations
-export SUPPORT_LLM=false
 export SUPPORT_ASR=true
 
 # for gitlab case, since gitlab does not have pipeline webhook pre-set to trigger the initial build
