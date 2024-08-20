@@ -2,10 +2,10 @@ apiVersion: scaffolder.backstage.io/v1beta3
 # https://backstage.io/docs/features/software-catalog/descriptor-format#kind-template
 kind: Template
 metadata:
-  name: sed.edit.NAME
-  title: sed.edit.TITLE
-  description: sed.edit.DESCRIPTION
-  tags: sed.edit.APPTAGS
+  name: rag
+  title: RAG Chatbot Application
+  description: RAG Chatbot Application example with an LLM and a Vector database enabled
+  tags: ["ai", "llamacpp", "vllm", "python", "rag", "database"]
 spec:
   type: service
   # These parameters are used to generate the input form in the frontend, and are
@@ -46,22 +46,6 @@ spec:
             - vLLM
             - llama.cpp
           # SED_LLM_SERVER_END
-          # SED_ASR_MODEL_SERVER_START
-          title: ASR Model Server
-          description: The model server container to use. The deployed model on the server must support automatic speech recognition (ASR).
-          type: string
-          default: whisper.cpp
-          enum:
-            - whisper.cpp
-          # SED_ASR_MODEL_SERVER_END
-          # SED_DETR_MODEL_SERVER_START
-          title: DETR Model Server
-          description: The model server container to use. The deployed model on the server must support object detection.
-          type: string
-          default: detr-resnet-101
-          enum:
-            - detr-resnet-101
-          # SED_DETR_MODEL_SERVER_END
             - Existing model server
       dependencies:
         modelServer:
@@ -92,16 +76,6 @@ spec:
                 modelServer:
                     const: llama.cpp
             # SED_LLM_SERVER_END
-            # SED_ASR_MODEL_SERVER_START
-            - properties:
-                modelServer:
-                    const: whisper.cpp
-            # SED_ASR_MODEL_SERVER_END
-            # SED_DETR_MODEL_SERVER_START
-            - properties:
-                modelServer:
-                    const: detr-resnet-101
-            # SED_DETR_MODEL_SERVER_END
 
     - title: Application Repository Information
       required:
@@ -162,7 +136,7 @@ spec:
           title: Image Registry
           type: string
           description: The image registry host
-          default: ${QUAY__DEFAULT__HOST}
+          default: quay.io
           ui:help: "You can also provide the on-prem registry host, example: quay-tv2pb.apps.cluster-tv2pb.sandbox1194.opentlc.com"
         imageOrg:
           title: Image Organization
@@ -177,7 +151,7 @@ spec:
         namespace:
           title: Deployment Namespace
           type: string
-          default: ${DEFAULT__DEPLOYMENT__NAMESPACE__PREFIX}
+          default: rhtap-app
           ui:autofocus: true
           ui:options:
             rows: 5
@@ -203,11 +177,11 @@ spec:
           namespace: ${{ parameters.namespace }}
           repoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops
           srcRepoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}
-          appContainer: ${{ 'quay.io/redhat-ai-dev/ai-template-bootstrap-app:latest' if parameters.hostType === 'GitHub' else '${APP_INTERFACE_CONTAINER}' }}
-          appPort: ${APP_PORT}
-          appRunCommand: "${APP_RUN_COMMAND}"
-          modelServiceContainer: ${MODEL_SERVICE_CONTAINER}
-          modelServicePort: ${MODEL_SERVICE_PORT}          
+          appContainer: ${{ 'quay.io/redhat-ai-dev/ai-template-bootstrap-app:latest' if parameters.hostType === 'GitHub' else 'quay.io/redhat-ai-dev/rag:latest' }}
+          appPort: 8501
+          appRunCommand: "streamlit run rag_app.py"
+          modelServiceContainer: quay.io/ai-lab/llamacpp_python:latest
+          modelServicePort: 8001          
     # Renders all the template variables into the files and directory names and content, and places the result in the workspace.
     - id: fetch-skeleton
       name: Fetch Skeleton
@@ -218,12 +192,12 @@ spec:
         values:
           name: ${{ parameters.name }}
           namespace: ${{ parameters.namespace }}
-          description: sed.edit.CATALOG_DESCRIPTION 
-          dockerfile: sed.edit.DOCKERFILE
-          buildContext: sed.edit.BUILDCONTEXT
+          description: Secure Supply Chain Example for RAG Chatbot Application example with an LLM and a Vector database enabled 
+          dockerfile: Containerfile
+          buildContext: .
           gitopsSecretName: ${{ 'gitops-auth-secret' if parameters.hostType === 'GitHub' else 'gitlab-auth-secret' }}
           image: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
-          tags: 'sed.edit.APPTAGS'
+          tags: '["ai", "llamacpp", "vllm", "python", "rag", "database"]'
           owner: ${{ parameters.owner }} 
           repoSlug: '${{ parameters.imageOrg }}/${{ parameters.imageName }}'
           defaultBranch: ${{ parameters.branch }}
@@ -276,8 +250,8 @@ spec:
           appName: ${{ parameters.name }}-gitops # for now just use the component name, since it's single component app
           description: This is GitOps manifest for ${{ parameters.name }}
           namespace: ${{ parameters.namespace }}
-          rhtapNamespace: ${RHTAP__DEFAULT__NAMESPACE}
-          defaultDeployNamespace: ${DEFAULT__DEPLOYMENT__NAMESPACE__PREFIX}
+          rhtapNamespace: rhtap
+          defaultDeployNamespace: rhtap-app
           # example: github.com?owner=<owner>&repo=<srcRepo>, the gitops repo name will be <srcRepo>-gitops
           repoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops
           srcRepoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}
@@ -286,27 +260,27 @@ spec:
           image: quay.io/redhat-appstudio/dance-bootstrap-app:latest # bootstrap app image as placeholder
           # actual src image, should be used by tekton PR pipeline to update the image in gitops repo
           srcImage: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
-          argoNS: ${ARGOCD__DEFAULT__NAMESPACE}
-          argoProject: ${ARGOCD__DEFAULT__PROJECT}
+          argoNS: rhtap
+          argoProject: default
           secretRef: ${{ parameters.hostType === 'GitLab' }}
-          gitSecret: ${GIT__SECRET__DEFAULT__NAME}
-          gitSecretKey: ${GIT__SECRET__DEFAULT__KEY}
-          webhookSecret: ${WEBHOOK__SECRET__DEFAULT__NAME}
-          webhookSecretKey: ${WEBHOOK__SECRET__DEFAULT__KEY}
+          gitSecret: gitlab-auth-secret
+          gitSecretKey: password
+          webhookSecret: pipelines-secret
+          webhookSecretKey: webhook.secret
           defaultBranch: main
-          initContainer: ${INIT_CONTAINER}
-          modelInitCommand: "${INIT_CONTAINER_COMMAND}"
-          modelPath: "${MODEL_PATH}"
-          appContainer: ${{ 'quay.io/redhat-ai-dev/ai-template-bootstrap-app:latest' if parameters.hostType === 'GitHub' else '${APP_INTERFACE_CONTAINER}' }}
-          appPort: ${APP_PORT}
-          modelServiceContainer: ${MODEL_SERVICE_CONTAINER}
-          modelServicePort: ${MODEL_SERVICE_PORT}
+          initContainer: quay.io/redhat-ai-dev/granite-7b-lab:latest
+          modelInitCommand: "['/usr/bin/install', '/model/model.file', '/shared/']"
+          modelPath: "/model/model.file"
+          appContainer: ${{ 'quay.io/redhat-ai-dev/ai-template-bootstrap-app:latest' if parameters.hostType === 'GitHub' else 'quay.io/redhat-ai-dev/rag:latest' }}
+          appPort: 8501
+          modelServiceContainer: quay.io/ai-lab/llamacpp_python:latest
+          modelServicePort: 8001
           # SED_LLM_SERVER_START
           # for vllm
           vllmSelected: ${{ parameters.modelServer === 'vLLM' }}
-          vllmModelServiceContainer: ${VLLM_CONTAINER}
-          modelName: ${{ parameters.modelName if parameters.modelServer === 'Existing model server' else '${VLLM_MODEL_NAME}' }}
-          maxModelLength: ${VLLM_MAX_MODEL_LEN}
+          vllmModelServiceContainer: quay.io/rh-aiservices-bu/vllm-openai-ubi9:0.4.2
+          modelName: ${{ parameters.modelName if parameters.modelServer === 'Existing model server' else 'instructlab/granite-7b-lab' }}
+          maxModelLength: 4096
           # SED_LLM_SERVER_END
           existingModelServer: ${{ parameters.modelServer === 'Existing model server' }}
           modelEndpoint: ${{ parameters.modelEndpoint }}
@@ -314,9 +288,9 @@ spec:
           rhoaiSelected: ${{ parameters.rhoaiSelected }}
           # SED_DB_START
           # Database is required for the RAG templates
-          dbRequired: ${SUPPORT_DB}
-          dbContainer: ${DB_CONTAINER}
-          dbPort: ${DB_PORT}
+          dbRequired: true
+          dbContainer: quay.io/redhat-ai-dev/chroma:latest
+          dbPort: 8000
           # SED_DB_END
     - action: fs:rename
       id: renameComponentDir
@@ -374,8 +348,8 @@ spec:
       input:
         appName: ${{ parameters.name }}-app-of-apps
         # name set in rhdh config
-        argoInstance: ${ARGOCD__DEFAULT__INSTANCE}
-        namespace: ${ARGOCD__DEFAULT__NAMESPACE}
+        argoInstance: default
+        namespace: rhtap
         repoUrl: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops.git
         path: './app-of-apps'
     # PR with empty commit

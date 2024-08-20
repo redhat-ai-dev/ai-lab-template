@@ -17,3 +17,6 @@ export SUPPORT_DETR=false
 
 # for gitlab case, since gitlab does not have pipeline webhook pre-set to trigger the initial build
 export APP_INTERFACE_CONTAINER="quay.io/redhat-ai-dev/audio-to-text:latest"
+
+# Database configurations
+export SUPPORT_DB=false
