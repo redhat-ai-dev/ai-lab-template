@@ -1,3 +1,6 @@
+# all default common env var values are defined in scripts/envs/base file
+# in order to override a default common env var value and/or add a custom
+# env var used only for this sample you can list it here
 export APP_NAME="codegen"
 export APP_DISPLAY_NAME="Code Generation Application"
 export APP_DESC="Code Generation Application example that generate code in countless programming languages."

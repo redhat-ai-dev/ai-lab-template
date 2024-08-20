@@ -1,3 +1,6 @@
+# all default common env var values are defined in scripts/envs/base file
+# in order to override a default common env var value and/or add a custom
+# env var used only for this sample you can list it here
 export APP_NAME="chatbot"
 export APP_DISPLAY_NAME="Chatbot Application"
 export APP_DESC="Chatbot Application example with LLM enabled chat applications"
