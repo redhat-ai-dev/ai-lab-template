@@ -1,27 +1,20 @@
+# all default common env var values are defined in scripts/envs/base file
+# in order to override a default common env var value and/or add a custom
+# env var used only for this sample you can list it here
 export APP_NAME="codegen"
 export APP_DISPLAY_NAME="Code Generation Application"
 export APP_DESC="Code Generation Application example that generate code in countless programming languages."
 export APP_TAGS='["ai", "llamacpp", "vllm", "python"]'
 export APP_RUN_COMMAND="streamlit run codegen-app.py"
 export INIT_CONTAINER="quay.io/redhat-ai-dev/mistral-7b-code-16k-qlora:latest"
-export INIT_CONTAINER_COMMAND="['/usr/bin/install', '/model/model.file', '/shared/']"
-export MODEL_PATH="/model/model.file"
-export APP_PORT=8501
 export MODEL_SERVICE_CONTAINER="quay.io/ai-lab/llamacpp_python:latest"
-export MODEL_SERVICE_PORT=8001
-
-# model configurations
-export SUPPORT_LLM=true
-export SUPPORT_ASR=false
-export SUPPORT_DETR=false
 
 export VLLM_CONTAINER="quay.io/rh-aiservices-bu/vllm-openai-ubi9:0.4.2"
 export VLLM_MODEL_NAME="Nondzu/Mistral-7B-code-16k-qlora"
 export VLLM_MAX_MODEL_LEN=6144
 
+# model configurations
+export SUPPORT_LLM=true
 
 # for gitlab case, since gitlab does not have pipeline webhook pre-set to trigger the initial build
 export APP_INTERFACE_CONTAINER="quay.io/redhat-ai-dev/codegen:latest"
-
-# Database configurations
-export SUPPORT_DB=false

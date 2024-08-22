@@ -1,3 +1,6 @@
+# all default common env var values are defined in scripts/envs/base file
+# in order to override a default common env var value and/or add a custom
+# env var used only for this sample you can list it here
 export APP_NAME="object-detection"
 export APP_DISPLAY_NAME="Object Detection Application"
 export APP_DESC="AI enabled Object Detection Application example using DEtection TRansformer(DETR) model to detect objects in an image"
@@ -6,17 +9,11 @@ export APP_RUN_COMMAND="streamlit run object_detection_client.py"
 export INIT_CONTAINER="quay.io/redhat-ai-dev/detr-resnet-101:latest"
 export INIT_CONTAINER_COMMAND="['cp', '-R', '/model/detr-resnet-101', '/shared/detr-resnet-101']"
 export MODEL_PATH="/model/detr-resnet-101"
-export APP_PORT=8501
 export MODEL_SERVICE_CONTAINER="quay.io/redhat-ai-dev/object_detection_python:latest"
 export MODEL_SERVICE_PORT=8000
 
 # model configurations
-export SUPPORT_LLM=false
-export SUPPORT_ASR=false
 export SUPPORT_DETR=true
 
 # for gitlab case, since gitlab does not have pipeline webhook pre-set to trigger the initial build
 export APP_INTERFACE_CONTAINER="quay.io/redhat-ai-dev/object_detection:latest"
-
-# Database configurations
-export SUPPORT_DB=false

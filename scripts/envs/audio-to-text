@@ -1,22 +1,16 @@
+# all default common env var values are defined in scripts/envs/base file
+# in order to override a default common env var value and/or add a custom
+# env var used only for this sample you can list it here
 export APP_NAME="audio-to-text"
 export APP_DISPLAY_NAME="Audio to Text Application"
 export APP_DESC="Audio to Text Application example with AI enabled audio transcription"
 export APP_TAGS='["ai", "whispercpp", "python", "asr"]'
 export APP_RUN_COMMAND="streamlit run whisper_client.py"
 export INIT_CONTAINER="quay.io/redhat-ai-dev/whisper-small:latest"
-export INIT_CONTAINER_COMMAND="['/usr/bin/install', '/model/model.file', '/shared/']"
-export MODEL_PATH="/model/model.file"
-export APP_PORT=8501
 export MODEL_SERVICE_CONTAINER="quay.io/redhat-ai-dev/whispercpp:latest"
-export MODEL_SERVICE_PORT=8001
 
 # model configurations
-export SUPPORT_LLM=false
 export SUPPORT_ASR=true
-export SUPPORT_DETR=false
 
 # for gitlab case, since gitlab does not have pipeline webhook pre-set to trigger the initial build
 export APP_INTERFACE_CONTAINER="quay.io/redhat-ai-dev/audio-to-text:latest"
-
-# Database configurations
-export SUPPORT_DB=false
