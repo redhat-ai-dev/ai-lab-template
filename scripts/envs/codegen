@@ -18,6 +18,3 @@ export SUPPORT_LLM=true
 
 # for gitlab case, since gitlab does not have pipeline webhook pre-set to trigger the initial build
 export APP_INTERFACE_CONTAINER="quay.io/redhat-ai-dev/codegen:latest"
-
-# Database configurations
-export SUPPORT_DB=false

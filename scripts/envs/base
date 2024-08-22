@@ -9,3 +9,6 @@ export MODEL_SERVICE_PORT=8001
 export SUPPORT_LLM=false
 export SUPPORT_ASR=false
 export SUPPORT_DETR=false
+
+# Database configurations
+export SUPPORT_DB=false
