@@ -12,7 +12,7 @@ export MODEL_SERVICE_CONTAINER="quay.io/ai-lab/llamacpp_python:latest"
 # model configurations
 export SUPPORT_LLM=true
 
-export VLLM_CONTAINER="quay.io/rh-aiservices-bu/vllm-openai-ubi9:0.4.2"
+export VLLM_CONTAINER="quay.io/redhat-ai-dev/vllm-openai-ubi9:0.4.2"
 export VLLM_MODEL_NAME="instructlab/granite-7b-lab"
 export VLLM_MAX_MODEL_LEN=4096
 

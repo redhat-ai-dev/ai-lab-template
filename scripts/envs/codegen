@@ -9,7 +9,7 @@ export APP_RUN_COMMAND="streamlit run codegen-app.py"
 export INIT_CONTAINER="quay.io/redhat-ai-dev/mistral-7b-code-16k-qlora:latest"
 export MODEL_SERVICE_CONTAINER="quay.io/ai-lab/llamacpp_python:latest"
 
-export VLLM_CONTAINER="quay.io/rh-aiservices-bu/vllm-openai-ubi9:0.4.2"
+export VLLM_CONTAINER="quay.io/redhat-ai-dev/vllm-openai-ubi9:0.4.2"
 export VLLM_MODEL_NAME="Nondzu/Mistral-7B-code-16k-qlora"
 export VLLM_MAX_MODEL_LEN=6144
 
