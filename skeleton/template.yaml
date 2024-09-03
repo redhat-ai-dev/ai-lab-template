@@ -39,7 +39,7 @@ spec:
           # SED_LLM_SERVER_START
           title: Large Language Model(LLM) Server
           description: The model server container to use
-          ui:help: If you choose vLLM, ensure your cluster has Nvidia GPU supported, and has enough CPU and memory resources
+          ui:help: If you choose vLLM, ensure that your cluster has Nvidia GPU supported (with compute capability 7.0 or higher). Also, it should have enough CPU & memory resources for the model you'd like to work with.
           default: llama.cpp
           type: string
           enum:
