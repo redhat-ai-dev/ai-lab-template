@@ -4,7 +4,7 @@ kind: Template
 metadata:
   name: object-detection
   title: Object Detection Application
-  description: AI enabled Object Detection Application example using DEtection TRansformer(DETR) model to detect objects in an image
+  description: Identify and locate objects in an image using an AI-enabled Object Detection Application. Pick from the DEtection TRansformer (DETR) model servers available in our catalog or bring your own DEtection TRansformer (DETR).
   tags: ["ai", "detr", "python"]
 spec:
   type: service
@@ -178,7 +178,7 @@ spec:
         values:
           name: ${{ parameters.name }}
           namespace: ${{ parameters.namespace }}
-          description: Secure Supply Chain Example for AI enabled Object Detection Application example using DEtection TRansformer(DETR) model to detect objects in an image 
+          description: Secure Supply Chain Example for Object Detection Application 
           dockerfile: Containerfile
           buildContext: .
           gitopsSecretName: ${{ 'gitops-auth-secret' if parameters.hostType === 'GitHub' else 'gitlab-auth-secret' }}

@@ -4,7 +4,7 @@ kind: Template
 metadata:
   name: rag
   title: RAG Chatbot Application
-  description: RAG Chatbot Application example with an LLM and a Vector database enabled
+  description: Enhance the capabilities of your chatbot using a Retrieval-Augmented Generation (RAG) Chatbot application. Pick from the model servers available in our catalog or bring your own.
   tags: ["ai", "llamacpp", "vllm", "python", "rag", "database"]
 spec:
   type: service
@@ -192,7 +192,7 @@ spec:
         values:
           name: ${{ parameters.name }}
           namespace: ${{ parameters.namespace }}
-          description: Secure Supply Chain Example for RAG Chatbot Application example with an LLM and a Vector database enabled 
+          description: Secure Supply Chain Example for RAG Chatbot Application 
           dockerfile: Containerfile
           buildContext: .
           gitopsSecretName: ${{ 'gitops-auth-secret' if parameters.hostType === 'GitHub' else 'gitlab-auth-secret' }}

@@ -4,7 +4,7 @@ kind: Template
 metadata:
   name: codegen
   title: Code Generation Application
-  description: Code Generation Application example that generate code in countless programming languages.
+  description: Build your own Large language model (LLM)-enabled code generation application to generate code source from a natural language. Pick from the model servers available in our catalog or bring your own.
   tags: ["ai", "llamacpp", "vllm", "python"]
 spec:
   type: service
@@ -192,7 +192,7 @@ spec:
         values:
           name: ${{ parameters.name }}
           namespace: ${{ parameters.namespace }}
-          description: Secure Supply Chain Example for Code Generation Application example that generate code in countless programming languages. 
+          description: Secure Supply Chain Example for Code Generation Application 
           dockerfile: Containerfile
           buildContext: .
           gitopsSecretName: ${{ 'gitops-auth-secret' if parameters.hostType === 'GitHub' else 'gitlab-auth-secret' }}
