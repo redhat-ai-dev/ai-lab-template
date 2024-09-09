@@ -1,26 +1,21 @@
+# all default common env var values are defined in scripts/envs/base file
+# in order to override a default common env var value and/or add a custom
+# env var used only for this sample you can list it here
 export APP_NAME="chatbot"
 export APP_DISPLAY_NAME="Chatbot Application"
 export APP_DESC="Build your own Large language model (LLM)-enabled chat application. Pick from the model servers available in our catalog or bring your own."
 export APP_TAGS='["ai", "llamacpp", "vllm", "python"]'
 export APP_RUN_COMMAND="streamlit run chatbot_ui.py"
 export INIT_CONTAINER="quay.io/redhat-ai-dev/granite-7b-lab:latest"
-export INIT_CONTAINER_COMMAND="['/usr/bin/install', '/model/model.file', '/shared/']"
-export MODEL_PATH="/model/model.file"
-export APP_PORT=8501
 export MODEL_SERVICE_CONTAINER="quay.io/ai-lab/llamacpp_python:latest"
-export MODEL_SERVICE_PORT=8001
-
-# model configurations
-export SUPPORT_LLM=true
-export SUPPORT_ASR=false
-export SUPPORT_DETR=false
 
 export VLLM_CONTAINER="quay.io/rh-aiservices-bu/vllm-openai-ubi9:0.4.2"
 export VLLM_MODEL_NAME="instructlab/granite-7b-lab"
 export VLLM_MAX_MODEL_LEN=4096
 
+# model configurations
+export SUPPORT_LLM=true
+
 # for gitlab case, since gitlab does not have pipeline webhook pre-set to trigger the initial build
 export APP_INTERFACE_CONTAINER="quay.io/redhat-ai-dev/chatbot:latest"
 
-# Database configurations
-export SUPPORT_DB=false
