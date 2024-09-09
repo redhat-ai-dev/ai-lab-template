@@ -1,6 +1,6 @@
 export APP_NAME="rag"
 export APP_DISPLAY_NAME="RAG Chatbot Application"
-export APP_DESC="RAG Chatbot Application example with an LLM and a Vector database enabled"
+export APP_DESC="Enhance the capabilities of your chatbot using a Retrieval-Augmented Generation (RAG) Chatbot application. Pick from the model servers available in our catalog or bring your own."
 export APP_TAGS='["ai", "llamacpp", "vllm", "python", "rag", "database"]'
 export APP_RUN_COMMAND="streamlit run rag_app.py"
 export INIT_CONTAINER="quay.io/redhat-ai-dev/granite-7b-lab:latest"
