@@ -4,7 +4,7 @@ kind: Template
 metadata:
   name: rag
   title: RAG Chatbot Application
-  description: Enhance the capabilities of your chatbot using a Retrieval-Augmented Generation (RAG) Chatbot application. Pick from the model servers available in our catalog or bring your own.
+  description: Enhance the capabilities of your Chatbot using a Retrieval-Augmented Generation (RAG) Chatbot application. Pick from the model servers available or bring your own.
   tags: ["ai", "llamacpp", "vllm", "python", "rag", "database"]
 spec:
   type: service

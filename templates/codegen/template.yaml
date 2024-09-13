@@ -4,7 +4,7 @@ kind: Template
 metadata:
   name: codegen
   title: Code Generation Application
-  description: Build your own Large language model (LLM)-enabled code generation application to generate code source from a natural language. Pick from the model servers available in our catalog or bring your own.
+  description: Build your own Large language model (LLM)-enabled code generation application to generate code source from a natural language. Pick from the model servers available or bring your own.
   tags: ["ai", "llamacpp", "vllm", "python"]
 spec:
   type: service

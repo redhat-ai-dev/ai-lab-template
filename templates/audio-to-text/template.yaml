@@ -4,7 +4,7 @@ kind: Template
 metadata:
   name: audio-to-text
   title: Audio to Text Application
-  description: Build your own AI-enabled audio transcription application. Pick from the model servers available in our catalog or bring your own.
+  description: Build your own AI-enabled audio transcription application. Pick from the model servers available or bring your own.
   tags: ["ai", "whispercpp", "python", "asr"]
 spec:
   type: service
