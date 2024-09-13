@@ -3,7 +3,7 @@
 # env var used only for this sample you can list it here
 export APP_NAME="audio-to-text"
 export APP_DISPLAY_NAME="Audio to Text Application"
-export APP_DESC="Build your own AI-enabled audio transcription application. Pick from the model servers available in our catalog or bring your own."
+export APP_DESC="Build your own AI-enabled audio transcription application. Pick from the model servers available or bring your own."
 export APP_TAGS='["ai", "whispercpp", "python", "asr"]'
 export APP_RUN_COMMAND="streamlit run whisper_client.py"
 export INIT_CONTAINER="quay.io/redhat-ai-dev/whisper-small:latest"
