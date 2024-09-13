@@ -4,7 +4,7 @@ kind: Template
 metadata:
   name: object-detection
   title: Object Detection Application
-  description: Identify and locate objects in an image using an AI-enabled Object Detection Application. Pick from the DEtection TRansformer (DETR) model servers available in our catalog or bring your own DEtection TRansformer (DETR).
+  description: Identify and locate objects in an image using an AI-enabled Object Detection Application. Pick from the DEtection TRansformer (DETR) model servers or bring your own DEtection TRansformer (DETR).
   tags: ["ai", "detr", "python"]
 spec:
   type: service
