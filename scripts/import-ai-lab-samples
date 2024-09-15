@@ -55,7 +55,7 @@ for f in */; do
         sed -i "s!sed.edit.TITLE!$APP_DISPLAY_NAME!g" $DEST/template.yaml
         sed -i "s!sed.edit.DESCRIPTION!$APP_DESC!g" $DEST/template.yaml
         sed -i "s!sed.edit.APPTAGS!$APP_TAGS!g" $DEST/template.yaml
-        sed -i "s!sed.edit.CATALOG_DESCRIPTION!Secure Supply Chain Example for $APP_DESC!g" $DEST/template.yaml
+        sed -i "s!sed.edit.CATALOG_DESCRIPTION!Secure Supply Chain Example for $APP_DISPLAY_NAME!g" $DEST/template.yaml
 
         if [ $SUPPORT_LLM == false ]; then
             sed -i '/# SED_LLM_SERVER_START/,/# SED_LLM_SERVER_END/d' $DEST/template.yaml

@@ -3,7 +3,7 @@
 # env var used only for this sample you can list it here
 export APP_NAME="object-detection"
 export APP_DISPLAY_NAME="Object Detection Application"
-export APP_DESC="AI enabled Object Detection Application example using DEtection TRansformer(DETR) model to detect objects in an image"
+export APP_DESC="Identify and locate objects in an image using an AI-enabled Object Detection Application. Pick from the DEtection TRansformer (DETR) model servers or bring your own DEtection TRansformer (DETR)."
 export APP_TAGS='["ai", "detr", "python"]'
 export APP_RUN_COMMAND="streamlit run object_detection_client.py"
 export INIT_CONTAINER="quay.io/redhat-ai-dev/detr-resnet-101:latest"

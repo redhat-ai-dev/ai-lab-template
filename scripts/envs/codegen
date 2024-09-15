@@ -3,7 +3,7 @@
 # env var used only for this sample you can list it here
 export APP_NAME="codegen"
 export APP_DISPLAY_NAME="Code Generation Application"
-export APP_DESC="Code Generation Application example that generate code in countless programming languages."
+export APP_DESC="Build your own Large language model (LLM)-enabled code generation application to generate code source from a natural language. Pick from the model servers available or bring your own."
 export APP_TAGS='["ai", "llamacpp", "vllm", "python"]'
 export APP_RUN_COMMAND="streamlit run codegen-app.py"
 export INIT_CONTAINER="quay.io/redhat-ai-dev/mistral-7b-code-16k-qlora:latest"

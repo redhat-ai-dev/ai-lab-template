@@ -4,7 +4,7 @@ kind: Template
 metadata:
   name: audio-to-text
   title: Audio to Text Application
-  description: Audio to Text Application example with AI enabled audio transcription
+  description: Build your own AI-enabled audio transcription application. Pick from the model servers available or bring your own.
   tags: ["ai", "whispercpp", "python", "asr"]
 spec:
   type: service
@@ -178,7 +178,7 @@ spec:
         values:
           name: ${{ parameters.name }}
           namespace: ${{ parameters.namespace }}
-          description: Secure Supply Chain Example for Audio to Text Application example with AI enabled audio transcription 
+          description: Secure Supply Chain Example for Audio to Text Application 
           dockerfile: Containerfile
           buildContext: .
           gitopsSecretName: ${{ 'gitops-auth-secret' if parameters.hostType === 'GitHub' else 'gitlab-auth-secret' }}

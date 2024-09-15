@@ -4,7 +4,7 @@ kind: Template
 metadata:
   name: chatbot
   title: Chatbot Application
-  description: Chatbot Application example with LLM enabled chat applications
+  description: Build your own Large language model (LLM)-enabled chat application. Pick from the model servers available or bring your own.
   tags: ["ai", "llamacpp", "vllm", "python"]
 spec:
   type: service
@@ -192,7 +192,7 @@ spec:
         values:
           name: ${{ parameters.name }}
           namespace: ${{ parameters.namespace }}
-          description: Secure Supply Chain Example for Chatbot Application example with LLM enabled chat applications 
+          description: Secure Supply Chain Example for Chatbot Application 
           dockerfile: Containerfile
           buildContext: .
           gitopsSecretName: ${{ 'gitops-auth-secret' if parameters.hostType === 'GitHub' else 'gitlab-auth-secret' }}
