@@ -18,7 +18,7 @@ spec:
         - |
           # Wait for the image stream creation job to finish
           echo "Wait for the image stream job"
-          oc wait --for=condition=complete job/create-imagestream-${{ values.appName }} -n redhat-ods-applications
+          oc wait --for=condition=complete job/create-imagestream-${{ values.appName }}
           echo "Done"
           
           # Wait for the namespace initialize job to finish
