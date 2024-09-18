@@ -41,8 +41,8 @@ With the sample app now running, the following steps will allow you to access th
 1) Navigate back to the OpenShift AI dashboard, and find the name of your workbench.
 ![image](./images/workbench-name.png)
 
-1) In a terminal window on your machine, run `oc get pods -l app=<workbench-name>`. This will retrieve the name of the pod where the workbench is running.
+2) In a terminal window on your machine, run `oc get pods -l app=<workbench-name>`. This will retrieve the name of the pod where the workbench is running.
 
-2) Run `oc port-forward <pod-name> ${{ values.appPort }}` to port forward the sample application's port to your local machine.
+3) Run `oc port-forward <pod-name> ${{ values.appPort }}` to port forward the sample application's port to your local machine.
 
-3) Finally, visit `http://localhost:${{ values.appPort }}` in your browser to access the application.
+4) Finally, visit `http://localhost:${{ values.appPort }}` in your browser to access the application.
