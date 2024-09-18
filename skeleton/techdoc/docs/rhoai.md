@@ -24,15 +24,15 @@ This document will outline how you can run build and run your sample application
 
 ![image](./images/access-workbench.png)
 
-1) Go to `File->Open` and select `Terminal`
+4) Go to `File->Open` and select `Terminal`
 
 ![image](./images/open-terminal.png)
 
-1) In the terminal, run `cd ${{ values.name }}` to navigate to your sample app's directory
+5) In the terminal, run `cd ${{ values.name }}` to navigate to your sample app's directory
 
-2) Run `pip install --upgrade -r requirements.txt` to install the dependencies for your application
+6) Run `pip install --upgrade -r requirements.txt` to install the dependencies for your application
 
-3) Run `${{ values.appRunCommand }}` to run the sample in the workbench.
+7) Run `${{ values.appRunCommand }}` to run the sample in the workbench.
 
 ## Accessing the Sample
 
