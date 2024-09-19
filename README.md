@@ -83,4 +83,6 @@ export PATH="/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH"
 
 ### TechDocs Images
 
-If you encounter images within TechDocs not properly rendering on Red Hat Developer Hub you may need to ensure they are located in a directory named `/images`.
+If you encounter images within TechDocs not properly rendering on Red Hat Developer Hub you may need to ensure they are located in a sub-directory named `/images` within `/docs`. 
+
+For example: `/docs/images`.
