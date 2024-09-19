@@ -16,13 +16,13 @@ spec:
         - /bin/bash
         - -c
         - |
-          # Wait for the image stream creation job to finish
-          echo "Wait for the image stream job"
+          # Wait for the Image Stream creation job to finish
+          echo "Wait for the Image Stream job"
           oc wait --for=condition=complete job/create-imagestream-${{ values.appName }}
           echo "Done"
           
-          # Wait for the namespace initialize job to finish
-          echo "Wait for the namespace job"
+          # Wait for the Namespace initialize job to finish
+          echo "Wait for the Namespace job"
           oc wait --for=condition=complete job/initialize-namespace-${{ values.appName }}
           echo "Done"
 
