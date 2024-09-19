@@ -14,19 +14,19 @@ This document will outline how you can run build and run your sample application
 
 1) While on Console, navigate to the `OpenShift AI` by clicking the square "apps" icon on the top-right corner (next to the notifications icon). `Openshift AI` will be listed in the dropdown list
 
-![image](./.assets/access-openshift-ai.png)
+![image](./images/access-openshift-ai.png)
 
 2) Go to the `Data Science Projects` section and access your application's project named `{{ values.namespace }}`
 
-![image](./.assets/data-science-projects.png)
+![image](./images/data-science-projects.png)
 
 3) Access the `workbench` named `{{ values.name }}-notebook`
 
-![image](./.assets/access-workbench.png)
+![image](./images/access-workbench.png)
 
 4) Go to `File->Open` and select `Terminal`
 
-![image](./.assets/open-terminal.png)
+![image](./images/open-terminal.png)
 
 5) In the terminal, run `cd ${{ values.name }}` to navigate to your sample app's directory
 
@@ -39,7 +39,7 @@ This document will outline how you can run build and run your sample application
 With the sample app now running, the following steps will allow you to access the sample app in your browser:
 
 1) Navigate back to the OpenShift AI dashboard, and find the name of your workbench.
-![image](./.assets/workbench-name.png)
+![image](./images/workbench-name.png)
 
 2) In a terminal window on your machine, run `oc get pods -l app=<workbench-name>`. This will retrieve the name of the pod where the workbench is running.
 

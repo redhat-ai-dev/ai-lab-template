@@ -67,6 +67,7 @@ To update the templates from these or any new samples you update the list of imp
  `SAMPLE_REPO`/`GITOPS_REPO`/`PIPELINE_REPO` and `SAMPLE_BRANCH`/`GITOPS_BRANCH`/`PIPELINE_BRANCH`
 
 
+## Troubleshooting
 
 ### MacOS 
 
@@ -79,3 +80,9 @@ After this, alter PATH. For example, add the following line to your `~/.bash_pro
 ```
 export PATH="/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH"
 ```
+
+### TechDocs Images
+
+If you encounter images within TechDocs not properly rendering on Red Hat Developer Hub you may need to ensure they are located in a sub-directory named `/images` within `/docs`. 
+
+For example: `/docs/images`.
