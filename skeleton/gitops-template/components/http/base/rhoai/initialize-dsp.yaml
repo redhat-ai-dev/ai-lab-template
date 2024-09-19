@@ -16,8 +16,13 @@ spec:
         - /bin/bash
         - -c
         - |
-          # Wait for the NS initialize job to finish
-          echo "Wait for NS Job"
+          # Wait for the Image Stream creation job to finish
+          echo "Wait for the Image Stream job"
+          oc wait --for=condition=complete job/create-imagestream-${{ values.appName }}
+          echo "Done"
+          
+          # Wait for the Namespace initialize job to finish
+          echo "Wait for the Namespace job"
           oc wait --for=condition=complete job/initialize-namespace-${{ values.appName }}
           echo "Done"
 
@@ -93,7 +98,7 @@ spec:
                                             --ServerApp.base_url=/notebook/${{ values.namespace }}/${{ values.name }}-notebook
                                             --ServerApp.quit_button=False
                       - name: JUPYTER_IMAGE
-                        value: 'image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/s2i-minimal-notebook:2024.1'
+                        value: 'image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/custom-sqlite3-odh-minimal-notebook-container:v2-2024a-20240523-sqlite3'
                     envFrom:
                     - configMapRef:
                         name: ${{ values.name }}-model-config
@@ -111,7 +116,7 @@ spec:
                         name: ${{ values.name }}-notebook
                       - mountPath: /dev/shm
                         name: shm
-                    image: 'image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/s2i-minimal-notebook:2024.1'
+                    image: 'image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/custom-sqlite3-odh-minimal-notebook-container:v2-2024a-20240523-sqlite3'
                     workingDir: /opt/app-root/src
                 enableServiceLinks: false
                 serviceAccountName: ${{ values.name }}-notebook
