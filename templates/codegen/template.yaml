@@ -72,9 +72,25 @@ spec:
             - properties:
                 modelServer:
                     const: vLLM
+                modelNameDeployed:
+                  title: Model Name
+                  description: Small and fast model for supporting coding or acting as a copilot.
+                  ui:help: The name of the model deployed on the model server being used.
+                  default: Nondzu/Mistral-7B-code-16k-qlora
+                  type: string
+                  enum:
+                    - Nondzu/Mistral-7B-code-16k-qlora
             - properties:
                 modelServer:
                     const: llama.cpp
+                modelNameDeployed:
+                  title: Model Name
+                  description: Small and fast model for supporting coding or acting as a copilot.
+                  ui:help: The name of the model deployed on the model server being used.
+                  default: Nondzu/Mistral-7B-code-16k-qlora
+                  type: string
+                  enum:
+                    - Nondzu/Mistral-7B-code-16k-qlora
             # SED_LLM_SERVER_END
 
     - title: Application Repository Information

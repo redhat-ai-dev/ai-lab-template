@@ -88,19 +88,51 @@ spec:
             - properties:
                 modelServer:
                     const: vLLM
+                modelNameDeployed:
+                  title: Model Name
+                  description: ${VLLM_MODEL_DESC}
+                  ui:help: The name of the model deployed on the model server being used.
+                  default: ${VLLM_MODEL_NAME}
+                  type: string
+                  enum:
+                    - ${VLLM_MODEL_NAME}
             - properties:
                 modelServer:
                     const: llama.cpp
+                modelNameDeployed:
+                  title: Model Name
+                  description: ${VLLM_MODEL_DESC}
+                  ui:help: The name of the model deployed on the model server being used.
+                  default: ${VLLM_MODEL_NAME}
+                  type: string
+                  enum:
+                    - ${VLLM_MODEL_NAME}
             # SED_LLM_SERVER_END
             # SED_ASR_MODEL_SERVER_START
             - properties:
                 modelServer:
                     const: whisper.cpp
+                modelNameDeployed:
+                  title: Model Name
+                  description: ${ASR_MODEL_DESC}
+                  ui:help: The name of the model deployed on the model server being used.
+                  default: ${ASR_MODEL_NAME}
+                  type: string
+                  enum:
+                    - ${ASR_MODEL_NAME}
             # SED_ASR_MODEL_SERVER_END
             # SED_DETR_MODEL_SERVER_START
             - properties:
                 modelServer:
                     const: detr-resnet-101
+                modelNameDeployed:
+                  title: Model Name
+                  description: ${DETR_MODEL_DESC}
+                  ui:help: The name of the model deployed on the model server being used.
+                  default: ${DETR_MODEL_NAME}
+                  type: string
+                  enum:
+                    - ${DETR_MODEL_NAME}
             # SED_DETR_MODEL_SERVER_END
 
     - title: Application Repository Information

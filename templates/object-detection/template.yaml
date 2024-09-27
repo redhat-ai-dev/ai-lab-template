@@ -61,6 +61,14 @@ spec:
             - properties:
                 modelServer:
                     const: detr-resnet-101
+                modelNameDeployed:
+                  title: Model Name
+                  description: DEtection TRansformer (DETR) model trained end-to-end on COCO 2017 object detection (118k annotated images).
+                  ui:help: The name of the model deployed on the model server being used.
+                  default: facebook/detr-resnet-101
+                  type: string
+                  enum:
+                    - facebook/detr-resnet-101
             # SED_DETR_MODEL_SERVER_END
 
     - title: Application Repository Information

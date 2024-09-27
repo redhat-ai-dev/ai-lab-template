@@ -11,6 +11,8 @@ export INIT_CONTAINER_COMMAND="['cp', '-R', '/model/detr-resnet-101', '/shared/d
 export MODEL_PATH="/model/detr-resnet-101"
 export MODEL_SERVICE_CONTAINER="quay.io/redhat-ai-dev/object_detection_python:latest"
 export MODEL_SERVICE_PORT=8000
+export DETR_MODEL_NAME="facebook/detr-resnet-101"
+export DETR_MODEL_DESC="DEtection TRansformer (DETR) model trained end-to-end on COCO 2017 object detection (118k annotated images)."
 
 # model configurations
 export SUPPORT_DETR=true

@@ -8,6 +8,8 @@ export APP_TAGS='["ai", "whispercpp", "python", "asr"]'
 export APP_RUN_COMMAND="streamlit run whisper_client.py"
 export INIT_CONTAINER="quay.io/redhat-ai-dev/whisper-small:latest"
 export MODEL_SERVICE_CONTAINER="quay.io/redhat-ai-dev/whispercpp:latest"
+export ASR_MODEL_NAME="ggerganov/whisper.cpp"
+export ASR_MODEL_DESC="High-performance inference of OpenAI's Whisper automatic speech recognition (ASR) model."
 
 # model configurations
 export SUPPORT_ASR=true
