@@ -38,7 +38,8 @@ spec:
         modelServer:
           # SED_DETR_MODEL_SERVER_START
           title: DETR Model Server
-          description: The model server container to use. The deployed model on the server must support object detection.
+          description: A simple FastAPI application for use in applications with the DEtection TRansformer (DETR) models. It relies on huggingface's transformer package to process image data and to make inferences respectively.
+          ui:help: The model server container to use. The deployed model on the server must support object detection.
           type: string
           default: detr-resnet-101
           enum:

@@ -37,9 +37,8 @@ spec:
               kind: [Group, User]
         modelServer:
           # SED_LLM_SERVER_START
-          title: Large Language Model(LLM) Server
-          description: The model server container to use
-          ui:help: If you choose vLLM, ensure that your cluster has Nvidia GPU supported (with compute capability 7.0 or higher). Also, it should have enough CPU & memory resources for the model you'd like to work with.
+          title: Large Language Model(LLM) Server 
+          ui:help: The model server container to use. If you choose vLLM, ensure that your cluster has Nvidia GPU supported (with compute capability 7.0 or higher). Also, it should have enough CPU & memory resources for the model you would like to work with.
           default: llama.cpp
           type: string
           enum:
@@ -71,7 +70,8 @@ spec:
             # SED_LLM_SERVER_START
             - properties:
                 modelServer:
-                    const: vLLM
+                  const: vLLM
+                  description: OpenShift deployment of vLLM is a fast and easy-to-use library for LLM inference and serving.
                 modelNameDeployed:
                   title: Model Name
                   description: Small and fast model for supporting coding or acting as a copilot.
@@ -82,7 +82,8 @@ spec:
                     - Nondzu/Mistral-7B-code-16k-qlora
             - properties:
                 modelServer:
-                    const: llama.cpp
+                  const: llama.cpp
+                  description: This Python binding of llama.cpp provides LLM inference with minimal setup and state-of-the-art performance on a wide variety of hardware - locally and in the cloud.
                 modelNameDeployed:
                   title: Model Name
                   description: Small and fast model for supporting coding or acting as a copilot.

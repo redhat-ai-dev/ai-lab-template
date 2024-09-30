@@ -38,7 +38,8 @@ spec:
         modelServer:
           # SED_ASR_MODEL_SERVER_START
           title: ASR Model Server
-          description: The model server container to use. The deployed model on the server must support automatic speech recognition (ASR).
+          description: Simple http server where WAV Files are passed to the inference model via http requests.
+          ui:help: The model server container to use. The deployed model on the server must support automatic speech recognition (ASR).
           type: string
           default: whisper.cpp
           enum:
