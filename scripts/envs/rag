@@ -7,6 +7,9 @@ export APP_DESC="Enhance the capabilities of your Chatbot using a Retrieval-Augm
 export APP_TAGS='["ai", "llamacpp", "vllm", "python", "rag", "database"]'
 export APP_RUN_COMMAND="streamlit run rag_app.py"
 
+# https://github.com/redhat-ai-dev/developer-images/tree/main/model/granite-7b-lab
+export INIT_CONTAINER="quay.io/redhat-ai-dev/granite-7b-lab:latest"
+
 # https://github.com/containers/ai-lab-recipes/tree/main/model_servers/llamacpp_python
 export MODEL_SERVICE_CONTAINER="quay.io/ai-lab/llamacpp_python:latest"
 export MODEL_SERVICE_CONTAINER_DESC="This Python binding of llama.cpp provides LLM inference with minimal setup and state-of-the-art performance on a wide variety of hardware - locally and in the cloud."
@@ -16,8 +19,6 @@ export VLLM_CONTAINER="quay.io/rh-aiservices-bu/vllm-openai-ubi9:0.4.2"
 export VLLM_CONTAINER_DESC="OpenShift deployment of vLLM is a fast and easy-to-use library for LLM inference and serving."
 
 # https://huggingface.co/instructlab/granite-7b-lab
-# https://github.com/redhat-ai-dev/developer-images/tree/main/model/granite-7b-lab
-export INIT_CONTAINER="quay.io/redhat-ai-dev/granite-7b-lab:latest"
 export VLLM_MODEL_NAME="instructlab/granite-7b-lab"
 export VLLM_MAX_MODEL_LEN=4096
 export VLLM_MODEL_DESC="LAB (Large-scale Alignment for chatBots) is a novel synthetic data-based alignment tuning method for LLMs from IBM Research. Granite-7b-lab is a Granite-7b-base derivative model trained with the LAB methodology, using Mixtral-8x7b-Instruct as a teacher model."
