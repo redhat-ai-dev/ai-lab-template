@@ -2,8 +2,14 @@
 
 # Gitops Repo Patterns
 
-This repository contains a http gitops repository format component for use as the ai-lab gitops template
+This repository contains an HTTP Gitops repository format component for use as the AI-Lab Gitops template.
 
-### http 
-- contains a deployment with a model service image `${{ values.modelServiceContainer }}` listening on port `${{ values.modelServicePort }}`, and an app interface image `${{ values.appContainer }}` listening on port `${{ values.appPort }}`, service and route for `${{ values.appPort }}`
-- this matches the current RHTAP and ai-lab software templates default deployment
+## HTTP
+
+This contains a deployment with the following characteristics:
+
+**Model service image** `$${{  values.modelServiceContainer  }}` **listening on port** `$${{  values.modelServicePort  }}`.
+
+**App interface image** `$${{  values.appContainer  }}` **listening on port** `$${{  values.appPort  }}` for service and routing.
+
+This matches the current AI-Lab software template default deployment.
