@@ -37,9 +37,8 @@ spec:
               kind: [Group, User]
         modelServer:
           # SED_ASR_MODEL_SERVER_START
-          title: ASR Model Server
-          description: Simple http server where WAV Files are passed to the inference model via http requests.
-          ui:help: The model server container to use. The deployed model on the server must support automatic speech recognition (ASR).
+          title: Model Server
+          description: Simple http server where WAV Files are passed to the inference model via http requests. The deployed model on the server must support automatic speech recognition (ASR). | [Learn more](https://github.com/containers/ai-lab-recipes/tree/main/model_servers/whispercpp)
           type: string
           default: whisper.cpp
           enum:
@@ -64,8 +63,7 @@ spec:
                     const: whisper.cpp
                 modelNameDeployed:
                   title: Model Name
-                  description: High-performance inference of OpenAI's Whisper automatic speech recognition (ASR) model.
-                  ui:help: The name of the model deployed on the model server being used.
+                  description: Automatic Speech Recognition | MIT | [Learn more](https://huggingface.co/ggerganov/whisper.cpp)
                   default: ggerganov/whisper.cpp
                   type: string
                   enum:
