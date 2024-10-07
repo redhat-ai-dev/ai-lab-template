@@ -38,7 +38,7 @@ spec:
         modelServer:
           # SED_ASR_MODEL_SERVER_START
           title: Model Server
-          description: Simple http server where WAV Files are passed to the inference model via http requests. The deployed model on the server must support automatic speech recognition (ASR). | [Learn more](https://github.com/containers/ai-lab-recipes/tree/main/model_servers/whispercpp)
+          description: Simple HTTP server where WAV Files are passed to the inference model via HTTP requests. The deployed model on the server must support automatic speech recognition (ASR). | [Learn more](https://github.com/containers/ai-lab-recipes/tree/main/model_servers/whispercpp)
           type: string
           default: whisper.cpp
           enum:
