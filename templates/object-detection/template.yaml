@@ -37,9 +37,8 @@ spec:
               kind: [Group, User]
         modelServer:
           # SED_DETR_MODEL_SERVER_START
-          title: DETR Model Server
-          description: A simple FastAPI application for use in applications with the DEtection TRansformer (DETR) models. It relies on huggingface's transformer package to process image data and to make inferences respectively.
-          ui:help: The model server container to use. The deployed model on the server must support object detection.
+          title: Model Server
+          description: A simple FastAPI application for use with the DEtection TRansformer (DETR) models. The deployed model on the server must support object detection. | [Learn more](https://github.com/containers/ai-lab-recipes/tree/main/model_servers/object_detection_python)
           type: string
           default: detr-resnet-101
           enum:
@@ -64,8 +63,7 @@ spec:
                     const: detr-resnet-101
                 modelNameDeployed:
                   title: Model Name
-                  description: DEtection TRansformer (DETR) model trained end-to-end on COCO 2017 object detection (118k annotated images).
-                  ui:help: The name of the model deployed on the model server being used.
+                  description: Object Detection | Apache-2.0 | [Learn more](https://huggingface.co/facebook/detr-resnet-101)
                   default: facebook/detr-resnet-101
                   type: string
                   enum:

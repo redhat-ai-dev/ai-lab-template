@@ -12,16 +12,20 @@ export INIT_CONTAINER="quay.io/redhat-ai-dev/mistral-7b-code-16k-qlora:latest"
 
 # https://github.com/containers/ai-lab-recipes/tree/main/model_servers/llamacpp_python
 export MODEL_SERVICE_CONTAINER="quay.io/ai-lab/llamacpp_python:latest"
-export MODEL_SERVICE_CONTAINER_DESC="This Python binding of llama.cpp provides LLM inference with minimal setup and state-of-the-art performance on a wide variety of hardware - locally and in the cloud."
+export MODEL_SERVICE_DESC="A Python binding of LLM inference in C/C++ with minimal setup"
+export MODEL_SERVICE_SRC="https://github.com/containers/ai-lab-recipes/tree/main/model_servers/llamacpp_python"
 
 # https://github.com/rh-aiservices-bu/llm-on-openshift/tree/main/llm-servers/vllm/gpu
 export VLLM_CONTAINER="quay.io/rh-aiservices-bu/vllm-openai-ubi9:0.4.2"
-export VLLM_CONTAINER_DESC="OpenShift deployment of vLLM is a fast and easy-to-use library for LLM inference and serving."
+export VLLM_DESC="A high throughput, memory efficient inference and serving engine with GPU support for LLMs in OpenShift"
+export VLLM_SRC="https://github.com/rh-aiservices-bu/llm-on-openshift/tree/main/llm-servers/vllm/gpu"
 
 # https://huggingface.co/Nondzu/Mistral-7B-code-16k-qlora
-export VLLM_MODEL_NAME="Nondzu/Mistral-7B-code-16k-qlora"
-export VLLM_MAX_MODEL_LEN=6144
-export VLLM_MODEL_DESC="Small and fast model for supporting coding or acting as a copilot."
+export LLM_MODEL_NAME="Nondzu/Mistral-7B-code-16k-qlora"
+export LLM_MAX_MODEL_LEN=6144
+export LLM_MODEL_CLASSIFICATION="Text Generation"
+export LLM_MODEL_LICENSE="Apache-2.0"
+export LLM_MODEL_SRC="https://huggingface.co/Nondzu/Mistral-7B-code-16k-qlora"
 
 # model configurations
 export SUPPORT_LLM=true
