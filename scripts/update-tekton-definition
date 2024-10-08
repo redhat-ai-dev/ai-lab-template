@@ -3,7 +3,7 @@
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )" 
 ROOTDIR=$(realpath $SCRIPTDIR/..)
 
-REPO="${PIPELINE_REPO:-https://github.com/redhat-appstudio/tssc-sample-pipelines}"
+REPO="${PIPELINE_REPO:-https://github.com/redhat-ai-dev/rhdh-pipelines}"
 BRANCH="${PIPELINE_BRANCH:-main}"
 RAW_BASE=$(echo $REPO/$BRANCH |  sed "s/github.com/raw.githubusercontent.com/")  
 REPONAME=$(basename $REPO)
@@ -30,16 +30,11 @@ function add-backstage-labels () {
 }
 
 #source and gitops tekton copied, note new names 
-SRC_TEKTON=$ROOTDIR/skeleton/source-repo/.tekton 
-GITOPS_TEKTON=$ROOTDIR/skeleton/gitops-template/.tekton 
+SRC_TEKTON=$ROOTDIR/skeleton/source-repo/.tekton
 
 rm -rf $SRC_TEKTON
 mkdir -p $SRC_TEKTON   
 cp -r $TEMPDIR/$REPONAME/pac/source-repo/. $SRC_TEKTON
-
-rm -rf $GITOPS_TEKTON
-mkdir -p $GITOPS_TEKTON   
-cp -r $TEMPDIR/$REPONAME/pac/gitops-repo/. $GITOPS_TEKTON
 
 rm -rf $TEMPDIR
  
