@@ -2,7 +2,7 @@
 
 ## Shared Git resolver model for shared pipeline and tasks
  
-This pipeline is used to create dockerfile based sscs builds. The pipeline run by this runner will clone the source, build an image with SBOM, and attestations and push these to the users image registry.  
+This pipeline is used to create containerfile based SSCS (Software Supply Chain Security) builds. The pipeline run by this runner will clone the source, build an image with SBOM (Software Bill of Materials), and attestations and push these to the users image registry.  
 
 Tasks references come from this repository ` ../pipelines` `../tasks` and are referenced by URL using the git resolver in tekton. 
  
