@@ -37,9 +37,11 @@ spec:
               kind: [Group, User]
         modelServer:
           # SED_LLM_SERVER_START
-          title: Large Language Model(LLM) Server
-          description: The model server container to use
-          ui:help: If you choose vLLM, ensure that your cluster has Nvidia GPU supported (with compute capability 7.0 or higher). Also, it should have enough CPU & memory resources for the model you'd like to work with.
+          title: Model Server
+          description: |
+            llama.cpp: ${MODEL_SERVICE_DESC}. | [Learn more](${MODEL_SERVICE_SRC})
+            
+            vLLM: ${VLLM_DESC}. If you choose vLLM, ensure that your cluster has Nvidia GPU supported (with compute capability 7.0 or higher). Also, it should have enough CPU & memory resources for the model you would like to work with. | [Learn more](${VLLM_SRC})
           default: llama.cpp
           type: string
           enum:
@@ -47,16 +49,16 @@ spec:
             - llama.cpp
           # SED_LLM_SERVER_END
           # SED_ASR_MODEL_SERVER_START
-          title: ASR Model Server
-          description: The model server container to use. The deployed model on the server must support automatic speech recognition (ASR).
+          title: Model Server
+          description: ${MODEL_SERVICE_DESC}. The deployed model on the server must support automatic speech recognition (ASR). | [Learn more](${MODEL_SERVICE_SRC})
           type: string
           default: whisper.cpp
           enum:
             - whisper.cpp
           # SED_ASR_MODEL_SERVER_END
           # SED_DETR_MODEL_SERVER_START
-          title: DETR Model Server
-          description: The model server container to use. The deployed model on the server must support object detection.
+          title: Model Server
+          description: ${MODEL_SERVICE_DESC}. The deployed model on the server must support object detection. | [Learn more](${MODEL_SERVICE_SRC})
           type: string
           default: detr-resnet-101
           enum:
@@ -87,20 +89,48 @@ spec:
             # SED_LLM_SERVER_START
             - properties:
                 modelServer:
-                    const: vLLM
+                  const: vLLM
+                modelNameDeployed:
+                  title: Model Name
+                  description: ${LLM_MODEL_CLASSIFICATION} | ${LLM_MODEL_LICENSE} | [Learn more](${LLM_MODEL_SRC})
+                  default: ${LLM_MODEL_NAME}
+                  type: string
+                  enum:
+                    - ${LLM_MODEL_NAME}
             - properties:
                 modelServer:
-                    const: llama.cpp
+                  const: llama.cpp
+                modelNameDeployed:
+                  title: Model Name
+                  description: ${LLM_MODEL_CLASSIFICATION} | ${LLM_MODEL_LICENSE} | [Learn more](${LLM_MODEL_SRC})
+                  default: ${LLM_MODEL_NAME}
+                  type: string
+                  enum:
+                    - ${LLM_MODEL_NAME}
             # SED_LLM_SERVER_END
             # SED_ASR_MODEL_SERVER_START
             - properties:
                 modelServer:
                     const: whisper.cpp
+                modelNameDeployed:
+                  title: Model Name
+                  description: ${ASR_MODEL_CLASSIFICATION} | ${ASR_MODEL_LICENSE} | [Learn more](${ASR_MODEL_SRC})
+                  default: ${ASR_MODEL_NAME}
+                  type: string
+                  enum:
+                    - ${ASR_MODEL_NAME}
             # SED_ASR_MODEL_SERVER_END
             # SED_DETR_MODEL_SERVER_START
             - properties:
                 modelServer:
                     const: detr-resnet-101
+                modelNameDeployed:
+                  title: Model Name
+                  description: ${DETR_MODEL_CLASSIFICATION} | ${DETR_MODEL_LICENSE} | [Learn more](${DETR_MODEL_SRC})
+                  default: ${DETR_MODEL_NAME}
+                  type: string
+                  enum:
+                    - ${DETR_MODEL_NAME}
             # SED_DETR_MODEL_SERVER_END
 
     - title: Application Repository Information
@@ -305,8 +335,8 @@ spec:
           # for vllm
           vllmSelected: ${{ parameters.modelServer === 'vLLM' }}
           vllmModelServiceContainer: ${VLLM_CONTAINER}
-          modelName: ${{ parameters.modelName if parameters.modelServer === 'Existing model server' else '${VLLM_MODEL_NAME}' }}
-          maxModelLength: ${VLLM_MAX_MODEL_LEN}
+          modelName: ${{ parameters.modelName if parameters.modelServer === 'Existing model server' else '${LLM_MODEL_NAME}' }}
+          maxModelLength: ${LLM_MAX_MODEL_LEN}
           # SED_LLM_SERVER_END
           existingModelServer: ${{ parameters.modelServer === 'Existing model server' }}
           modelEndpoint: ${{ parameters.modelEndpoint }}

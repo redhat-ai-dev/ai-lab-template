@@ -37,8 +37,8 @@ spec:
               kind: [Group, User]
         modelServer:
           # SED_DETR_MODEL_SERVER_START
-          title: DETR Model Server
-          description: The model server container to use. The deployed model on the server must support object detection.
+          title: Model Server
+          description: A simple FastAPI application for use with the DEtection TRansformer (DETR) models. The deployed model on the server must support object detection. | [Learn more](https://github.com/containers/ai-lab-recipes/tree/main/model_servers/object_detection_python)
           type: string
           default: detr-resnet-101
           enum:
@@ -61,6 +61,13 @@ spec:
             - properties:
                 modelServer:
                     const: detr-resnet-101
+                modelNameDeployed:
+                  title: Model Name
+                  description: Object Detection | Apache-2.0 | [Learn more](https://huggingface.co/facebook/detr-resnet-101)
+                  default: facebook/detr-resnet-101
+                  type: string
+                  enum:
+                    - facebook/detr-resnet-101
             # SED_DETR_MODEL_SERVER_END
 
     - title: Application Repository Information

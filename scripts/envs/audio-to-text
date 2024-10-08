@@ -6,8 +6,21 @@ export APP_DISPLAY_NAME="Audio to Text Application"
 export APP_DESC="Build your own AI-enabled audio transcription application. Pick from the model servers available or bring your own."
 export APP_TAGS='["ai", "whispercpp", "python", "asr"]'
 export APP_RUN_COMMAND="streamlit run whisper_client.py"
+
+# https://github.com/redhat-ai-dev/developer-images/tree/main/model/whisper-small
 export INIT_CONTAINER="quay.io/redhat-ai-dev/whisper-small:latest"
+
+# https://github.com/containers/ai-lab-recipes/blob/main/model_servers/whispercpp/base/Containerfile
+# https://github.com/ggerganov/whisper.cpp/blob/v1.5.4/examples/server/README.md
 export MODEL_SERVICE_CONTAINER="quay.io/redhat-ai-dev/whispercpp:latest"
+export MODEL_SERVICE_DESC="Simple HTTP server where WAV Files are passed to the inference model via HTTP requests" 
+export MODEL_SERVICE_SRC="https://github.com/containers/ai-lab-recipes/tree/main/model_servers/whispercpp"
+
+# https://huggingface.co/ggerganov/whisper.cpp
+export ASR_MODEL_NAME="ggerganov/whisper.cpp"
+export ASR_MODEL_CLASSIFICATION="Automatic Speech Recognition"
+export ASR_MODEL_LICENSE="MIT"
+export ASR_MODEL_SRC="https://huggingface.co/ggerganov/whisper.cpp"
 
 # model configurations
 export SUPPORT_ASR=true

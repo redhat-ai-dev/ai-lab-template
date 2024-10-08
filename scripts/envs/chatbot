@@ -6,12 +6,26 @@ export APP_DISPLAY_NAME="Chatbot Application"
 export APP_DESC="Build your own Large language model (LLM)-enabled chat application. Pick from the model servers available or bring your own."
 export APP_TAGS='["ai", "llamacpp", "vllm", "python"]'
 export APP_RUN_COMMAND="streamlit run chatbot_ui.py"
-export INIT_CONTAINER="quay.io/redhat-ai-dev/granite-7b-lab:latest"
-export MODEL_SERVICE_CONTAINER="quay.io/ai-lab/llamacpp_python:latest"
 
+# https://github.com/redhat-ai-dev/developer-images/tree/main/model/granite-7b-lab
+export INIT_CONTAINER="quay.io/redhat-ai-dev/granite-7b-lab:latest"
+
+# https://github.com/containers/ai-lab-recipes/tree/main/model_servers/llamacpp_python
+export MODEL_SERVICE_CONTAINER="quay.io/ai-lab/llamacpp_python:latest"
+export MODEL_SERVICE_DESC="A Python binding of LLM inference in C/C++ with minimal setup"
+export MODEL_SERVICE_SRC="https://github.com/containers/ai-lab-recipes/tree/main/model_servers/llamacpp_python"
+
+# https://github.com/rh-aiservices-bu/llm-on-openshift/tree/main/llm-servers/vllm/gpu
 export VLLM_CONTAINER="quay.io/rh-aiservices-bu/vllm-openai-ubi9:0.4.2"
-export VLLM_MODEL_NAME="instructlab/granite-7b-lab"
-export VLLM_MAX_MODEL_LEN=4096
+export VLLM_DESC="A high throughput, memory efficient inference and serving engine with GPU support for LLMs in OpenShift"
+export VLLM_SRC="https://github.com/rh-aiservices-bu/llm-on-openshift/tree/main/llm-servers/vllm/gpu"
+
+# https://huggingface.co/instructlab/granite-7b-lab
+export LLM_MODEL_NAME="instructlab/granite-7b-lab"
+export LLM_MAX_MODEL_LEN=4096
+export LLM_MODEL_CLASSIFICATION="Text Generation"
+export LLM_MODEL_LICENSE="Apache-2.0"
+export LLM_MODEL_SRC="https://huggingface.co/instructlab/granite-7b-lab"
 
 # model configurations
 export SUPPORT_LLM=true

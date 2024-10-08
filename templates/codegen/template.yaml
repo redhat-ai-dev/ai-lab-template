@@ -37,9 +37,11 @@ spec:
               kind: [Group, User]
         modelServer:
           # SED_LLM_SERVER_START
-          title: Large Language Model(LLM) Server
-          description: The model server container to use
-          ui:help: If you choose vLLM, ensure that your cluster has Nvidia GPU supported (with compute capability 7.0 or higher). Also, it should have enough CPU & memory resources for the model you'd like to work with.
+          title: Model Server
+          description: |
+            llama.cpp: A Python binding of LLM inference in C/C++ with minimal setup. | [Learn more](https://github.com/containers/ai-lab-recipes/tree/main/model_servers/llamacpp_python)
+            
+            vLLM: A high throughput, memory efficient inference and serving engine with GPU support for LLMs in OpenShift. If you choose vLLM, ensure that your cluster has Nvidia GPU supported (with compute capability 7.0 or higher). Also, it should have enough CPU & memory resources for the model you would like to work with. | [Learn more](https://github.com/rh-aiservices-bu/llm-on-openshift/tree/main/llm-servers/vllm/gpu)
           default: llama.cpp
           type: string
           enum:
@@ -71,10 +73,24 @@ spec:
             # SED_LLM_SERVER_START
             - properties:
                 modelServer:
-                    const: vLLM
+                  const: vLLM
+                modelNameDeployed:
+                  title: Model Name
+                  description: Text Generation | Apache-2.0 | [Learn more](https://huggingface.co/Nondzu/Mistral-7B-code-16k-qlora)
+                  default: Nondzu/Mistral-7B-code-16k-qlora
+                  type: string
+                  enum:
+                    - Nondzu/Mistral-7B-code-16k-qlora
             - properties:
                 modelServer:
-                    const: llama.cpp
+                  const: llama.cpp
+                modelNameDeployed:
+                  title: Model Name
+                  description: Text Generation | Apache-2.0 | [Learn more](https://huggingface.co/Nondzu/Mistral-7B-code-16k-qlora)
+                  default: Nondzu/Mistral-7B-code-16k-qlora
+                  type: string
+                  enum:
+                    - Nondzu/Mistral-7B-code-16k-qlora
             # SED_LLM_SERVER_END
 
     - title: Application Repository Information
