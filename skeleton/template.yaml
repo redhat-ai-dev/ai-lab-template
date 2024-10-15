@@ -104,7 +104,7 @@ spec:
                             ui:help: Please provide the name of the secret that your bearer token is stored.
                             type: string
                           modelEndpointSecretKey:
-                            title: Model Enpoint Secret Key
+                            title: Model Endpoint Secret Key
                             ui:help: Please provide the key of the secret that the token value is assigned to.
                             type: string
                         required:
