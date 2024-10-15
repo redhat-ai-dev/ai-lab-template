@@ -89,7 +89,7 @@ spec:
                             type: string
                           modelEndpointSecretKey:
                             title: Model Endpoint Secret Key
-                            ui:help: Provide the Secret's key containing the token value.
+                            ui:help: Provide the key of the Secret containing the token value.
                             type: string
                         required:
                           - modelEndpointSecretName
