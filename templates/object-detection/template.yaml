@@ -57,6 +57,30 @@ spec:
                   title: Model Server Endpoint
                   type: string
                   description: "The endpoint for an existing model server."
+                includeModelEndpointSecret:
+                  title: Bearer Authentication Required?
+                  type: boolean
+                  default: false
+              dependencies:
+                includeModelEndpointSecret:
+                  allOf:
+                    - if:
+                        properties:
+                          includeModelEndpointSecret:
+                            const: true
+                      then:
+                        properties:
+                          modelEndpointSecretName:
+                            title: Model Enpoint Secret Name
+                            ui:help: Please provide the name of the secret that your bearer token is stored.
+                            type: string
+                          modelEndpointSecretKey:
+                            title: Model Enpoint Secret Key
+                            ui:help: Please provide the key of the secret that the token value is assigned to.
+                            type: string
+                        required:
+                          - modelEndpointSecretName
+                          - modelEndpointSecretKey
             # SED_DETR_MODEL_SERVER_START
             - properties:
                 modelServer:
@@ -270,6 +294,9 @@ spec:
           modelServicePort: 8000
           existingModelServer: ${{ parameters.modelServer === 'Existing model server' }}
           modelEndpoint: ${{ parameters.modelEndpoint }}
+          modelEndpointSecretName: ${{ parameters.modelEndpointSecretName }}
+          modelEndpointSecretKey: ${{ parameters.modelEndpointSecretKey }}
+          includeModelEndpointSecret: ${{ parameters.includeModelEndpointSecret }}
           # for RHOAI
           rhoaiSelected: ${{ parameters.rhoaiSelected }}
     - action: fs:rename
