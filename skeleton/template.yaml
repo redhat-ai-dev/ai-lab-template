@@ -100,7 +100,7 @@ spec:
                       then:
                         properties:
                           modelEndpointSecretName:
-                            title: Model Enpoint Secret Name
+                            title: Model Endpoint Secret Name
                             ui:help: Please provide the name of the secret that your bearer token is stored.
                             type: string
                           modelEndpointSecretKey:
