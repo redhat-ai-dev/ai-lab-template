@@ -101,7 +101,7 @@ spec:
                         properties:
                           modelEndpointSecretName:
                             title: Model Endpoint Secret Name
-                            ui:help: Please provide the name of the secret that your bearer token is stored.
+                            ui:help: Provide the name of the Secret containing your bearer token.
                             type: string
                           modelEndpointSecretKey:
                             title: Model Endpoint Secret Key
