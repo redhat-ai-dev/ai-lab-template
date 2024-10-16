@@ -90,6 +90,7 @@ spec:
                   title: Bearer Authentication Required?
                   type: boolean
                   default: false
+                  ui:help: Ensure that a Secret containing the bearer authentication already exists in the preferred targeted Namespace.
               dependencies:
                 includeModelEndpointSecret:
                   allOf:
