@@ -21,7 +21,7 @@ spec:
           apiVersion: tekton.dev/v1
           kind: PipelineRun
           metadata:
-            generateName: rhtap-dev-namespace-setup-
+            generateName: dev-namespace-setup-
             namespace: $NS 
           spec:
             pipelineSpec:
@@ -33,7 +33,7 @@ spec:
                       - name: kind
                         value: task
                       - name: name
-                        value: rhtap-dev-namespace-setup
+                        value: dev-namespace-setup
                       - name: namespace
                         value: ${{ values.rhtapNamespace }}
                     resolver: cluster 
