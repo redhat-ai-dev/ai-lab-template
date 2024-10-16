@@ -64,16 +64,16 @@ spec:
                   title: Model Server Endpoint
                   type: string
                   description: "The endpoint for an existing model server."
-                includeModelEndpointSecret:
-                  title: Bearer Authentication Required?
-                  type: boolean
-                  default: false
                 # SED_LLM_SERVER_START
                 modelName:
                   title: Model Name
                   type: string
                   ui:help: "The name of the model deployed on the model server you would like to use."
                 # SED_LLM_SERVER_END
+                includeModelEndpointSecret:
+                  title: Bearer Authentication Required?
+                  type: boolean
+                  default: false
               dependencies:
                 includeModelEndpointSecret:
                   allOf:
