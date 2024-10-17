@@ -58,7 +58,7 @@ spec:
                   type: string
                   description: "The endpoint for an existing model server."
                 includeModelEndpointSecret:
-                  title: Bearer Authentication Required?
+                  title: Is bearer authentication required?
                   type: boolean
                   default: false
                   ui:help: Create a secret containing the authentication bearer in the preffered targeted Namespace first.
