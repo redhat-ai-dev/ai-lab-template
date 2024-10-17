@@ -169,7 +169,7 @@ spec:
                 githubServer:
                   title: Repository Server
                   type: string
-                  default: github.com
+                  default: ${GITHUB__DEFAULT__HOST}
                   ui:help: "You can also provide the on-prem github server, example: github-github.apps.cluster-ljg9z.sandbox219.opentlc.com"
             - required:
                 - gitlabServer
@@ -179,7 +179,7 @@ spec:
                 gitlabServer:
                   title: Repository Server
                   type: string
-                  default: gitlab.com
+                  default: ${GITLAB__DEFAULT__HOST}
                   ui:help: "You can also provide the on-prem gitlab server, example: gitlab-gitlab.apps.cluster-ljg9z.sandbox219.opentlc.com"
     - title: Deployment Information
       required:
@@ -306,7 +306,7 @@ spec:
           appName: ${{ parameters.name }}-gitops # for now just use the component name, since it's single component app
           description: This is GitOps manifest for ${{ parameters.name }}
           namespace: ${{ parameters.namespace }}
-          rhtapNamespace: ${RHTAP__DEFAULT__NAMESPACE}
+          rhdhNamespace: ${RHDH__DEFAULT__NAMESPACE}
           # example: github.com?owner=<owner>&repo=<srcRepo>, the gitops repo name will be <srcRepo>-gitops
           repoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops
           srcRepoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}
