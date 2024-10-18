@@ -16,7 +16,7 @@ MarkupSafe==2.1.5
 mdurl==0.1.2
 numpy==1.26.4
 packaging==24.0
-pandas==2.2.2
+pandas==2.2.3
 pillow==10.3.0
 protobuf==4.25.3
 pyarrow==15.0.2
@@ -37,4 +37,4 @@ toolz==0.12.1
 tornado==6.4.1
 typing_extensions==4.11.0
 tzdata==2024.1
-urllib3==2.2.2
+urllib3==2.2.3

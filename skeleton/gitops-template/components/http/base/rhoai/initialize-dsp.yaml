@@ -90,6 +90,13 @@ spec:
                       successThreshold: 1
                       timeoutSeconds: 1
                     env:
+                      {%- if values.includeModelEndpointSecret %}
+                      - name: MODEL_ENDPOINT_BEARER
+                        valueFrom:
+                          secretKeyRef:
+                            name: ${{ values.modelEndpointSecretName }}
+                            key: ${{ values.modelEndpointSecretKey }}
+                      {%- endif %}
                       - name: NOTEBOOK_ARGS
                         value: |-
                           --ServerApp.port=8888
