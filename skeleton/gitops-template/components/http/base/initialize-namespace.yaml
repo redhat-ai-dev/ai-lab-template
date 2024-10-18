@@ -16,7 +16,7 @@ spec:
         - -c
         - |
           NS=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace) 
-          echo "Initialize RHTAP Namespace: $NS"  
+          echo "Initialize RHDH Namespace: $NS"  
           cat <<CONFIGURE_PIPELINE | oc create -f - 
           apiVersion: tekton.dev/v1
           kind: PipelineRun
@@ -35,7 +35,7 @@ spec:
                       - name: name
                         value: dev-namespace-setup
                       - name: namespace
-                        value: ${{ values.rhtapNamespace }}
+                        value: ${{ values.rhdhNamespace }}
                     resolver: cluster 
           CONFIGURE_PIPELINE
           

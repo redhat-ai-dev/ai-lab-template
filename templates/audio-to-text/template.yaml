@@ -243,16 +243,12 @@ spec:
           appName: ${{ parameters.name }}-gitops # for now just use the component name, since it's single component app
           description: This is GitOps manifest for ${{ parameters.name }}
           namespace: ${{ parameters.namespace }}
-          rhtapNamespace: ai-rhdh
-          defaultDeployNamespace: rhdh-app
+          rhdhNamespace: ai-rhdh
           # example: github.com?owner=<owner>&repo=<srcRepo>, the gitops repo name will be <srcRepo>-gitops
           repoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops
           srcRepoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}
           argoComponentOverlays: './components/${{ parameters.name }}/overlays'
-          owner: ${{ parameters.owner }} 
-          image: quay.io/redhat-appstudio/dance-bootstrap-app:latest # bootstrap app image as placeholder
-          # actual src image, should be used by tekton PR pipeline to update the image in gitops repo
-          srcImage: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
+          owner: ${{ parameters.owner }}
           argoNS: ai-rhdh
           argoProject: default
           secretRef: ${{ parameters.hostType === 'GitLab' }}
