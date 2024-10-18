@@ -61,7 +61,7 @@ spec:
                   title: Is bearer authentication required?
                   type: boolean
                   default: false
-                  ui:help: Create a secret containing the authentication bearer in the preffered targeted Namespace first.
+                  ui:help: Create a secret containing the authentication bearer in the preferred targeted Namespace first.
               dependencies:
                 includeModelEndpointSecret:
                   allOf:
