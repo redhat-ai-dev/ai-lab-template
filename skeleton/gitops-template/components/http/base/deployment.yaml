@@ -32,6 +32,14 @@ spec:
         - configMapRef:
             name: ${{ values.name }}-database-config
         {%- endif %}
+        {%- if values.includeModelEndpointSecret %}
+        env:
+        - name: MODEL_ENDPOINT_BEARER
+          valueFrom:
+            secretKeyRef:
+              name: ${{  values.modelEndpointSecretName  }}
+              key: ${{  values.modelEndpointSecretKey  }}
+        {%- endif %}
         ports:
         - containerPort: ${{ values.appPort }}
         securityContext:

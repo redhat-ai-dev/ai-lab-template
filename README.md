@@ -10,6 +10,19 @@ Import `https://github.com/redhat-ai-dev/ai-lab-template/blob/main/all.yaml`
 
 ![Screenshot](register2.png)
 
+### Bearer Authentication support for "Bring Your Own Server" cases
+
+Bearer authentication is supported when a user wants to use an existing model server. The process is the following:
+
+* A secret storing the authentication bearer should be already created in the targeted Namespace (e.g the Namespace that the software template will be deployed to).
+
+* On the software template installation wizzard, click on the `Bearer Authentication Required?` field.
+
+* Fill in the name of your secret and the key that the bearer value is stored.
+
+![Screenshot](wizzard1.png)
+
+
 ## Usage in Backstage 
 
 Add the following to your `app-config.yaml` file in your Backstage configuration:
