@@ -215,6 +215,7 @@ spec:
         targetPath: source
         values:
           name: ${{ parameters.name }}
+          appSummary: A Large language model (LLM)-enabled code generation application. This specialized bot helps with code related queries.
           namespace: ${{ parameters.namespace }}
           repoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops
           srcRepoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}
