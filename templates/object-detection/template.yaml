@@ -192,6 +192,7 @@ spec:
         targetPath: source
         values:
           name: ${{ parameters.name }}
+          appSummary: A DEtection TRansformer (DETR) model application. Upload an image to identify and locate objects in the image.
           namespace: ${{ parameters.namespace }}
           repoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops
           srcRepoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}

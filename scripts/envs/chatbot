@@ -4,6 +4,7 @@
 export APP_NAME="chatbot"
 export APP_DISPLAY_NAME="Chatbot Application"
 export APP_DESC="Build your own Large language model (LLM)-enabled chat application. Pick from the model servers available or bring your own."
+export APP_SUMMARY="A Large language model (LLM)-enabled chat application. The bot replies with AI generated responses."
 export APP_TAGS='["ai", "llamacpp", "vllm", "python"]'
 export APP_RUN_COMMAND="streamlit run chatbot_ui.py"
 

@@ -4,7 +4,7 @@ kind: Template
 metadata:
   name: rag
   title: RAG Chatbot Application
-  description: Enhance the capabilities of your Chatbot using a Retrieval-Augmented Generation (RAG) Chatbot application. Pick from the model servers available or bring your own.
+  description: Enhance the capabilities of your Chatbot using a Retrieval-Augmented Generation (RAG) application. Pick from the model servers available or bring your own.
   tags: ["ai", "llamacpp", "vllm", "python", "rag", "database"]
 spec:
   type: service
@@ -215,6 +215,7 @@ spec:
         targetPath: source
         values:
           name: ${{ parameters.name }}
+          appSummary: RAG (Retrieval Augmented Generation) Chat Application with a vector database. Upload a file containing relevant information to train the model for more accurate responses.
           namespace: ${{ parameters.namespace }}
           repoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops
           srcRepoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}

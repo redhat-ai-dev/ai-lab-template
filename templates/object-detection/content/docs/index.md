@@ -4,6 +4,10 @@ This application, ${{ values.name }}, was created from an AI Software Template. 
 
 Included in the source code repository will be the chosen sample source application.
 
+## Sample Source Application
+
+${{ values.appSummary }}
+
 ## Repositories
 
 The source code for your application can be found in [${{ values.srcRepoURL }} ](${{ values.srcRepoURL }} ).
