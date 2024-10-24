@@ -4,7 +4,7 @@
 export APP_NAME="rag"
 export APP_DISPLAY_NAME="RAG Chatbot Application"
 export APP_DESC="Enhance the capabilities of your Chatbot using a Retrieval-Augmented Generation (RAG) application. Pick from the model servers available or bring your own."
-export APP_SUMMARY="RAG (Retrieval Augmented Generation) Chat Application with a vector database. Upload a file containing relevant information to train the model for more accurate responses."
+export APP_SUMMARY="RAG (Retrieval Augmented Generation) chat application with a vector database. Upload a file containing relevant information to train the model for more accurate responses."
 export APP_TAGS='["ai", "llamacpp", "vllm", "python", "rag", "database"]'
 export APP_RUN_COMMAND="streamlit run rag_app.py"
 
