@@ -215,7 +215,7 @@ spec:
         targetPath: source
         values:
           name: ${{ parameters.name }}
-          appSummary: RAG (Retrieval Augmented Generation) chat application with a vector database. Upload a file containing relevant information to train the model for more accurate responses.
+          appSummary: RAG (Retrieval Augmented Generation) streamlit chat application with a vector database. Upload a file containing relevant information to train the model for more accurate responses.
           namespace: ${{ parameters.namespace }}
           repoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops
           srcRepoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}

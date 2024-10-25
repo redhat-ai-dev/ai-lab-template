@@ -4,7 +4,7 @@ kind: Template
 metadata:
   name: chatbot
   title: Chatbot Application
-  description: Build your own Large language model (LLM)-enabled chat application. Pick from the model servers available or bring your own.
+  description: Build your own Large Language Model (LLM)-enabled chat application. Pick from the model servers available or bring your own.
   tags: ["ai", "llamacpp", "vllm", "python"]
 spec:
   type: service
@@ -215,7 +215,7 @@ spec:
         targetPath: source
         values:
           name: ${{ parameters.name }}
-          appSummary: A Large language model (LLM)-enabled chat application. The bot replies with AI generated responses.
+          appSummary: A Large Language Model (LLM)-enabled streamlit chat application. The bot replies with AI generated responses.
           namespace: ${{ parameters.namespace }}
           repoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops
           srcRepoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}
