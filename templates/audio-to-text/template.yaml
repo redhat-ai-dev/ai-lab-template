@@ -192,6 +192,7 @@ spec:
         targetPath: source
         values:
           name: ${{ parameters.name }}
+          appSummary: An AI enabled audio transcription streamlit application. Upload an audio file to be transcribed.
           namespace: ${{ parameters.namespace }}
           repoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops
           srcRepoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}

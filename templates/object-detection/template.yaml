@@ -4,7 +4,7 @@ kind: Template
 metadata:
   name: object-detection
   title: Object Detection Application
-  description: Identify and locate objects in an image using an AI-enabled Object Detection Application. Pick from the DEtection TRansformer (DETR) model servers or bring your own DEtection TRansformer (DETR).
+  description: Identify and locate objects in an image using an AI-enabled object detection application. Pick from the DEtection TRansformer (DETR) model servers or bring your own DEtection TRansformer (DETR).
   tags: ["ai", "detr", "python"]
 spec:
   type: service
@@ -192,6 +192,7 @@ spec:
         targetPath: source
         values:
           name: ${{ parameters.name }}
+          appSummary: A DEtection TRansformer (DETR) model streamlit application. Upload an image to identify and locate objects in the image.
           namespace: ${{ parameters.namespace }}
           repoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops
           srcRepoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}
