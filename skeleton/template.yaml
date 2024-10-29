@@ -247,6 +247,12 @@ spec:
   # These steps are executed in the scaffolder backend, using data that we gathered
   # via the parameters above.
   steps:
+    - id: fetch-skeleton-docs
+      name: Fetch Skeleton Techdocs
+      action: fetch:template
+      input:
+        url: ../../skeleton/techdoc
+        targetPath: source
     # Each step executes an action, in this case one templates files into the workspace.
     # Get the sample source code
     - id: fetch-base
