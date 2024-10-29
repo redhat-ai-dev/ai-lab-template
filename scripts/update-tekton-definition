@@ -39,7 +39,7 @@ cp -r $TEMPDIR/$REPONAME/pac/source-repo/. $SRC_TEKTON
 cp $SRC_TEKTON/README.md $ROOTDIR/skeleton/techdoc/docs/pipelines.md
 rm -rf $TEMPDIR
  
-for prun in $SRC_TEKTON/*.yaml $GITOPS_TEKTON/*.yaml; do 
+for prun in $SRC_TEKTON/*.yaml; do 
         echo "Labels for $prun" 
         add-backstage-labels $prun
 done 
