@@ -207,12 +207,6 @@ spec:
   # These steps are executed in the scaffolder backend, using data that we gathered
   # via the parameters above.
   steps:
-    - id: fetch-skeleton-docs
-      name: Fetch Skeleton Techdocs
-      action: fetch:template
-      input:
-        url: ../../skeleton/techdoc
-        targetPath: source
     # Each step executes an action, in this case one templates files into the workspace.
     # Get the sample source code
     - id: fetch-base
@@ -220,6 +214,13 @@ spec:
       action: fetch:template
       input:
         url: ./content
+        targetPath: source
+    # Renders all of the template variables into the techdocs and adds them to the source repo
+    - id: fetch-skeleton-docs
+      name: Fetch Skeleton Techdocs
+      action: fetch:template
+      input:
+        url: ../../skeleton/techdoc
         targetPath: source
         values:
           name: ${{ parameters.name }}
