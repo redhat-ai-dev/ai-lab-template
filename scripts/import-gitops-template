@@ -5,8 +5,8 @@ ROOTDIR=$(realpath $SCRIPTDIR/..)
 source $ROOTDIR/properties
 
 #get gitops templates
-REPO="${GITOPS_REPO:-https://github.com/Jdubrick/ai-lab-app}"
-BRANCH="${GITOPS_BRANCH:-readme-update-oct30}"
+REPO="${GITOPS_REPO:-https://github.com/redhat-ai-dev/ai-lab-app}"
+BRANCH="${GITOPS_BRANCH:-main}"
 REPONAME=$(basename $REPO)
 
 TEMPDIR=$ROOTDIR/temp
