@@ -6,6 +6,8 @@ metadata:
   title: sed.edit.TITLE
   description: sed.edit.DESCRIPTION
   tags: sed.edit.APPTAGS
+  annotations:
+    backstage.io/techdocs-ref: dir:./
 spec:
   type: service
   # These parameters are used to generate the input form in the frontend, and are
