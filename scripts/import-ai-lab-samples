@@ -31,6 +31,10 @@ for f in */; do
         mkdir -p $DEST
         cp -r $SAMPLE_DIR/$SAMPLENAME $DEST/content
 
+        # add template card docs
+        cp -r $ROOT_DIR/skeleton/template-card-techdocs/base/docs $DEST/docs
+        cp -r $ROOT_DIR/skeleton/template-card-techdocs/base/mkdocs.yml $DEST/mkdocs.yml
+
         cp $ROOT_DIR/skeleton/template.yaml $DEST/template.yaml
 
         cp -r $ROOT_DIR/skeleton/techdoc/docs  $DEST/content/docs
@@ -56,6 +60,9 @@ for f in */; do
         sed -i "s!sed.edit.DESCRIPTION!$APP_DESC!g" $DEST/template.yaml
         sed -i "s!sed.edit.APPTAGS!$APP_TAGS!g" $DEST/template.yaml
         sed -i "s!sed.edit.CATALOG_DESCRIPTION!Secure Supply Chain Example for $APP_DISPLAY_NAME!g" $DEST/template.yaml
+
+        sed -i "s!sed.edit.NAME!$APP_NAME!g" $DEST/docs/index.md
+        sed -i "s!sed.edit.TEMPLATE_URL!$TEMPLATE_SOURCE_URL!g" $DEST/docs/index.md
 
         if [ $SUPPORT_LLM == false ]; then
             sed -i '/# SED_LLM_SERVER_START/,/# SED_LLM_SERVER_END/d' $DEST/template.yaml
