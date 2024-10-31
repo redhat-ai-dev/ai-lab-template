@@ -6,6 +6,8 @@ metadata:
   title: Chatbot Application
   description: Build your own Large Language Model (LLM)-enabled chat application. Pick from the model servers available or bring your own.
   tags: ["ai", "llamacpp", "vllm", "python"]
+  annotations:
+    backstage.io/techdocs-ref: dir:./
 spec:
   type: service
   # These parameters are used to generate the input form in the frontend, and are
