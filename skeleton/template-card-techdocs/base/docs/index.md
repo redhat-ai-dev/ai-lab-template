@@ -4,7 +4,7 @@ This AI Software Template can be used to create a new source code repository and
 
 As a user you will be able to enter various customizations for each section of the template, such as:
 
-#### **Application Information**
+### **Application Information**
 
 - Application name
 
@@ -12,7 +12,7 @@ As a user you will be able to enter various customizations for each section of t
 
 - Model server of choice
 
-#### **Repository Information**
+### **Repository Information**
 
 - GitHub/GitLab Repository
 
@@ -20,7 +20,7 @@ As a user you will be able to enter various customizations for each section of t
 
 - Desired name and branch for the repository
 
-#### **Deployment Information**
+### **Deployment Information**
 
 - Application deployment namespace
 
