@@ -1,6 +1,6 @@
 # AI Software Template
 
-This AI Software Template can be used to create a new source code repository and new gitops deployment repository for a object-detection application.
+This AI Software Template can be used to create a new source code repository and a new GitOps deployment repository for a Object Detection Application.
 
 As a user you will be able to enter various customizations for each section of the template, such as:
 
