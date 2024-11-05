@@ -6,6 +6,8 @@ metadata:
   title: Object Detection Application
   description: Identify and locate objects in an image using an AI-enabled object detection application. Pick from the DEtection TRansformer (DETR) model servers or bring your own DEtection TRansformer (DETR).
   tags: ["ai", "detr", "python"]
+  annotations:
+    backstage.io/techdocs-ref: dir:.
 spec:
   type: service
   # These parameters are used to generate the input form in the frontend, and are
