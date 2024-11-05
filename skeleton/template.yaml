@@ -2,10 +2,12 @@ apiVersion: scaffolder.backstage.io/v1beta3
 # https://backstage.io/docs/features/software-catalog/descriptor-format#kind-template
 kind: Template
 metadata:
-  name: sed.edit.NAME
-  title: sed.edit.TITLE
+  name: sed.edit.APP_NAME
+  title: sed.edit.APP_DISPLAY_NAME
   description: sed.edit.DESCRIPTION
   tags: sed.edit.APPTAGS
+  annotations:
+    backstage.io/techdocs-ref: dir:.
 spec:
   type: service
   # These parameters are used to generate the input form in the frontend, and are

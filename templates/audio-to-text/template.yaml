@@ -6,6 +6,8 @@ metadata:
   title: Audio to Text Application
   description: Build your own AI-enabled audio transcription application. Pick from the model servers available or bring your own.
   tags: ["ai", "whispercpp", "python", "asr"]
+  annotations:
+    backstage.io/techdocs-ref: dir:.
 spec:
   type: service
   # These parameters are used to generate the input form in the frontend, and are
