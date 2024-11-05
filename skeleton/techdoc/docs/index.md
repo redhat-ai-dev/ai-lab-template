@@ -2,7 +2,7 @@
 
 This application, ${{ values.name }}, is created from an AI Software Template. These software templates create a new source code repository as well as a new GitOps deployment repository.
 
-The chosen sample source applicable is included in the source code repository
+The chosen sample source applicable is included in the source code repository.
 
 ## Sample Source Application
 
