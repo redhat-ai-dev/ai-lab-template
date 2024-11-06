@@ -16,11 +16,11 @@ This document outlines how you can build and run your sample applications within
 
 ![image](./images/access-openshift-ai.png)
 
-2) Go to the `Data Science Projects` section and access your application's project named `{{ values.namespace }}`.
+2) Go to the `Data Science Projects` section and access your application's project named `${{ values.namespace }}`.
 
 ![image](./images/data-science-projects.png)
 
-3) Access the `workbench` named `{{ values.name }}-notebook`.
+3) Access the `workbench` named `${{ values.name }}-notebook`.
 
 ![image](./images/access-workbench.png)
 
