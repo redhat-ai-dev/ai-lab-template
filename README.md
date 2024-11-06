@@ -1,7 +1,7 @@
 #  AI-lab Software Templates
 
 > [!IMPORTANT]  
-> The software templates in this repository require OpenShift Pipelines and OpenShift GitOps installed, alongside their respective plugins in Red Hat Developer Hub. For more information on configuring them, please see [the installer we have prepared](https://github.com/redhat-ai-dev/ai-rhdh-installer/).
+> The software templates in this repository require OpenShift Pipelines and OpenShift GitOps installed, along with their respective plugins in Red Hat Developer Hub. For more information on configuring them, please see [ai-rhdh-installer](https://github.com/redhat-ai-dev/ai-rhdh-installer/).
 
 ## Usage in Red Hat Developer Hub
 
