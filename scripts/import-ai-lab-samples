@@ -20,8 +20,10 @@ fi
 
 (cd $SAMPLE_DIR; git checkout $BRANCH; git pull)
 
-
 cd $SAMPLE_DIR
+# get readme to source component doc
+cp -r $SAMPLE_DIR/README.md  $SKELETON_DIR/techdoc/docs/source-component.md
+
 for f in */; do
     if [ -d "$f" ]; then
         # $f is a directory
@@ -36,14 +38,7 @@ for f in */; do
         cp -r $ROOT_DIR/skeleton/template-card-techdocs/base/mkdocs.yml $DEST/mkdocs.yml
 
         cp $ROOT_DIR/skeleton/template.yaml $DEST/template.yaml
-
-        cp -r $ROOT_DIR/skeleton/techdoc/docs  $DEST/content/docs
-        cp -r $ROOT_DIR/skeleton/techdoc/mkdocs.yml  $DEST/content/mkdocs.yml
-
-        # get readme to source component doc
-        cp -r $SAMPLE_DIR/README.md  $DEST/content/docs/source-component.md
-        cp -r $ROOT_DIR/skeleton/source-repo/.tekton/README.md  $DEST/content/docs/pipelines.md
-
+        
         # get default env variables
         source $SCRIPTDIR/envs/base
 

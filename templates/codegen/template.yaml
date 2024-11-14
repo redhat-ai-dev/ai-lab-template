@@ -215,6 +215,13 @@ spec:
       input:
         url: ./content
         targetPath: source
+    # Renders all of the template variables into the techdocs and adds them to the source repo
+    - id: fetch-skeleton-docs
+      name: Fetch Skeleton Techdocs
+      action: fetch:template
+      input:
+        url: ../../skeleton/techdoc
+        targetPath: source
         values:
           name: ${{ parameters.name }}
           appSummary: A Large Language Model (LLM)-enabled streamlit code generation application. This specialized bot helps with code related queries.
