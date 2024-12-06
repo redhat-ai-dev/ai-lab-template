@@ -1,7 +1,9 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+{%- if not values.noApp %}
 patchesStrategicMerge:
 - deployment-patch.yaml
+{%- endif %}
 resources:
 - ../../base 
 - gitops-repository.yaml
