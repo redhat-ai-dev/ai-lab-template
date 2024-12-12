@@ -4,6 +4,7 @@ SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 ROOT_DIR=$(realpath $SCRIPTDIR/..)
 SKELETON_DIR=$ROOT_DIR/skeleton
 TEMPLATE_DIR=$ROOT_DIR/templates
+TEMPLATE_TECHDOC_TYPE=app
 
 REPO="${SAMPLE_REPO:-https://github.com/redhat-ai-dev/ai-lab-samples}"
 BRANCH="${SAMPLE_BRANCH:-main}"
@@ -28,56 +29,14 @@ for f in */; do
     if [ -d "$f" ]; then
         # $f is a directory
         SAMPLENAME=$(basename $f)
-        DEST=$ROOT_DIR/templates/$SAMPLENAME
+        DEST=$TEMPLATE_DIR/$SAMPLENAME
         rm -rf $DEST
         mkdir -p $DEST
         cp -r $SAMPLE_DIR/$SAMPLENAME $DEST/content
 
-        # add template card docs
-        cp -r $ROOT_DIR/skeleton/template-card-techdocs/base/docs $DEST/docs
-        cp -r $ROOT_DIR/skeleton/template-card-techdocs/base/mkdocs.yml $DEST/mkdocs.yml
-
-        cp $ROOT_DIR/skeleton/template.yaml $DEST/template.yaml
-        
-        # get default env variables
-        source $SCRIPTDIR/envs/base
-
-        # get sample env variables
-        source $SCRIPTDIR/envs/$SAMPLENAME
-
-        if [ -f $f/Containerfile ]; then
-            sed -i "s!sed.edit.DOCKERFILE!Containerfile!g" $DEST/template.yaml
-            sed -i "s!sed.edit.BUILDCONTEXT!.!g" $DEST/template.yaml
-        fi
-
-        sed -i "s!sed.edit.APP_NAME!$APP_NAME!g" $DEST/template.yaml
-        sed -i "s!sed.edit.APP_DISPLAY_NAME!$APP_DISPLAY_NAME!g" $DEST/template.yaml
-        sed -i "s!sed.edit.DESCRIPTION!$APP_DESC!g" $DEST/template.yaml
-        sed -i "s!sed.edit.APPTAGS!$APP_TAGS!g" $DEST/template.yaml
-        sed -i "s!sed.edit.CATALOG_DESCRIPTION!Secure Supply Chain Example for $APP_DISPLAY_NAME!g" $DEST/template.yaml
-
-        sed -i "s!sed.edit.APP_DISPLAY_NAME!$APP_DISPLAY_NAME!g" $DEST/docs/index.md
-        sed -i "s!sed.edit.TEMPLATE_SOURCE_URL!$TEMPLATE_SOURCE_URL!g" $DEST/docs/index.md
-
-        if [ $SUPPORT_LLM == false ]; then
-            sed -i '/# SED_LLM_SERVER_START/,/# SED_LLM_SERVER_END/d' $DEST/template.yaml
-        fi
-        if [ $SUPPORT_ASR == false ]; then
-            sed -i '/# SED_ASR_MODEL_SERVER_START/,/# SED_ASR_MODEL_SERVER_END/d' $DEST/template.yaml
-        fi
-        if [ $SUPPORT_DETR == false ]; then
-            sed -i '/# SED_DETR_MODEL_SERVER_START/,/# SED_DETR_MODEL_SERVER_END/d' $DEST/template.yaml
-        fi
-        if [ $SUPPORT_DB == false ]; then
-            sed -i '/# SED_DB_START/,/# SED_DB_END/d' $DEST/template.yaml
-        fi
-
-        source $ROOT_DIR/properties
-        cat $DEST/template.yaml | envsubst > $DEST/new-template.yaml
-        mv $DEST/new-template.yaml $DEST/template.yaml
+        source $SCRIPTDIR/util
+        apply-configurations $DEST $SAMPLENAME $TEMPLATE_TECHDOC_TYPE
     fi
 done
 
-
 rm -rf $SCRIPTDIR/samples
-
