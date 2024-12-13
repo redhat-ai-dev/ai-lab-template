@@ -46,6 +46,7 @@ function apply-configurations() {
     fi
     if [ $SUPPORT_LLM_LLAMA == false ]; then
         sed -i '/# SED_LLM_LLAMA_SERVER_START/,/# SED_LLM_LLAMA_SERVER_END/d' $DEST/template.yaml
+        sed -i 's/llama.cpp: ${MODEL_SERVICE_DESC}. | \[Learn more\][(]${MODEL_SERVICE_SRC}[)]//' $DEST/template.yaml
     fi
     if [ $SUPPORT_ASR == false ]; then
         sed -i '/# SED_ASR_MODEL_SERVER_START/,/# SED_ASR_MODEL_SERVER_END/d' $DEST/template.yaml

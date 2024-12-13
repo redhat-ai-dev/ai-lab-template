@@ -40,12 +40,10 @@ spec:
         modelServer:
           # SED_LLM_SERVER_START
           title: Model Server
-          description: 
-          # SED_LLM_LLAMA_SERVER_START
+          description:
           |
             llama.cpp: A Python binding of LLM inference in C/C++ with minimal setup. | [Learn more](https://github.com/containers/ai-lab-recipes/tree/main/model_servers/llamacpp_python)
-          # SED_LLM_LLAMA_SERVER_END
-          |
+
             vLLM: A high throughput, memory efficient inference and serving engine with GPU support for LLMs in OpenShift. If you choose vLLM, ensure that your cluster has Nvidia GPU supported (with compute capability 7.0 or higher). Also, it should have enough CPU & memory resources for the model you would like to work with. | [Learn more](https://github.com/rh-aiservices-bu/llm-on-openshift/tree/main/llm-servers/vllm/gpu)
           # SED_LLM_LLAMA_SERVER_START
           default: llama.cpp

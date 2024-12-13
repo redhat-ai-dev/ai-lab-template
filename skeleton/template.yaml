@@ -40,12 +40,10 @@ spec:
         modelServer:
           # SED_LLM_SERVER_START
           title: Model Server
-          description: 
-          # SED_LLM_LLAMA_SERVER_START
+          description:
           |
             llama.cpp: ${MODEL_SERVICE_DESC}. | [Learn more](${MODEL_SERVICE_SRC})
-          # SED_LLM_LLAMA_SERVER_END
-          |
+
             vLLM: ${VLLM_DESC}. If you choose vLLM, ensure that your cluster has Nvidia GPU supported (with compute capability 7.0 or higher). Also, it should have enough CPU & memory resources for the model you would like to work with. | [Learn more](${VLLM_SRC})
           # SED_LLM_LLAMA_SERVER_START
           default: llama.cpp
