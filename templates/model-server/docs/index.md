@@ -1,6 +1,6 @@
 # AI Software Template
 
-This AI Software Template can be used to create a new source code repository and a new GitOps deployment repository for a Chatbot Application.
+This AI Software Template can be used to create a new GitOps deployment repository for a  Model Server, No Application. This Software Template does not generate or configure an application.
 
 As a user you will be able to customize each section of the template, such as:
 
@@ -9,8 +9,6 @@ As a user you will be able to customize each section of the template, such as:
 - Application name
 
 - Owner
-
-- Model server of choice
 
 ### **Repository Information**
 
@@ -24,6 +22,5 @@ As a user you will be able to customize each section of the template, such as:
 
 - Application deployment namespace
 
-- Image registry and image name
 
-For more information please check out our general template documentation in our [source code repository](https://github.com/redhat-ai-dev/ai-lab-template) as well as the source code for this template's generated application [here](https://github.com/redhat-ai-dev/ai-lab-samples/tree/main/chatbot)!
+For more information please check out our general template documentation in our [source code repository](https://github.com/redhat-ai-dev/ai-lab-template). If you are interested in the ibm-granite/granite-3.0-8b-instruct model being used for this template, refer to the hugging face [page](https://huggingface.co/ibm-granite/granite-3.0-8b-instruct)!

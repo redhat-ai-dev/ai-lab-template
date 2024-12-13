@@ -15,7 +15,7 @@ resources:
 - deployment-model-server.yaml
 - service-model-server.yaml
 {%- endif %}
-{%- if not values.noApp %}
+{%- if values.supportApp %}
 - deployment.yaml
 - route.yaml
 - service.yaml

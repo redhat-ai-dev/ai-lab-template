@@ -3,8 +3,8 @@ apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
   name: model-server
-  title: Model Server, No Application
-  description: Deploy a granite-3.0 8b model server.
+  title:  Model Server, No Application
+  description: Deploy a granite-3.0 8b model server. No application is configured.
   tags: ["ai", "vllm", "modelserver"]
   annotations:
     backstage.io/techdocs-ref: dir:.
@@ -40,61 +40,18 @@ spec:
         modelServer:
           # SED_LLM_SERVER_START
           title: Model Server
-          description: |
+          description:
+          |
+            
+
             vLLM: A high throughput, memory efficient inference and serving engine with GPU support for LLMs in OpenShift. If you choose vLLM, ensure that your cluster has Nvidia GPU supported (with compute capability 7.0 or higher). Also, it should have enough CPU & memory resources for the model you would like to work with. | [Learn more](https://github.com/rh-aiservices-bu/llm-on-openshift/tree/main/llm-servers/vllm/gpu)
-          default: vLLM
           type: string
           enum:
             - vLLM
-            # - llama.cpp
           # SED_LLM_SERVER_END
-            - Existing model server
       dependencies:
         modelServer:
           oneOf:
-            - required:
-                - modelEndpoint
-                # SED_LLM_SERVER_START
-                - modelName
-                # SED_LLM_SERVER_END
-              properties:
-                modelServer:
-                    const: Existing model server
-                modelEndpoint:
-                  title: Model Server Endpoint
-                  type: string
-                  description: "The endpoint for an existing model server."
-                # SED_LLM_SERVER_START
-                modelName:
-                  title: Model Name
-                  type: string
-                  ui:help: "The name of the model deployed on the model server you would like to use."
-                # SED_LLM_SERVER_END
-                includeModelEndpointSecret:
-                  title: Is bearer authentication required?
-                  type: boolean
-                  default: false
-                  ui:help: Create a Secret containing the authentication bearer in the preferred targeted Namespace first.
-              dependencies:
-                includeModelEndpointSecret:
-                  allOf:
-                    - if:
-                        properties:
-                          includeModelEndpointSecret:
-                            const: true
-                      then:
-                        properties:
-                          modelEndpointSecretName:
-                            title: Model Server Endpoint Secret Name
-                            ui:help: Paste in the name of the Secret containing your bearer.
-                            type: string
-                          modelEndpointSecretKey:
-                            title: Model Server Endpoint Secret Key
-                            ui:help: Paste in the key of the Secret containing the bearer value.
-                            type: string
-                        required:
-                          - modelEndpointSecretName
-                          - modelEndpointSecretKey
             # SED_LLM_SERVER_START
             - properties:
                 modelServer:
@@ -158,27 +115,8 @@ spec:
                   ui:help: "You can also provide the on-prem gitlab server, example: gitlab-gitlab.apps.cluster-ljg9z.sandbox219.opentlc.com"
     - title: Deployment Information
       required:
-        # - imageRegistry
-        # - imageOrg
-        # - imageName
         - namespace
       properties:
-        # imageRegistry:
-        #   title: Image Registry
-        #   type: string
-        #   description: The image registry host
-        #   default: quay.io
-        #   ui:help: "You can also provide the on-prem registry host, example: quay-tv2pb.apps.cluster-tv2pb.sandbox1194.opentlc.com"
-        # imageOrg:
-        #   title: Image Organization
-        #   type: string
-        #   description: The organization, user or project that this repo will belong to
-        # imageName:
-        #   title: Image Name
-        #   type: string
-        #   ui:autofocus: true
-        #   ui:options:
-        #     rows: 5
         namespace:
           title: Deployment Namespace
           type: string
@@ -186,97 +124,9 @@ spec:
           ui:autofocus: true
           ui:options:
             rows: 5
-        # rhoaiSelected:
-        #   title: Create Workbench for OpenShift AI
-        #   description: Deploy to OpenShift AI in your app's namespace
-        #   type: boolean
-        #   default: false
-        #   ui:help: If you select this field, you must ensure that Red Hat OpenShift AI has been installed on your cluster.
   # These steps are executed in the scaffolder backend, using data that we gathered
   # via the parameters above.
   steps:
-    # Each step executes an action, in this case one templates files into the workspace.
-    # Get the sample source code
-    # - id: fetch-base
-    #   name: Fetch Base
-    #   action: fetch:template
-    #   input:
-    #     url: ./content
-    #     targetPath: source
-    # Renders all of the template variables into the techdocs and adds them to the source repo
-    # - id: fetch-skeleton-docs
-    #   name: Fetch Skeleton Techdocs
-    #   action: fetch:template
-    #   input:
-    #     url: ../../skeleton/techdoc
-    #     targetPath: source
-    #     values:
-    #       name: ${{ parameters.name }}
-    #       appSummary: Deploy a granite-3.0 8b model server.
-    #       namespace: ${{ parameters.namespace }}
-    #       repoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops
-    #       srcRepoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}
-    #       appContainer: ${{ 'quay.io/redhat-ai-dev/ai-template-bootstrap-app:latest' if parameters.hostType === 'GitHub' else 'quay.io/redhat-ai-dev/chatbot:latest' }}
-    #       appPort: 8501
-    #       appRunCommand: "streamlit run chatbot_ui.py"
-    #       modelServiceContainer: quay.io/ai-lab/llamacpp_python:latest
-    #       modelServicePort: 8001          
-    # Renders all the template variables into the files and directory names and content, and places the result in the workspace.
-    # - id: fetch-skeleton
-    #   name: Fetch Skeleton
-    #   action: fetch:template
-    #   input:
-    #     url: ../../skeleton/source-repo
-    #     targetPath: source
-    #     values:
-    #       name: ${{ parameters.name }}
-    #       namespace: ${{ parameters.namespace }}
-    #       description: Secure Supply Chain Example for Chatbot Application 
-    #       dockerfile: Containerfile
-    #       buildContext: .
-    #       gitopsSecretName: ${{ 'gitops-auth-secret' if parameters.hostType === 'GitHub' else 'gitlab-auth-secret' }}
-    #       image: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
-    #       tags: '["ai", "llamacpp", "vllm", "python"]'
-    #       owner: ${{ parameters.owner }} 
-    #       repoSlug: '${{ parameters.imageOrg }}/${{ parameters.imageName }}'
-    #       defaultBranch: ${{ parameters.branch }}
-    # - id: fetch-github-action
-    #   name: Fetch GitHub Action
-    #   action: fetch:plain
-    #   if: ${{ parameters.hostType === 'GitHub' }}
-    #   input:
-    #     targetPath: source
-    #     url: ../../skeleton/github-action
-    # This action creates a new GitHub repository and publishes the files in the workspace directory to the repository.
-    # - id: publish-github
-    #   name: Publish Repository to GitHub
-    #   action: publish:github
-    #   if: ${{ parameters.hostType === 'GitHub' }}
-    #   input:
-    #     sourcePath: source
-    #     allowedHosts: [ '${{ parameters.githubServer}}' ]
-    #     description: This is ${{ parameters.name }}
-    #     repoUrl: ${{ parameters.githubServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}
-    #     defaultBranch: ${{ parameters.branch }}
-    #     protectDefaultBranch: true
-    #     allowAutoMerge: true
-    #     deleteBranchOnMerge: true
-    #     requiredStatusCheckContexts: []
-    #     repoVisibility: "public"
-    #     requiredApprovingReviewCount: 0
-    # This action creates a new GitLab repository and publishes the files in the workspace directory to the repository.
-    # - id: publish-gitlab
-    #   name: Publish Repository to GitLab
-    #   action: publish:gitlab
-    #   if: ${{ parameters.hostType === 'GitLab' }}
-    #   input:
-    #     sourcePath: source
-    #     allowedHosts: [ '${{ parameters.gitlabServer }}' ]
-    #     description: This is ${{ parameters.name }}
-    #     repoUrl: ${{ parameters.gitlabServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}
-    #     defaultBranch: ${{ parameters.branch }}
-    #     protectDefaultBranch: false
-    #     repoVisibility: "public"
     # The final step is to register our new component in the catalog.
     - id: fetch-gitops-skeleton
       name: Fetch Gitops Skeleton
@@ -303,12 +153,12 @@ spec:
           webhookSecret: pipelines-secret
           webhookSecretKey: webhook.secret
           defaultBranch: main
-          initContainer: quay.io/redhat-ai-dev/granite-7b-lab:latest
+          initContainer: 
           modelInitCommand: "['/usr/bin/install', '/model/model.file', '/shared/']"
           modelPath: "/model/model.file"
-          appContainer: ${{ 'quay.io/redhat-ai-dev/ai-template-bootstrap-app:latest' if parameters.hostType === 'GitHub' else 'quay.io/redhat-ai-dev/chatbot:latest' }}
+          appContainer: ${{ 'quay.io/redhat-ai-dev/ai-template-bootstrap-app:latest' if parameters.hostType === 'GitHub' else '' }}
           appPort: 8501
-          modelServiceContainer: quay.io/ai-lab/llamacpp_python:latest
+          modelServiceContainer: 
           modelServicePort: 8001
           # SED_LLM_SERVER_START
           # for vllm
@@ -318,13 +168,7 @@ spec:
           maxModelLength: 4096
           # SED_LLM_SERVER_END
           existingModelServer: ${{ parameters.modelServer === 'Existing model server' }}
-          modelEndpoint: ${{ parameters.modelEndpoint }}
-          modelEndpointSecretName: ${{ parameters.modelEndpointSecretName }}
-          modelEndpointSecretKey: ${{ parameters.modelEndpointSecretKey }}
-          includeModelEndpointSecret: ${{ parameters.includeModelEndpointSecret }}
-          # for RHOAI
-          rhoaiSelected: false
-          noApp: true
+          supportApp: false
     - action: fs:rename
       id: renameComponentDir
       name: Rename Component Directory
@@ -363,12 +207,6 @@ spec:
       action: 'debug:wait'
       input:
         seconds: 3
-    # - id: register
-    #   name: Register
-    #   action: catalog:register
-    #   input:
-    #     repoContentsUrl: ${{ steps['publish-github'].output.repoContentsUrl if steps['publish-github'].output else steps['publish-gitlab'].output.repoContentsUrl }}
-    #     catalogInfoPath: '/catalog-info.yaml'
     - id: register-gitops
       name: Register Gitops
       action: catalog:register
@@ -385,43 +223,13 @@ spec:
         namespace: ai-rhdh
         repoUrl: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops.git
         path: './app-of-apps'
-    # PR with empty commit
-    # - id: trigger-build-pr
-    #   name: PR to Trigger Pipeline Build
-    #   action: publish:github:pull-request
-    #   if: ${{ parameters.hostType === 'GitHub' }}
-    #   input:
-    #     repoUrl: ${{ parameters.githubServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}
-    #     branchName: trigger-pipeline
-    #     gitCommitMessage: trigger pipeline build
-    #     description: "pr to trigger pipeline build"
-    #     title: trigger pipeline build
-    #     sourcePath: source
-    #     targetBranchName: ${{ parameters.branch }}
-    # dispatch the workflow to automerge the pr and trigger the pipeline build
-    # - id: trigger_gh_workflow
-    #   name: Trigger GitHub workflow
-    #   action: github:actions:dispatch
-    #   if: ${{ parameters.hostType === 'GitHub' }}
-    #   input:
-    #     repoUrl: ${{ parameters.githubServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}
-    #     branchOrTagName: ${{ parameters.branch }}
-    #     workflowId: automerge.yml
-    #     workflowInputs: {
-    #       pr_url: "${{ steps['trigger-build-pr'].output.remoteUrl }}"
-    #     }
 
 
   # Outputs are displayed to the user after a successful execution of the template.
   output:
     links:
-      # - title: Source Repository
-      #   url: ${{ steps['publish-github'].output.remoteUrl if steps['publish-github'].output else steps['publish-gitlab'].output.remoteUrl }}
       - title: GitOps Repository
         url: ${{ steps['publish-github-gitops'].output.remoteUrl if steps['publish-github-gitops'].output else steps['publish-gitlab-gitops'].output.remoteUrl }}
-      # - title: Open Component in Catalog
-      #   icon: catalog
-      #   entityRef: ${{ steps['register'].output.entityRef }}
       - title: Open GitOps Resource in Catalog
         icon: catalog
         entityRef: ${{ steps['register-gitops'].output.entityRef }}
