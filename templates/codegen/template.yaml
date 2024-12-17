@@ -355,10 +355,10 @@ spec:
           modelEndpointSecretKey: ${{ parameters.modelEndpointSecretKey }}
           includeModelEndpointSecret: ${{ parameters.includeModelEndpointSecret }}
           # SED_EXISTING_SERVER_END
-          # SED_RHOAI_SUPPORT_START
+          # SED_APP_SUPPORT_START
           # for RHOAI
           rhoaiSelected: ${{ parameters.rhoaiSelected }}
-          # SED_RHOAI_SUPPORT_END
+          # SED_APP_SUPPORT_END
           supportApp: true
     - action: fs:rename
       id: renameComponentDir
