@@ -27,8 +27,5 @@ export SUPPORT_LLM_LLAMA=false
 # model server configuration
 export SUPPORT_EXISTING_SERVER=false
 
-# RHOAI configuration
-export SUPPORT_RHOAI=false
-
 # application configuration
 export SUPPORT_APP=false

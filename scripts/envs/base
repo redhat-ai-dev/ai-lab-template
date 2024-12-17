@@ -14,9 +14,6 @@ export SUPPORT_DETR=false
 # model server configuration
 export SUPPORT_EXISTING_SERVER=true
 
-# RHOAI configuration
-export SUPPORT_RHOAI=true
-
 # Database configurations
 export SUPPORT_DB=false
 
