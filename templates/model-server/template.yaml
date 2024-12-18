@@ -3,8 +3,8 @@ apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
   name: model-server
-  title:  Model Server, No Application
-  description: Deploy a granite-3.0 8b model server. No application is configured.
+  title: Model Server, No Application
+  description: Deploy a granite-3.0 8b model with a vLLM server. While no application is configured, this model server can be utilized in other Software Template like a Chatbot Application for instance.
   tags: ["ai", "vllm", "modelserver"]
   annotations:
     backstage.io/techdocs-ref: dir:.

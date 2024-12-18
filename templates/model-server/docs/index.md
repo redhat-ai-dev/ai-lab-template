@@ -1,6 +1,6 @@
 # AI Software Template
 
-This AI Software Template can be used to create a new GitOps deployment repository for a  Model Server, No Application. This Software Template does not generate or configure an application.
+This AI Software Template can be used to create a new GitOps deployment repository for a Model Server, No Application. This Software Template does not generate or configure an application. You can utilize this model server with other Software Template like a Chatbot Application for instance.
 
 As a user you will be able to customize each section of the template, such as:
 

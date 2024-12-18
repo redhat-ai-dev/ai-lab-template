@@ -2,11 +2,10 @@
 # in order to override a default common env var value and/or add a custom
 # env var used only for this sample you can list it here
 export APP_NAME="model-server"
-export APP_DISPLAY_NAME=" Model Server, No Application"
-export APP_DESC="Deploy a granite-3.0 8b model server. No application is configured."
+export APP_DISPLAY_NAME="Model Server, No Application"
+export APP_DESC="Deploy a granite-3.0 8b model with a vLLM server. While no application is configured, this model server can be utilized in other Software Template like a Chatbot Application for instance."
 export APP_SUMMARY="A granite-3.0 8b model server deployment."
 export APP_TAGS='["ai", "vllm", "modelserver"]'
-# export APP_RUN_COMMAND="streamlit run object_detection_client.py"
 
 # https://github.com/rh-aiservices-bu/llm-on-openshift/tree/main/llm-servers/vllm/gpu
 export VLLM_CONTAINER="quay.io/redhat-ai-dev/vllm-openai-ubi9:v0.6.4"
