@@ -1,0 +1,13 @@
+#!/bin/bash
+
+SCRIPTDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
+ROOT_DIR=$(realpath $SCRIPTDIR/..)
+TEMPLATE_DIR=$ROOT_DIR/templates
+TEMPLATE_TECHDOC_TYPE=no-app
+
+DEST=$TEMPLATE_DIR/model-server
+rm -rf $DEST
+mkdir -p $DEST
+
+source $SCRIPTDIR/util
+apply-configurations $DEST model-server $TEMPLATE_TECHDOC_TYPE

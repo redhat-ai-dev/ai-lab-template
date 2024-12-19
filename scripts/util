@@ -1,0 +1,67 @@
+#!/bin/bash
+
+SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )" 
+ROOT_DIR=$(realpath $SCRIPTDIR/..)
+SKELETON_DIR=$ROOT_DIR/skeleton
+TEMPLATE_DIR=$ROOT_DIR/templates
+
+function apply-configurations() {
+    DEST=$1
+    SAMPLENAME=$2
+    TEMPLATE_TECHDOC_TYPE=$3
+
+    # add template card docs
+    cp -r $SKELETON_DIR/template-card-techdocs/$TEMPLATE_TECHDOC_TYPE/docs $DEST/docs
+    cp -r $SKELETON_DIR/template-card-techdocs/mkdocs.yml $DEST/mkdocs.yml
+
+    cp $SKELETON_DIR/template.yaml $DEST/template.yaml
+
+    # get default env variables
+    source $SCRIPTDIR/envs/base
+
+    # get sample env variables
+    source $SCRIPTDIR/envs/$SAMPLENAME
+
+    if [ -f $f/Containerfile ]; then
+        sed -i "s!sed.edit.DOCKERFILE!Containerfile!g" $DEST/template.yaml
+        sed -i "s!sed.edit.BUILDCONTEXT!.!g" $DEST/template.yaml
+    fi
+
+    sed -i "s!sed.edit.APP_NAME!$APP_NAME!g" $DEST/template.yaml
+    sed -i "s!sed.edit.APP_DISPLAY_NAME!$APP_DISPLAY_NAME!g" $DEST/template.yaml
+    sed -i "s!sed.edit.DESCRIPTION!$APP_DESC!g" $DEST/template.yaml
+    sed -i "s!sed.edit.APPTAGS!$APP_TAGS!g" $DEST/template.yaml
+    sed -i "s!sed.edit.CATALOG_DESCRIPTION!Secure Supply Chain Example for $APP_DISPLAY_NAME!g" $DEST/template.yaml
+
+    sed -i "s!sed.edit.APP_DISPLAY_NAME!$APP_DISPLAY_NAME!g" $DEST/docs/index.md
+    sed -i "s!sed.edit.TEMPLATE_SOURCE_URL!$TEMPLATE_SOURCE_URL!g" $DEST/docs/index.md
+    sed -i "s!sed.edit.LLM_MODEL_NAME!$LLM_MODEL_NAME!g" $DEST/docs/index.md
+    sed -i "s!sed.edit.LLM_MODEL_SRC!$LLM_MODEL_SRC!g" $DEST/docs/index.md
+
+    if [ $SUPPORT_APP == false ]; then
+        sed -i '/# SED_APP_SUPPORT_START/,/# SED_APP_SUPPORT_END/d' $DEST/template.yaml
+    fi
+    if [ $SUPPORT_LLM == false ]; then
+        sed -i '/# SED_LLM_SERVER_START/,/# SED_LLM_SERVER_END/d' $DEST/template.yaml
+    fi
+    if [ $SUPPORT_LLM_LLAMA == false ]; then
+        sed -i '/# SED_LLM_LLAMA_SERVER_START/,/# SED_LLM_LLAMA_SERVER_END/d' $DEST/template.yaml
+        sed -i 's/llama.cpp: ${MODEL_SERVICE_DESC}. | \[Learn more\][(]${MODEL_SERVICE_SRC}[)]//' $DEST/template.yaml
+    fi
+    if [ $SUPPORT_ASR == false ]; then
+        sed -i '/# SED_ASR_MODEL_SERVER_START/,/# SED_ASR_MODEL_SERVER_END/d' $DEST/template.yaml
+    fi
+    if [ $SUPPORT_DETR == false ]; then
+        sed -i '/# SED_DETR_MODEL_SERVER_START/,/# SED_DETR_MODEL_SERVER_END/d' $DEST/template.yaml
+    fi
+    if [ $SUPPORT_DB == false ]; then
+        sed -i '/# SED_DB_START/,/# SED_DB_END/d' $DEST/template.yaml
+    fi
+    if [ $SUPPORT_EXISTING_SERVER == false ]; then
+        sed -i '/# SED_EXISTING_SERVER_START/,/# SED_EXISTING_SERVER_END/d' $DEST/template.yaml
+    fi
+
+    source $ROOT_DIR/properties
+    cat $DEST/template.yaml | envsubst >$DEST/new-template.yaml
+    mv $DEST/new-template.yaml $DEST/template.yaml
+}
