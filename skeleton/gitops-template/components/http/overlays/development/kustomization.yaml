@@ -7,4 +7,6 @@ patchesStrategicMerge:
 resources:
 - ../../base 
 - gitops-repository.yaml
+{%- if values.supportApp %}
 - source-repository.yaml
+{%- endif %}
