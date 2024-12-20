@@ -40,15 +40,20 @@ spec:
         modelServer:
           # SED_LLM_SERVER_START
           title: Model Server
-          description: |
+          description:
+          |
             llama.cpp: ${MODEL_SERVICE_DESC}. | [Learn more](${MODEL_SERVICE_SRC})
-            
+
             vLLM: ${VLLM_DESC}. If you choose vLLM, ensure that your cluster has Nvidia GPU supported (with compute capability 7.0 or higher). Also, it should have enough CPU & memory resources for the model you would like to work with. | [Learn more](${VLLM_SRC})
+          # SED_LLM_LLAMA_SERVER_START
           default: llama.cpp
+          # SED_LLM_LLAMA_SERVER_END
           type: string
           enum:
             - vLLM
+            # SED_LLM_LLAMA_SERVER_START
             - llama.cpp
+            # SED_LLM_LLAMA_SERVER_END 
           # SED_LLM_SERVER_END
           # SED_ASR_MODEL_SERVER_START
           title: Model Server
@@ -66,10 +71,13 @@ spec:
           enum:
             - detr-resnet-101
           # SED_DETR_MODEL_SERVER_END
+          # SED_EXISTING_SERVER_START
             - Existing model server
+          # SED_EXISTING_SERVER_END
       dependencies:
         modelServer:
           oneOf:
+            # SED_EXISTING_SERVER_START
             - required:
                 - modelEndpoint
                 # SED_LLM_SERVER_START
@@ -113,6 +121,7 @@ spec:
                         required:
                           - modelEndpointSecretName
                           - modelEndpointSecretKey
+            # SED_EXISTING_SERVER_END
             # SED_LLM_SERVER_START
             - properties:
                 modelServer:
@@ -124,6 +133,7 @@ spec:
                   type: string
                   enum:
                     - ${LLM_MODEL_NAME}
+            # SED_LLM_LLAMA_SERVER_START
             - properties:
                 modelServer:
                   const: llama.cpp
@@ -134,6 +144,7 @@ spec:
                   type: string
                   enum:
                     - ${LLM_MODEL_NAME}
+            # SED_LLM_LLAMA_SERVER_END
             # SED_LLM_SERVER_END
             # SED_ASR_MODEL_SERVER_START
             - properties:
@@ -210,11 +221,14 @@ spec:
                   ui:help: "You can also provide the on-prem gitlab server, example: gitlab-gitlab.apps.cluster-ljg9z.sandbox219.opentlc.com"
     - title: Deployment Information
       required:
+        # SED_APP_SUPPORT_START
         - imageRegistry
         - imageOrg
         - imageName
+        # SED_APP_SUPPORT_END
         - namespace
       properties:
+        # SED_APP_SUPPORT_START
         imageRegistry:
           title: Image Registry
           type: string
@@ -231,6 +245,7 @@ spec:
           ui:autofocus: true
           ui:options:
             rows: 5
+        # SED_APP_SUPPORT_END
         namespace:
           title: Deployment Namespace
           type: string
@@ -238,15 +253,18 @@ spec:
           ui:autofocus: true
           ui:options:
             rows: 5
+        # SED_APP_SUPPORT_START
         rhoaiSelected:
           title: Create Workbench for OpenShift AI
           description: Deploy to OpenShift AI in your app's namespace
           type: boolean
           default: false
           ui:help: If you select this field, you must ensure that Red Hat OpenShift AI has been installed on your cluster.
+        # SED_APP_SUPPORT_END
   # These steps are executed in the scaffolder backend, using data that we gathered
   # via the parameters above.
   steps:
+    # SED_APP_SUPPORT_START
     # Each step executes an action, in this case one templates files into the workspace.
     # Get the sample source code
     - id: fetch-base
@@ -329,6 +347,7 @@ spec:
         defaultBranch: ${{ parameters.branch }}
         protectDefaultBranch: false
         repoVisibility: "public"
+    # SED_APP_SUPPORT_END
     # The final step is to register our new component in the catalog.
     - id: fetch-gitops-skeleton
       name: Fetch Gitops Skeleton
@@ -370,18 +389,23 @@ spec:
           maxModelLength: ${LLM_MAX_MODEL_LEN}
           # SED_LLM_SERVER_END
           existingModelServer: ${{ parameters.modelServer === 'Existing model server' }}
+          # SED_EXISTING_SERVER_START
           modelEndpoint: ${{ parameters.modelEndpoint }}
           modelEndpointSecretName: ${{ parameters.modelEndpointSecretName }}
           modelEndpointSecretKey: ${{ parameters.modelEndpointSecretKey }}
           includeModelEndpointSecret: ${{ parameters.includeModelEndpointSecret }}
+          # SED_EXISTING_SERVER_END
+          # SED_APP_SUPPORT_START
           # for RHOAI
           rhoaiSelected: ${{ parameters.rhoaiSelected }}
+          # SED_APP_SUPPORT_END
           # SED_DB_START
           # Database is required for the RAG templates
           dbRequired: ${SUPPORT_DB}
           dbContainer: ${DB_CONTAINER}
           dbPort: ${DB_PORT}
           # SED_DB_END
+          supportApp: ${SUPPORT_APP}
     - action: fs:rename
       id: renameComponentDir
       name: Rename Component Directory
@@ -420,12 +444,14 @@ spec:
       action: 'debug:wait'
       input:
         seconds: 3
+    # SED_APP_SUPPORT_START
     - id: register
       name: Register
       action: catalog:register
       input:
         repoContentsUrl: ${{ steps['publish-github'].output.repoContentsUrl if steps['publish-github'].output else steps['publish-gitlab'].output.repoContentsUrl }}
         catalogInfoPath: '/catalog-info.yaml'
+    # SED_APP_SUPPORT_END
     - id: register-gitops
       name: Register Gitops
       action: catalog:register
@@ -442,6 +468,7 @@ spec:
         namespace: ${ARGOCD__DEFAULT__NAMESPACE}
         repoUrl: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops.git
         path: './app-of-apps'
+    # SED_APP_SUPPORT_START
     # PR with empty commit
     - id: trigger-build-pr
       name: PR to Trigger Pipeline Build
@@ -467,18 +494,23 @@ spec:
         workflowInputs: {
           pr_url: "${{ steps['trigger-build-pr'].output.remoteUrl }}"
         }
+    # SED_APP_SUPPORT_END
 
 
   # Outputs are displayed to the user after a successful execution of the template.
   output:
     links:
+      # SED_APP_SUPPORT_START
       - title: Source Repository
         url: ${{ steps['publish-github'].output.remoteUrl if steps['publish-github'].output else steps['publish-gitlab'].output.remoteUrl }}
+      # SED_APP_SUPPORT_END
       - title: GitOps Repository
         url: ${{ steps['publish-github-gitops'].output.remoteUrl if steps['publish-github-gitops'].output else steps['publish-gitlab-gitops'].output.remoteUrl }}
+      # SED_APP_SUPPORT_START
       - title: Open Component in Catalog
         icon: catalog
         entityRef: ${{ steps['register'].output.entityRef }}
+      # SED_APP_SUPPORT_END
       - title: Open GitOps Resource in Catalog
         icon: catalog
         entityRef: ${{ steps['register-gitops'].output.entityRef }}
