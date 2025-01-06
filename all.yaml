@@ -10,3 +10,4 @@ spec:
     - ./templates/audio-to-text/template.yaml
     - ./templates/object-detection/template.yaml
     - ./templates/rag/template.yaml
+    - ./templates/model-server/template.yaml
