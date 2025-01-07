@@ -15,9 +15,11 @@ resources:
 - deployment-model-server.yaml
 - service-model-server.yaml
 {%- endif %}
+{%- if values.supportApp %}
 - deployment.yaml
 - route.yaml
 - service.yaml
+{%- endif %}
 - model-config.yaml
 {%- if values.dbRequired %}
 - deployment-database.yaml
