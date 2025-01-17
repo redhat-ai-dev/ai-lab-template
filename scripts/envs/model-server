@@ -3,21 +3,21 @@
 # env var used only for this sample you can list it here
 export APP_NAME="model-server"
 export APP_DISPLAY_NAME="Model Server, No Application"
-export APP_DESC="Deploy a granite-3.0 8b model with a vLLM server. While no application is configured, this model server can be utilized in other Software Templates, like a Chatbot Application for instance."
-export APP_SUMMARY="A granite-3.0 8b model server deployment."
+export APP_DESC="Deploy a granite-3.1 8b model with a vLLM server. While no application is configured, this model server can be utilized in other Software Templates, like a Chatbot Application for instance."
+export APP_SUMMARY="A granite-3.1 8b model server deployment."
 export APP_TAGS='["ai", "vllm", "modelserver"]'
 
 # https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/vllm/0.6.4
-export VLLM_CONTAINER="quay.io/redhat-ai-dev/vllm-openai-ubi9:v0.6.4"
+export VLLM_CONTAINER="quay.io/redhat-ai-dev/vllm-openai-ubi9:v0.6.6"
 export VLLM_DESC="A high throughput, memory efficient inference and serving engine with GPU support for LLMs in OpenShift"
 export VLLM_SRC="https://github.com/rh-aiservices-bu/llm-on-openshift/tree/main/llm-servers/vllm/gpu"
 
-# https://huggingface.co/ibm-granite/granite-3.0-8b-instruct
-export LLM_MODEL_NAME="ibm-granite/granite-3.0-8b-instruct"
+# https://huggingface.co/ibm-granite/granite-3.1-8b-instruct
+export LLM_MODEL_NAME="ibm-granite/granite-3.1-8b-instruct"
 export LLM_MAX_MODEL_LEN=4096
 export LLM_MODEL_CLASSIFICATION="Text Generation"
 export LLM_MODEL_LICENSE="Apache-2.0"
-export LLM_MODEL_SRC="https://huggingface.co/ibm-granite/granite-3.0-8b-instruct"
+export LLM_MODEL_SRC="https://huggingface.co/ibm-granite/granite-3.1-8b-instruct"
 
 #model configuration
 export SUPPORT_LLM=true

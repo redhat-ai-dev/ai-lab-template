@@ -4,7 +4,7 @@ kind: Template
 metadata:
   name: model-server
   title: Model Server, No Application
-  description: Deploy a granite-3.0 8b model with a vLLM server. While no application is configured, this model server can be utilized in other Software Templates, like a Chatbot Application for instance.
+  description: Deploy a granite-3.1 8b model with a vLLM server. While no application is configured, this model server can be utilized in other Software Templates, like a Chatbot Application for instance.
   tags: ["ai", "vllm", "modelserver"]
   annotations:
     backstage.io/techdocs-ref: dir:.
@@ -58,11 +58,11 @@ spec:
                   const: vLLM
                 modelNameDeployed:
                   title: Model Name
-                  description: Text Generation | Apache-2.0 | [Learn more](https://huggingface.co/ibm-granite/granite-3.0-8b-instruct)
-                  default: ibm-granite/granite-3.0-8b-instruct
+                  description: Text Generation | Apache-2.0 | [Learn more](https://huggingface.co/ibm-granite/granite-3.1-8b-instruct)
+                  default: ibm-granite/granite-3.1-8b-instruct
                   type: string
                   enum:
-                    - ibm-granite/granite-3.0-8b-instruct
+                    - ibm-granite/granite-3.1-8b-instruct
             # SED_LLM_SERVER_END
 
     - title: Application Repository Information
@@ -163,8 +163,8 @@ spec:
           # SED_LLM_SERVER_START
           # for vllm
           vllmSelected: ${{ parameters.modelServer === 'vLLM' }}
-          vllmModelServiceContainer: quay.io/redhat-ai-dev/vllm-openai-ubi9:v0.6.4
-          modelName: ${{ parameters.modelName if parameters.modelServer === 'Existing model server' else 'ibm-granite/granite-3.0-8b-instruct' }}
+          vllmModelServiceContainer: quay.io/redhat-ai-dev/vllm-openai-ubi9:v0.6.6
+          modelName: ${{ parameters.modelName if parameters.modelServer === 'Existing model server' else 'ibm-granite/granite-3.1-8b-instruct' }}
           maxModelLength: 4096
           # SED_LLM_SERVER_END
           existingModelServer: ${{ parameters.modelServer === 'Existing model server' }}
