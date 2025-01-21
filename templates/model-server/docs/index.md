@@ -23,4 +23,4 @@ As a user you will be able to customize each section of the template, such as:
 - Application deployment namespace
 
 
-For more information please check out our general template documentation in our [source code repository](https://github.com/redhat-ai-dev/ai-lab-template). If you are interested in the ibm-granite/granite-3.0-8b-instruct model being used for this template, refer to the hugging face [page](https://huggingface.co/ibm-granite/granite-3.0-8b-instruct)!
+For more information please check out our general template documentation in our [source code repository](https://github.com/redhat-ai-dev/ai-lab-template). If you are interested in the ibm-granite/granite-3.1-8b-instruct model being used for this template, refer to the hugging face [page](https://huggingface.co/ibm-granite/granite-3.1-8b-instruct)!
