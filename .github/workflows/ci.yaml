@@ -23,3 +23,14 @@ jobs:
             git status
             exit 1
           fi
+
+  yaml-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.1.7
+      - name: yaml format
+        run: |
+          curl -L -O https://github.com/google/yamlfmt/releases/download/v0.15.0/yamlfmt_0.15.0_Linux_x86_64.tar.gz
+          tar -xf yamlfmt_0.15.0_Linux_x86_64.tar.gz
+          chmod +x yamlfmt
+          ./yamlfmt -lint

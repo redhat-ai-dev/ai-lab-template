@@ -1,11 +1,11 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-- dsp-job-role.yaml
-- dsp-job-rb.yaml
-- dsp-job-sa.yaml
-- initialize-dsp.yaml
-- dsp-clone-job.yaml
-- imagestream-job-role.yaml
-- imagestream-job-rb.yaml
-- create-imagestream.yaml
+  - dsp-job-role.yaml
+  - dsp-job-rb.yaml
+  - dsp-job-sa.yaml
+  - initialize-dsp.yaml
+  - dsp-clone-job.yaml
+  - imagestream-job-role.yaml
+  - imagestream-job-rb.yaml
+  - create-imagestream.yaml

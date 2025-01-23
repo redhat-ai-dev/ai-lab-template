@@ -1,15 +1,15 @@
 apiVersion: v1
 kind: Service
-metadata: 
-  labels: 
+metadata:
+  labels:
     app.kubernetes.io/instance: ${{ values.name }}-model-server
     app.kubernetes.io/managed-by: kustomize
     app.kubernetes.io/name: ${{ values.name }}-model-server
   name: ${{ values.name }}-model-server
 spec:
   ports:
-  - port: ${{ values.modelServicePort }}
-    protocol: TCP
-    targetPort: ${{ values.modelServicePort }}
+    - port: ${{ values.modelServicePort }}
+      protocol: TCP
+      targetPort: ${{ values.modelServicePort }}
   selector:
     app.kubernetes.io/instance: ${{ values.name }}-model-server

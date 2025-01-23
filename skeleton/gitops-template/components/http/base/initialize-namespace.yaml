@@ -2,41 +2,40 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: initialize-namespace-${{ values.appName }}
-spec:  
-  template:         
+spec:
+  template:
     metadata:
       name: initialize-namespace-${{ values.appName }}
-    spec:  
+    spec:
       serviceAccountName: pipeline
       containers:
-      - name: initialize-namespace
-        image: quay.io/redhat-ai-dev/utils:latest
-        command:
-        - /bin/bash
-        - -c
-        - |
-          NS=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace) 
-          echo "Initialize RHDH Namespace: $NS"  
-          cat <<CONFIGURE_PIPELINE | oc create -f - 
-          apiVersion: tekton.dev/v1
-          kind: PipelineRun
-          metadata:
-            generateName: dev-namespace-setup-
-            namespace: $NS 
-          spec:
-            pipelineSpec:
-              tasks:
-                - name: configure-namespace
-                  taskRef:
-                    kind: Task
-                    params:
-                      - name: kind
-                        value: task
-                      - name: name
-                        value: dev-namespace-setup
-                      - name: namespace
-                        value: ${{ values.rhdhNamespace }}
-                    resolver: cluster 
-          CONFIGURE_PIPELINE
-          
+        - name: initialize-namespace
+          image: quay.io/redhat-ai-dev/utils:latest
+          command:
+            - /bin/bash
+            - -c
+            - |
+              NS=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
+              echo "Initialize RHDH Namespace: $NS"
+              cat <<CONFIGURE_PIPELINE | oc create -f -
+              apiVersion: tekton.dev/v1
+              kind: PipelineRun
+              metadata:
+                generateName: dev-namespace-setup-
+                namespace: $NS
+              spec:
+                pipelineSpec:
+                  tasks:
+                    - name: configure-namespace
+                      taskRef:
+                        kind: Task
+                        params:
+                          - name: kind
+                            value: task
+                          - name: name
+                            value: dev-namespace-setup
+                          - name: namespace
+                            value: ${{ values.rhdhNamespace }}
+                        resolver: cluster
+              CONFIGURE_PIPELINE
       restartPolicy: Never

@@ -45,10 +45,10 @@ spec:
           default: detr-resnet-101
           enum:
             - detr-resnet-101
-          # SED_DETR_MODEL_SERVER_END
-          # SED_EXISTING_SERVER_START
+            # SED_DETR_MODEL_SERVER_END
+            # SED_EXISTING_SERVER_START
             - Existing model server
-          # SED_EXISTING_SERVER_END
+            # SED_EXISTING_SERVER_END
       dependencies:
         modelServer:
           oneOf:
@@ -57,7 +57,7 @@ spec:
                 - modelEndpoint
               properties:
                 modelServer:
-                    const: Existing model server
+                  const: Existing model server
                 modelEndpoint:
                   title: Model Server Endpoint
                   type: string
@@ -91,7 +91,7 @@ spec:
             # SED_DETR_MODEL_SERVER_START
             - properties:
                 modelServer:
-                    const: detr-resnet-101
+                  const: detr-resnet-101
                 modelNameDeployed:
                   title: Model Name
                   description: Object Detection | Apache-2.0 | [Learn more](https://huggingface.co/facebook/detr-resnet-101)
@@ -99,8 +99,7 @@ spec:
                   type: string
                   enum:
                     - facebook/detr-resnet-101
-            # SED_DETR_MODEL_SERVER_END
-
+                    # SED_DETR_MODEL_SERVER_END
     - title: Application Repository Information
       required:
         - hostType
@@ -133,7 +132,7 @@ spec:
                 - githubServer
               properties:
                 hostType:
-                    const: GitHub
+                  const: GitHub
                 githubServer:
                   title: Repository Server
                   type: string
@@ -143,7 +142,7 @@ spec:
                 - gitlabServer
               properties:
                 hostType:
-                    const: GitLab
+                  const: GitLab
                 gitlabServer:
                   title: Repository Server
                   type: string
@@ -190,7 +189,7 @@ spec:
           type: boolean
           default: false
           ui:help: If you select this field, you must ensure that Red Hat OpenShift AI has been installed on your cluster.
-        # SED_APP_SUPPORT_END
+          # SED_APP_SUPPORT_END
   # These steps are executed in the scaffolder backend, using data that we gathered
   # via the parameters above.
   steps:
@@ -220,7 +219,7 @@ spec:
           appPort: 8501
           appRunCommand: "streamlit run object_detection_client.py"
           modelServiceContainer: quay.io/redhat-ai-dev/object_detection_python:latest
-          modelServicePort: 8000          
+          modelServicePort: 8000
     # Renders all the template variables into the files and directory names and content, and places the result in the workspace.
     - id: fetch-skeleton
       name: Fetch Skeleton
@@ -231,13 +230,13 @@ spec:
         values:
           name: ${{ parameters.name }}
           namespace: ${{ parameters.namespace }}
-          description: Secure Supply Chain Example for Object Detection Application 
+          description: Secure Supply Chain Example for Object Detection Application
           dockerfile: Containerfile
           buildContext: .
           gitopsSecretName: ${{ 'gitops-auth-secret' if parameters.hostType === 'GitHub' else 'gitlab-auth-secret' }}
           image: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
           tags: '["ai", "detr", "python"]'
-          owner: ${{ parameters.owner }} 
+          owner: ${{ parameters.owner }}
           repoSlug: '${{ parameters.imageOrg }}/${{ parameters.imageName }}'
           defaultBranch: ${{ parameters.branch }}
     - id: fetch-github-action
@@ -254,7 +253,7 @@ spec:
       if: ${{ parameters.hostType === 'GitHub' }}
       input:
         sourcePath: source
-        allowedHosts: [ '${{ parameters.githubServer}}' ]
+        allowedHosts: ['${{ parameters.githubServer}}']
         description: This is ${{ parameters.name }}
         repoUrl: ${{ parameters.githubServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}
         defaultBranch: ${{ parameters.branch }}
@@ -271,7 +270,7 @@ spec:
       if: ${{ parameters.hostType === 'GitLab' }}
       input:
         sourcePath: source
-        allowedHosts: [ '${{ parameters.gitlabServer }}' ]
+        allowedHosts: ['${{ parameters.gitlabServer }}']
         description: This is ${{ parameters.name }}
         repoUrl: ${{ parameters.gitlabServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}
         defaultBranch: ${{ parameters.branch }}
@@ -339,7 +338,7 @@ spec:
         sourcePath: gitops
         allowedHosts: ['${{ parameters.githubServer }}']
         description: This is GitOps repository for ${{ parameters.name }}
-        repoUrl:  ${{ parameters.githubServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}-gitops
+        repoUrl: ${{ parameters.githubServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}-gitops
         defaultBranch: "main"
         protectDefaultBranch: false
         repoVisibility: "public"
@@ -352,7 +351,7 @@ spec:
         sourcePath: gitops
         allowedHosts: ['${{ parameters.gitlabServer }}']
         description: This is GitOps repository for ${{ parameters.name }}
-        repoUrl:  ${{ parameters.gitlabServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}-gitops
+        repoUrl: ${{ parameters.gitlabServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}-gitops
         defaultBranch: "main"
         protectDefaultBranch: false
         repoVisibility: "public"
@@ -408,11 +407,8 @@ spec:
         repoUrl: ${{ parameters.githubServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}
         branchOrTagName: ${{ parameters.branch }}
         workflowId: automerge.yml
-        workflowInputs: {
-          pr_url: "${{ steps['trigger-build-pr'].output.remoteUrl }}"
-        }
-    # SED_APP_SUPPORT_END
-
+        workflowInputs: {pr_url: "${{ steps['trigger-build-pr'].output.remoteUrl }}"}
+  # SED_APP_SUPPORT_END
 
   # Outputs are displayed to the user after a successful execution of the template.
   output:

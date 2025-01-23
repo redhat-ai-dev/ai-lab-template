@@ -40,8 +40,7 @@ spec:
         modelServer:
           # SED_LLM_SERVER_START
           title: Model Server
-          description:
-          |
+          description: |
             
 
             vLLM: A high throughput, memory efficient inference and serving engine with GPU support for LLMs in OpenShift. If you choose vLLM, ensure that your cluster has Nvidia GPU supported (with compute capability 7.0 or higher). Also, it should have enough CPU & memory resources for the model you would like to work with. | [Learn more](https://github.com/rh-aiservices-bu/llm-on-openshift/tree/main/llm-servers/vllm/gpu)
@@ -64,7 +63,6 @@ spec:
                   enum:
                     - ibm-granite/granite-3.1-8b-instruct
             # SED_LLM_SERVER_END
-
     - title: Application Repository Information
       required:
         - hostType
@@ -97,7 +95,7 @@ spec:
                 - githubServer
               properties:
                 hostType:
-                    const: GitHub
+                  const: GitHub
                 githubServer:
                   title: Repository Server
                   type: string
@@ -107,7 +105,7 @@ spec:
                 - gitlabServer
               properties:
                 hostType:
-                    const: GitLab
+                  const: GitLab
                 gitlabServer:
                   title: Repository Server
                   type: string
@@ -185,7 +183,7 @@ spec:
         sourcePath: gitops
         allowedHosts: ['${{ parameters.githubServer }}']
         description: This is GitOps repository for ${{ parameters.name }}
-        repoUrl:  ${{ parameters.githubServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}-gitops
+        repoUrl: ${{ parameters.githubServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}-gitops
         defaultBranch: "main"
         protectDefaultBranch: false
         repoVisibility: "public"
@@ -198,7 +196,7 @@ spec:
         sourcePath: gitops
         allowedHosts: ['${{ parameters.gitlabServer }}']
         description: This is GitOps repository for ${{ parameters.name }}
-        repoUrl:  ${{ parameters.gitlabServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}-gitops
+        repoUrl: ${{ parameters.gitlabServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}-gitops
         defaultBranch: "main"
         protectDefaultBranch: false
         repoVisibility: "public"
@@ -223,7 +221,6 @@ spec:
         namespace: ai-rhdh
         repoUrl: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops.git
         path: './app-of-apps'
-
 
   # Outputs are displayed to the user after a successful execution of the template.
   output:

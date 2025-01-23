@@ -1,31 +1,31 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-commonLabels:         
+commonLabels:
   argocd/app-name: ${{ values.name }}
   janus-idp.io/tekton: ${{ values.name }}
   backstage.io/kubernetes-id: ${{ values.name }}
-  backstage.io/kubernetes-namespace: ${{ values.namespace }} 
+  backstage.io/kubernetes-namespace: ${{ values.namespace }}
   app.kubernetes.io/part-of: ${{ values.name }}
-resources: 
-- initialize-namespace.yaml
-{%- if values.vllmSelected %}
-- pvc.yaml
-{%- endif %}
-{%- if not values.existingModelServer %}
-- deployment-model-server.yaml
-- service-model-server.yaml
-{%- endif %}
-{%- if values.supportApp %}
-- deployment.yaml
-- route.yaml
-- service.yaml
-{%- endif %}
-- model-config.yaml
-{%- if values.dbRequired %}
-- deployment-database.yaml
-- service-database.yaml
-- database-config.yaml
-{%- endif %}
-{%- if values.rhoaiSelected %}
-- rhoai/
-{%- endif %}
+resources:
+  - initialize-namespace.yaml
+  {%- if values.vllmSelected %}
+  - pvc.yaml
+  {%- endif %}
+  {%- if not values.existingModelServer %}
+  - deployment-model-server.yaml
+  - service-model-server.yaml
+  {%- endif %}
+  {%- if values.supportApp %}
+  - deployment.yaml
+  - route.yaml
+  - service.yaml
+  {%- endif %}
+  - model-config.yaml
+  {%- if values.dbRequired %}
+  - deployment-database.yaml
+  - service-database.yaml
+  - database-config.yaml
+  {%- endif %}
+  {%- if values.rhoaiSelected %}
+  - rhoai/
+  {%- endif %}

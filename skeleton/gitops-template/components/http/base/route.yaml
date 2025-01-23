@@ -1,10 +1,10 @@
 apiVersion: route.openshift.io/v1
 kind: Route
-metadata: 
-  labels: 
+metadata:
+  labels:
     app.kubernetes.io/instance: ${{ values.name }}
     app.kubernetes.io/managed-by: kustomize
-    app.kubernetes.io/name: ${{ values.name }} 
+    app.kubernetes.io/name: ${{ values.name }}
   name: ${{ values.name }}
 spec:
   port:
@@ -14,6 +14,6 @@ spec:
     termination: edge
   to:
     kind: Service
-    name: ${{ values.name }} 
-    weight: 100 
+    name: ${{ values.name }}
+    weight: 100
   wildcardPolicy: None

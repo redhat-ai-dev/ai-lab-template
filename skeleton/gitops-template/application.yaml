@@ -3,7 +3,7 @@ kind: Application
 metadata:
   name: ${{ values.name }}
   namespace: ${{ values.argoNS }}
-  finalizers: ["resources-finalizer.argocd.argoproj.io"] 
+  finalizers: ["resources-finalizer.argocd.argoproj.io"]
 spec:
   project: ${{ values.argoProject }}
   source:
@@ -15,9 +15,9 @@ spec:
     server: https://kubernetes.default.svc
   syncPolicy:
     managedNamespaceMetadata:
-      labels: 
+      labels:
         argocd.argoproj.io/managed-by: ${{ values.argoNS }}
-    automated: 
+    automated:
       prune: true
       selfHeal: true
     syncOptions:

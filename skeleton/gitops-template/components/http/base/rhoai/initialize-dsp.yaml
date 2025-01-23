@@ -2,159 +2,157 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: initialize-dsp-${{ values.appName }}
-spec:  
-  template:         
+spec:
+  template:
     metadata:
       name: initialize-dsp-${{ values.appName }}
-    spec:  
+    spec:
       serviceAccountName: ${{ values.name }}-dsp-job
       containers:
-      - name: initialize-dsp
-        image: quay.io/redhat-ai-dev/utils:latest
+        - name: initialize-dsp
+          image: quay.io/redhat-ai-dev/utils:latest
+          command:
+            - /bin/bash
+            - -c
+            - |
+              # Wait for the Image Stream creation job to finish
+              echo "Wait for the Image Stream job"
+              oc wait --for=condition=complete job/create-imagestream-${{ values.appName }}
+              echo "Done"
 
-        command:
-        - /bin/bash
-        - -c
-        - |
-          # Wait for the Image Stream creation job to finish
-          echo "Wait for the Image Stream job"
-          oc wait --for=condition=complete job/create-imagestream-${{ values.appName }}
-          echo "Done"
-          
-          # Wait for the Namespace initialize job to finish
-          echo "Wait for the Namespace job"
-          oc wait --for=condition=complete job/initialize-namespace-${{ values.appName }}
-          echo "Done"
+              # Wait for the Namespace initialize job to finish
+              echo "Wait for the Namespace job"
+              oc wait --for=condition=complete job/initialize-namespace-${{ values.appName }}
+              echo "Done"
 
-          # Label the namespace as a DataScienceProject
-          NS=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
-          oc label ns $NS opendatahub.io/dashboard=true --overwrite
+              # Label the namespace as a DataScienceProject
+              NS=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
+              oc label ns $NS opendatahub.io/dashboard=true --overwrite
 
-          # Retrieve the UID for the notebook SA, and mark the notebook as owned by it for garbage collection purposes
-          SA_UID=$(oc get sa ${{ values.name }}-dsp-job -o json | jq -r .metadata.uid)
-          echo "$SA_UID"
-          cat <<EOF | oc apply -f -
-          apiVersion: kubeflow.org/v1
-          kind: Notebook
-          metadata:
-            annotations:
-              notebooks.opendatahub.io/inject-oauth: 'true'
-              opendatahub.io/image-display-name: Minimal Python
-              opendatahub.io/accelerator-name: ''
-              openshift.io/description: ''
-              openshift.io/display-name: ${{ values.name }}-notebook
-              notebooks.opendatahub.io/last-image-selection: 's2i-minimal-notebook:2024.1'
-              notebooks.opendatahub.io/last-size-selection: Small
-            name: ${{ values.name }}-notebook
-            namespace: ${{ values.namespace }}
-            ownerReferences:
-              - apiVersion: v1
-                kind: ServiceAccount
-                name: ${{ values.name }}-dsp-job
-                uid: $SA_UID
-            labels:
-              app: ${{ values.name }}-notebook
-              opendatahub.io/dashboard: 'true'
-              opendatahub.io/odh-managed: 'true'
-          spec:
-            template:
+              # Retrieve the UID for the notebook SA, and mark the notebook as owned by it for garbage collection purposes
+              SA_UID=$(oc get sa ${{ values.name }}-dsp-job -o json | jq -r .metadata.uid)
+              echo "$SA_UID"
+              cat <<EOF | oc apply -f -
+              apiVersion: kubeflow.org/v1
+              kind: Notebook
+              metadata:
+                annotations:
+                  notebooks.opendatahub.io/inject-oauth: 'true'
+                  opendatahub.io/image-display-name: Minimal Python
+                  opendatahub.io/accelerator-name: ''
+                  openshift.io/description: ''
+                  openshift.io/display-name: ${{ values.name }}-notebook
+                  notebooks.opendatahub.io/last-image-selection: 's2i-minimal-notebook:2024.1'
+                  notebooks.opendatahub.io/last-size-selection: Small
+                name: ${{ values.name }}-notebook
+                namespace: ${{ values.namespace }}
+                ownerReferences:
+                  - apiVersion: v1
+                    kind: ServiceAccount
+                    name: ${{ values.name }}-dsp-job
+                    uid: $SA_UID
+                labels:
+                  app: ${{ values.name }}-notebook
+                  opendatahub.io/dashboard: 'true'
+                  opendatahub.io/odh-managed: 'true'
               spec:
-                affinity: {}
-                containers:
-                  - resources:
-                      limits:
-                        cpu: '2'
-                        memory: 8Gi
-                      requests:
-                        cpu: '1'
-                        memory: 8Gi
-                    readinessProbe:
-                      failureThreshold: 3
-                      httpGet:
-                        path: /notebook/${{ values.namespace }}/${{ values.name }}-notebook/api
-                        port: notebook-port
-                        scheme: HTTP
-                      initialDelaySeconds: 10
-                      periodSeconds: 5
-                      successThreshold: 1
-                      timeoutSeconds: 1
-                    name: ${{ values.name }}-notebook
-                    livenessProbe:
-                      failureThreshold: 3
-                      httpGet:
-                        path: /notebook/${{ values.namespace }}/${{ values.name }}-notebook/api
-                        port: notebook-port
-                        scheme: HTTP
-                      initialDelaySeconds: 10
-                      periodSeconds: 5
-                      successThreshold: 1
-                      timeoutSeconds: 1
-                    env:
-                      {%- if values.includeModelEndpointSecret %}
-                      - name: MODEL_ENDPOINT_BEARER
-                        valueFrom:
-                          secretKeyRef:
-                            name: ${{ values.modelEndpointSecretName }}
-                            key: ${{ values.modelEndpointSecretKey }}
-                      {%- endif %}
-                      - name: NOTEBOOK_ARGS
-                        value: |-
-                          --ServerApp.port=8888
-                                            --ServerApp.token=''
-                                            --ServerApp.password=''
-                                            --ServerApp.base_url=/notebook/${{ values.namespace }}/${{ values.name }}-notebook
-                                            --ServerApp.quit_button=False
-                      - name: JUPYTER_IMAGE
-                        value: 'image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/custom-sqlite3-odh-minimal-notebook-container:v2-2024a-20240523-sqlite3'
-                    envFrom:
-                    - configMapRef:
-                        name: ${{ values.name }}-model-config
-                    {%- if values.dbRequired %}
-                    - configMapRef:
-                        name: ${{ values.name }}-database-config
-                    {%- endif %}
-                    ports:
-                      - containerPort: 8888
-                        name: notebook-port
-                        protocol: TCP
-                    imagePullPolicy: Always
-                    volumeMounts:
-                      - mountPath: /opt/app-root/src
+                template:
+                  spec:
+                    affinity: {}
+                    containers:
+                      - resources:
+                          limits:
+                            cpu: '2'
+                            memory: 8Gi
+                          requests:
+                            cpu: '1'
+                            memory: 8Gi
+                        readinessProbe:
+                          failureThreshold: 3
+                          httpGet:
+                            path: '/notebook/${{ values.namespace }}/${{ values.name }}-notebook/api'
+                            port: notebook-port
+                            scheme: HTTP
+                          initialDelaySeconds: 10
+                          periodSeconds: 5
+                          successThreshold: 1
+                          timeoutSeconds: 1
                         name: ${{ values.name }}-notebook
-                      - mountPath: /dev/shm
+                        livenessProbe:
+                          failureThreshold: 3
+                          httpGet:
+                            path: '/notebook/${{ values.namespace }}/${{ values.name }}-notebook/api'
+                            port: notebook-port
+                            scheme: HTTP
+                          initialDelaySeconds: 10
+                          periodSeconds: 5
+                          successThreshold: 1
+                          timeoutSeconds: 1
+                        env:
+                          {%- if values.includeModelEndpointSecret %}
+                          - name: MODEL_ENDPOINT_BEARER
+                            valueFrom:
+                              secretKeyRef:
+                                name: ${{ values.modelEndpointSecretName }}
+                                key: ${{ values.modelEndpointSecretKey }}
+                          {%- endif %}
+                          - name: NOTEBOOK_ARGS
+                            value: |-
+                              --ServerApp.port=8888
+                                                --ServerApp.token=''
+                                                --ServerApp.password=''
+                                                --ServerApp.base_url=/notebook/${{ values.namespace }}/${{ values.name }}-notebook
+                                                --ServerApp.quit_button=False
+                          - name: JUPYTER_IMAGE
+                            value: 'image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/custom-sqlite3-odh-minimal-notebook-container:v2-2024a-20240523-sqlite3'
+                        envFrom:
+                        - configMapRef:
+                            name: ${{ values.name }}-model-config
+                        {%- if values.dbRequired %}
+                        - configMapRef:
+                            name: ${{ values.name }}-database-config
+                        {%- endif %}
+                        ports:
+                          - containerPort: 8888
+                            name: notebook-port
+                            protocol: TCP
+                        imagePullPolicy: Always
+                        volumeMounts:
+                          - mountPath: /opt/app-root/src
+                            name: ${{ values.name }}-notebook
+                          - mountPath: /dev/shm
+                            name: shm
+                        image: 'image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/custom-sqlite3-odh-minimal-notebook-container:v2-2024a-20240523-sqlite3'
+                        workingDir: /opt/app-root/src
+                    enableServiceLinks: false
+                    serviceAccountName: ${{ values.name }}-notebook
+                    volumes:
+                      - name: ${{ values.name }}-notebook
+                        persistentVolumeClaim:
+                          claimName: ${{ values.name }}-notebook-rhoai
+                      - emptyDir:
+                          medium: Memory
                         name: shm
-                    image: 'image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/custom-sqlite3-odh-minimal-notebook-container:v2-2024a-20240523-sqlite3'
-                    workingDir: /opt/app-root/src
-                enableServiceLinks: false
-                serviceAccountName: ${{ values.name }}-notebook
-                volumes:
-                  - name: ${{ values.name }}-notebook
-                    persistentVolumeClaim:
-                      claimName: ${{ values.name }}-notebook-rhoai
-                  - emptyDir:
-                      medium: Memory
-                    name: shm
-          ---
-          kind: PersistentVolumeClaim
-          apiVersion: v1
-          metadata:
-            annotations:
-              openshift.io/display-name: ${{ values.name }}-notebook-rhoai
-            name: ${{ values.name }}-notebook-rhoai
-            ownerReferences:
-              - apiVersion: v1
-                kind: ServiceAccount
-                name: ${{ values.name }}-dsp-job
-                uid: $SA_UID
-            labels:
-              opendatahub.io/dashboard: 'true'
-          spec:
-            accessModes:
-              - ReadWriteOnce
-            resources:
-              requests:
-                storage: 20Gi
-            volumeMode: Filesystem
-          EOF
-          
+              ---
+              kind: PersistentVolumeClaim
+              apiVersion: v1
+              metadata:
+                annotations:
+                  openshift.io/display-name: ${{ values.name }}-notebook-rhoai
+                name: ${{ values.name }}-notebook-rhoai
+                ownerReferences:
+                  - apiVersion: v1
+                    kind: ServiceAccount
+                    name: ${{ values.name }}-dsp-job
+                    uid: $SA_UID
+                labels:
+                  opendatahub.io/dashboard: 'true'
+              spec:
+                accessModes:
+                  - ReadWriteOnce
+                resources:
+                  requests:
+                    storage: 20Gi
+                volumeMode: Filesystem
+              EOF
       restartPolicy: Never

@@ -2,53 +2,52 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: create-imagestream-${{ values.appName }}
-spec:  
-  template:         
+spec:
+  template:
     metadata:
       name: create-imagestream-${{ values.appName }}
-    spec:  
+    spec:
       serviceAccountName: ${{ values.name }}-dsp-job
       containers:
-      - name: create-imagestream
-        image: quay.io/redhat-ai-dev/utils:latest
-
-        command:
-        - /bin/bash
-        - -c
-        - |
-          # Check for image stream and create it not present
-          echo "Checking if the image stream exist"
-          if ! oc get is custom-sqlite3-odh-minimal-notebook-container -n redhat-ods-applications >/dev/null 2>&1 ; then
-            echo "The image stream does not exist, a new image stream will be created"
-            cat <<EOF | oc apply -f -
-            kind: ImageStream
-            apiVersion: image.openshift.io/v1
-            metadata:
-              annotations:
-                opendatahub.io/notebook-image-name: custom-sqlite3-odh-minimal-notebook-container
-                opendatahub.io/notebook-image-url: 'quay.io/redhat-ai-dev/odh-minimal-notebook-container:v2-2024a-20240523-sqlite3'
-              name: custom-sqlite3-odh-minimal-notebook-container
-              namespace: redhat-ods-applications
-              labels:
-                opendatahub.io/dashboard: 'true'
-                opendatahub.io/notebook-image: 'true'
-            spec:
-              lookupPolicy:
-                local: true
-              tags:
-                - name: v2-2024a-20240523-sqlite3
+        - name: create-imagestream
+          image: quay.io/redhat-ai-dev/utils:latest
+          command:
+            - /bin/bash
+            - -c
+            - |
+              # Check for image stream and create it not present
+              echo "Checking if the image stream exist"
+              if ! oc get is custom-sqlite3-odh-minimal-notebook-container -n redhat-ods-applications >/dev/null 2>&1 ; then
+                echo "The image stream does not exist, a new image stream will be created"
+                cat <<EOF | oc apply -f -
+                kind: ImageStream
+                apiVersion: image.openshift.io/v1
+                metadata:
                   annotations:
-                    openshift.io/imported-from: 'quay.io/redhat-ai-dev/odh-minimal-notebook-container:v2-2024a-20240523-sqlite3'
-                  from:
-                    kind: DockerImage
-                    name: 'quay.io/redhat-ai-dev/odh-minimal-notebook-container:v2-2024a-20240523-sqlite3'
-                  generation: 2
-                  importPolicy:
-                    importMode: Legacy
-                  referencePolicy:
-                    type: Source
-          EOF
-          else
-            echo "Image stream is already present, skipping create"
-          fi
+                    opendatahub.io/notebook-image-name: custom-sqlite3-odh-minimal-notebook-container
+                    opendatahub.io/notebook-image-url: 'quay.io/redhat-ai-dev/odh-minimal-notebook-container:v2-2024a-20240523-sqlite3'
+                  name: custom-sqlite3-odh-minimal-notebook-container
+                  namespace: redhat-ods-applications
+                  labels:
+                    opendatahub.io/dashboard: 'true'
+                    opendatahub.io/notebook-image: 'true'
+                spec:
+                  lookupPolicy:
+                    local: true
+                  tags:
+                    - name: v2-2024a-20240523-sqlite3
+                      annotations:
+                        openshift.io/imported-from: 'quay.io/redhat-ai-dev/odh-minimal-notebook-container:v2-2024a-20240523-sqlite3'
+                      from:
+                        kind: DockerImage
+                        name: 'quay.io/redhat-ai-dev/odh-minimal-notebook-container:v2-2024a-20240523-sqlite3'
+                      generation: 2
+                      importPolicy:
+                        importMode: Legacy
+                      referencePolicy:
+                        type: Source
+              EOF
+              else
+                echo "Image stream is already present, skipping create"
+              fi
       restartPolicy: Never
