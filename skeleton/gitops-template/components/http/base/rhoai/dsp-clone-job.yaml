@@ -2,20 +2,20 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: dsp-clone-job-${{ values.appName }}
-spec:  
-  template:         
+spec:
+  template:
     metadata:
       name: dsp-clone-job-${{ values.appName }}
-    spec:  
+    spec:
       serviceAccountName: ${{ values.name }}-dsp-job
       containers:
-      - name: initialize-dsp
-        image: quay.io/redhat-ai-dev/utils:latest
-        command:
-        - /bin/bash
-        - -c
-        - |
-          NS=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
-          oc wait -l statefulset=${{ values.name }}-notebook --for=condition=ready pod --timeout=300s
-          oc exec  StatefulSet/${{ values.name }}-notebook -- git clone ${{ values.srcRepoURL }}
+        - name: initialize-dsp
+          image: quay.io/redhat-ai-dev/utils:latest
+          command:
+            - /bin/bash
+            - -c
+            - |
+              NS=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
+              oc wait -l statefulset=${{ values.name }}-notebook --for=condition=ready pod --timeout=300s
+              oc exec  StatefulSet/${{ values.name }}-notebook -- git clone ${{ values.srcRepoURL }}
       restartPolicy: Never

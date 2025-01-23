@@ -1,46 +1,46 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:  
+  annotations:
     tad.gitops.set/image: ".spec.template.spec.containers[0].image"
     tad.gitops.get/image: ".spec.template.spec.containers[0].image"
     tad.gitops.set/replicas: ".spec.replicas"
-    tad.gitops.get/replicas: ".spec.replicas" 
-  labels: 
+    tad.gitops.get/replicas: ".spec.replicas"
+  labels:
     app.kubernetes.io/instance: ${{ values.name }}
     app.kubernetes.io/managed-by: kustomize
-    app.kubernetes.io/name:  ${{ values.name }}
-    app.kubernetes.io/part-of: ${{ values.name }}  
+    app.kubernetes.io/name: ${{ values.name }}
+    app.kubernetes.io/part-of: ${{ values.name }}
   name: ${{ values.name }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/instance:  ${{ values.name }} 
+      app.kubernetes.io/instance: ${{ values.name }}
   template:
-    metadata: 
+    metadata:
       labels:
-        app.kubernetes.io/instance:  ${{ values.name }}
+        app.kubernetes.io/instance: ${{ values.name }}
     spec:
       containers:
-      - image:  ${{ values.appContainer }}
-        name: app-inference
-        envFrom:
-        - configMapRef:
-            name: ${{ values.name }}-model-config
-        {%- if values.dbRequired %}
-        - configMapRef:
-            name: ${{ values.name }}-database-config
-        {%- endif %}
-        {%- if values.includeModelEndpointSecret %}
-        env:
-        - name: MODEL_ENDPOINT_BEARER
-          valueFrom:
-            secretKeyRef:
-              name: ${{  values.modelEndpointSecretName  }}
-              key: ${{  values.modelEndpointSecretKey  }}
-        {%- endif %}
-        ports:
-        - containerPort: ${{ values.appPort }}
-        securityContext:
-          runAsNonRoot: true
+        - image: ${{ values.appContainer }}
+          name: app-inference
+          envFrom:
+            - configMapRef:
+                name: ${{ values.name }}-model-config
+            {%- if values.dbRequired %}
+            - configMapRef:
+                name: ${{ values.name }}-database-config
+            {%- endif %}
+          {%- if values.includeModelEndpointSecret %}
+          env:
+            - name: MODEL_ENDPOINT_BEARER
+              valueFrom:
+                secretKeyRef:
+                  name: ${{  values.modelEndpointSecretName  }}
+                  key: ${{  values.modelEndpointSecretKey  }}
+          {%- endif %}
+          ports:
+            - containerPort: ${{ values.appPort }}
+          securityContext:
+            runAsNonRoot: true

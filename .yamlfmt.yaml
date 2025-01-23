@@ -1,0 +1,8 @@
+continue_on_error: true
+include: 
+  - skeleton/template-card-techdocs
+  - skeleton/template.yaml
+formatter:
+  type: basic
+  eof_newline: true
+  trim_trailing_whitespace: true
