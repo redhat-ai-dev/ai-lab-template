@@ -37,6 +37,7 @@ spec:
           ui:options:
             catalogFilter:
               kind: [Group, User]
+              readonly: false
         modelServer:
           # SED_ASR_MODEL_SERVER_START
           title: Model Server
