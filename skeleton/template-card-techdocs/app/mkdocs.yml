@@ -1,0 +1,6 @@
+site_name: 'Documentation'
+nav:
+  - Home: index.md
+  - Application: application.md
+plugins:
+  - techdocs-core
