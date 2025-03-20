@@ -6,7 +6,6 @@ patchesStrategicMerge:
 {%- endif %}
 resources:
   - ../../base
-  - gitops-repository.yaml
-  {%- if values.supportApp %}
-  - source-repository.yaml
+  {%- if not values.deployOnRemoteCluster %}
+  - tekton-repositories/
   {%- endif %}
