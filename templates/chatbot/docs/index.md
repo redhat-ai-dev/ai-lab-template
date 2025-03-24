@@ -26,4 +26,4 @@ As a user you will be able to customize each section of the template, such as:
 
 - Image registry and image name
 
-For more information please check out our Template [source code repository](https://github.com/redhat-ai-dev/ai-lab-template).
+For more information, see the Template [source code repository](https://github.com/redhat-ai-dev/ai-lab-template).

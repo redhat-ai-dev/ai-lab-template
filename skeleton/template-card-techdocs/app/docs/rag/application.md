@@ -5,11 +5,11 @@
 
 ## Application Information
 
-The application created by this AI Software Template utilizes the [sed.edit.LLM_MODEL_NAME](sed.edit.LLM_MODEL_SRC) model. This is classified as a "sed.edit.LLM_MODEL_CLASSIFICATION" model and is licensed under the sed.edit.LLM_MODEL_LICENSE license.
+The application created by the AI Software Template utilizes the [sed.edit.LLM_MODEL_NAME](sed.edit.LLM_MODEL_SRC) model. This is classified as a "sed.edit.LLM_MODEL_CLASSIFICATION" model and is licensed under the sed.edit.LLM_MODEL_LICENSE license.
 
-This application requires the use of a database to store uploaded documents so that the LLM is able to interact with them. The database for this application is [ChromaDB](https://www.trychroma.com/). The use of [Langchain's python package](https://python.langchain.com/docs/introduction/) to simplify communication with the Model Service and uses [Streamlit](https://streamlit.io/) for the UI layer.
+This application requires the use of a database to store uploaded documents so that the LLM is able to interact with them. The database for this application is [ChromaDB](https://www.trychroma.com/). The application uses [Langchain's python package](https://python.langchain.com/docs/introduction/) to simplify communication with the Model Service and uses [Streamlit](https://streamlit.io/) for the UI layer.
 
-The LLM references information within those documents to provide more accurate responses to the prompt. You can view an example of this application below:
+The LLM references information with the Langchain python package documents to provide more accurate responses to the prompt. You can view an example of this application in the following image:
 
 ![image](./images/rag.png)
 

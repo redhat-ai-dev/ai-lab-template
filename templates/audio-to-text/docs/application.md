@@ -5,16 +5,16 @@
 
 ## Application Information
 
-The application created by this AI Software Template utilizes the [ggerganov/whisper.cpp](https://huggingface.co/ggerganov/whisper.cpp) model. This is classified as a "Automatic Speech Recognition" model and is licensed under the MIT license.
+The application created by this AI Software Template utilizes the [ggerganov/whisper.cpp](https://huggingface.co/ggerganov/whisper.cpp) model. This is classified as an "Automatic Speech Recognition" model and is licensed under the MIT license.
 
-This application relies on [Langchain's python package](https://python.langchain.com/docs/introduction/) to simplify communication with the Model Service and uses [Streamlit](https://streamlit.io/) for the UI layer. The UI prompts the user to upload an audio file from the following types:
+This application relies on [Langchain's python package](https://python.langchain.com/docs/introduction/) to simplify communication with the Model Service and uses [Streamlit](https://streamlit.io/) for the UI layer. The UI prompts the user to upload an audio file from the following media types:
 
 - .wav
 - .mp3
 - .mp4
 - .flac
 
-After the user has uploaded an acceptable audio file the application will begin outputting the contents of that audio file on the screen for the user to read. You can view an example of this application below:
+After a user uploads an acceptable audio file, the user can view the displayed contents of the uploaded audio file on the screen. You can view an example of this application in the following image:
 
 ![image](./images/audio-to-text.png)
 
