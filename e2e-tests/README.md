@@ -50,6 +50,7 @@ At this point, the file `tests/chatbot.test.ts` becomes a test suite and will be
 ## Environment setup & variables
 
 In order to run the tests successfully, several requirements must be met:
+ - nodejs 18+ minumum, recommended 20+
  - RHDH test instance, with `backend.auth.dangerouslyDisableDefaultAuthPolicy` set to true
  - kube config with the correct cluster context (logged in to the cluster hosting RHDH)
  - github/gitlab token with permissions to create and delete repositories under your organization
