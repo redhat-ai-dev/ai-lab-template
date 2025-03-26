@@ -7,7 +7,7 @@ export class GitHubClient implements GitClient {
   constructor(githubToken: string, apiUrl = 'https://api.github.com') {
     this.octokit = new Octokit({
       baseUrl: apiUrl,
-      userAgent: 'rhdh-e2e',
+      userAgent: 'rhdh-ai-dev-e2e',
       auth: githubToken,
     });
   }
