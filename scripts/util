@@ -14,7 +14,7 @@ function apply-configurations() {
     if [ $TEMPLATE_TECHDOC_TYPE == "app" ]; then
         cp -r $SKELETON_DIR/template-card-techdocs/$TEMPLATE_TECHDOC_TYPE/docs/$SAMPLENAME $DEST/docs
     fi
-    cp -r $SKELETON_DIR/template-card-techdocs/$TEMPLATE_TECHDOC_TYPE/docs/common/ $DEST/docs
+    mkdir -p $DEST/docs && cp -r $SKELETON_DIR/template-card-techdocs/$TEMPLATE_TECHDOC_TYPE/docs/common/* $DEST/docs/
     cp -r $SKELETON_DIR/template-card-techdocs/$TEMPLATE_TECHDOC_TYPE/mkdocs.yml $DEST/mkdocs.yml
 
     cp $SKELETON_DIR/template.yaml $DEST/template.yaml
