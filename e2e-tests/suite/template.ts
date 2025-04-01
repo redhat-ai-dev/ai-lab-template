@@ -40,7 +40,7 @@ export const templateSuite = (template: AITemplate, appInfo: ApplicationInfo, re
 
       hub = new DeveloperHubClient(hubUrl);
       if (repoInfo.hostType === 'GitHub') {
-        gitToken = process.env.GITHUB_TOKEN || '';
+        gitToken = process.env.MY_GITHUB_TOKEN || '';
         git = new GitHubClient(gitToken);
       } else {
         gitToken = process.env.GITLAB_TOKEN || '';
