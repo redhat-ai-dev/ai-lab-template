@@ -168,6 +168,12 @@ spec:
           # SED_LLM_SERVER_END
           existingModelServer: ${{ parameters.modelServer === 'Existing model server' }}
           supportApp: false
+          modelServerName: ${{ parameters.modelServer }}
+          modelServiceSrcVLLM: 
+          modelServiceSrcOther: 
+          imageRegistry: ${{ parameters.imageRegistry }}
+          imageOrg: ${{ parameters.imageOrg }}
+          imageName: ${{ parameters.imageName }}
     - action: fs:rename
       id: renameComponentDir
       name: Rename Component Directory
