@@ -1,20 +1,40 @@
 # AI Software Template
 
-This application, ${{ values.name }}, is created from an AI Software Template. These software templates create a new source code repository as well as a new GitOps deployment repository.
+# Background
 
-The chosen sample source applicable is included in the source code repository.
+You deployed this application named **${{ values.name }}** from an AI Software Template! This template created a new source code repository as well as new GitOps deployment repository for you. You are able to find more information related to these repository locations in [Repository Information](#repository-information).
 
-## Sample Source Application
+# Usage
 
-${{ values.appSummary }}
+The template you used contains the deployment of a sample application. To access this sample application you can follow the below instructions.
 
-## Repositories
+You can view the Topology of deployed resources by navigating to the Topology tab in your RHDH ribbon:
 
-The source code for your application can be found in [${{ values.srcRepoURL }} ](${{ values.srcRepoURL }} ).
- 
+![Topology Ribbon](./images/topology-ribbon.png)
+
+From that view you are able to click the arrow on the application's resource to navigate straight to your sample application:
+
+![Topology View Application Link](./images/topology-app-link.png)
+
+# Model & Model Server Information
+
+{%- if values.customModelAndModelServerSelected %}
+You have chosen to provide your own model server. Due to this documentation potentially going to a public repository the endpoint URL has been omitted. During the template setup you provided the following model name to be accessible through the endpoint: 
+
+- **${{ values.customModelName }}**
+{%- else %}
+The following model was deployed by the template for your use: **[${{ values.modelName }}](${{ values.modelSrc }})**.
+
+This model is accessible via a model service. You chose **[${{ values.modelServerName }}]({%- if values.modelServerName == 'vLLM' %} ${{ values.modelServiceSrcVLLM }} {%- else %} ${{ values.modelServiceSrcOther }} {%- endif %})** as your service.
+{%- endif %}
+
+# Repository Information
+
+The source code for your chosen application can be found in [${{ values.srcRepoURL }}](${{ values.srcRepoURL }}).
+
 The GitOps repository, which contains the Kubernetes manifests for the application can be found in 
-[${{ values.repoURL }} ](${{ values.repoURL }} ). 
+[${{ values.repoURL }}](${{ values.repoURL }}). 
 
-## Application namespaces 
+# Deployment Information
 
-The default application is found in the namespace: **`${{ values.namespace }}`**. Applications can be deployed into their own unique namespace or multiple software templates can generate numerous applications into the same namespace.
+You can find deployed resources from this template in the **${{ values.namespace }}** namespace.
