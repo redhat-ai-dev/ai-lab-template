@@ -35,3 +35,11 @@ export SUPPORT_LLM=true
 export APP_INTERFACE_CONTAINER="quay.io/redhat-ai-dev/chatbot:latest"
 
 export TEMPLATE_SOURCE_URL="https://github.com/redhat-ai-dev/ai-lab-samples/tree/main/chatbot"
+
+# application configuration
+# Reference the above info as different names for templating purposes.
+# Should probably be refactored.
+export MODEL_NAME="${LLM_MODEL_NAME}"
+export MODEL_SRC="${LLM_MODEL_SRC}"
+export MODEL_SERVICE_SRC_OTHER="${MODEL_SERVICE_SRC}"
+export MODEL_SERVICE_SRC_VLLM="${VLLM_SRC}"
