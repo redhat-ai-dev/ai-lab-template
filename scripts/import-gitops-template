@@ -28,9 +28,9 @@ cp -r $TEMPDIR/$REPONAME/templates/http $DEST/components/http     # only support
 cp -r $TEMPDIR/$REPONAME/templates/application.yaml $DEST/
 
 # copy readme to techdoc folder
-cp -r $TEMPDIR/$REPONAME/README.md $ROOTDIR/skeleton/techdoc/docs/gitops-application.md
-sed -i "s/{{/\${{ /g" $ROOTDIR/skeleton/techdoc/docs/gitops-application.md
-sed -i "s/}}/ }}/g" $ROOTDIR/skeleton/techdoc/docs/gitops-application.md
+# cp -r $TEMPDIR/$REPONAME/README.md $DEST/docs/index.md
+# sed -i "s/{{/\${{ /g" $DEST/docs/index.md
+# sed -i "s/}}/ }}/g" $DEST/docs/index.md
 rm -rf $TEMPDIR
 
 # replace {{value}} to ${{ value }} for software templates
