@@ -6,26 +6,26 @@ You deployed this application named **${{ values.name }}** from an AI Software T
 
 # Usage
 
-The template you used contains the deployment of a sample application. To access this sample application you can follow the below instructions.
+The template you used contains the deployment of a sample application. To access this sample application, complete the following instructions.
 
-You can view the Topology of deployed resources by navigating to the Topology tab in your RHDH ribbon:
+You can view the Topology of deployed resources by navigating to the **Topology** tab in your RHDH ribbon:
 
 ![Topology Ribbon](./images/topology-ribbon.png)
 
-From that view you are able to click the arrow on the application's resource to navigate straight to your sample application:
+From that view, to navigate straight to your sample application, you can click the arrow on the resource of the application.
 
 ![Topology View Application Link](./images/topology-app-link.png)
 
 # Model & Model Server Information
 
 {%- if values.customModelAndModelServerSelected %}
-You have chosen to provide your own model server. Due to this documentation potentially going to a public repository the endpoint URL has been omitted. During the template setup you provided the following model name to be accessible through the endpoint: 
+You have chosen to provide your own model server. Due to this documentation potentially going to a public repository, the endpoint URL has been omitted. During the template setup, you provided the following model name to be accessible through the endpoint: 
 
 - **${{ values.customModelName }}**
 {%- else %}
 The following model was deployed by the template for your use: **[${{ values.modelName }}](${{ values.modelSrc }})**.
 
-This model is accessible via a model service. You chose **[${{ values.modelServerName }}]({%- if values.modelServerName == 'vLLM' %} ${{ values.modelServiceSrcVLLM }} {%- else %} ${{ values.modelServiceSrcOther }} {%- endif %})** as your service.
+This model is accessible through a model service. You chose **[${{ values.modelServerName }}]({%- if values.modelServerName == 'vLLM' %} ${{ values.modelServiceSrcVLLM }} {%- else %} ${{ values.modelServiceSrcOther }} {%- endif %})** as your service.
 {%- endif %}
 
 # Repository Information
