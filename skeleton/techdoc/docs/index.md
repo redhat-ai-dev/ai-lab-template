@@ -2,7 +2,7 @@
 
 # Background
 
-You deployed this application named **${{ values.name }}** from an AI Software Template! This template created a new source code repository as well as new GitOps deployment repository for you. You are able to find more information related to these repository locations in [Repository Information](#repository-information).
+You deployed this application named **${{ values.name }}** from an AI Software Template! This template created a new source code repository as well as a new GitOps deployment repository for you. You are able to find more information related to these repository locations in [Repository Information](#repository-information).
 
 # Usage
 
