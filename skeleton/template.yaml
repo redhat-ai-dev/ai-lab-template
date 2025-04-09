@@ -290,6 +290,13 @@ spec:
           appRunCommand: "${APP_RUN_COMMAND}"
           modelServiceContainer: ${MODEL_SERVICE_CONTAINER}
           modelServicePort: ${MODEL_SERVICE_PORT}
+          customModelName: ${{ parameters.modelName }}
+          modelName: ${MODEL_NAME}
+          modelSrc: ${MODEL_SRC}
+          modelServerName: ${{ parameters.modelServer }}
+          customModelAndModelServerSelected: ${{ true if parameters.modelServer === 'Existing model server' else false }}
+          modelServiceSrcVLLM: ${MODEL_SERVICE_SRC_VLLM}
+          modelServiceSrcOther: ${MODEL_SERVICE_SRC_OTHER}
     # Renders all the template variables into the files and directory names and content, and places the result in the workspace.
     - id: fetch-skeleton
       name: Fetch Skeleton
@@ -405,6 +412,12 @@ spec:
           dbPort: ${DB_PORT}
           # SED_DB_END
           supportApp: ${SUPPORT_APP}
+          modelServerName: ${{ parameters.modelServer }}
+          modelServiceSrcVLLM: ${MODEL_SERVICE_SRC_VLLM}
+          modelServiceSrcOther: ${MODEL_SERVICE_SRC_OTHER}
+          imageRegistry: ${{ parameters.imageRegistry }}
+          imageOrg: ${{ parameters.imageOrg }}
+          imageName: ${{ parameters.imageName }}
     - action: fs:rename
       id: renameComponentDir
       name: Rename Component Directory

@@ -27,10 +27,6 @@ cp -r $TEMPDIR/$REPONAME/templates/app-of-apps $DEST/
 cp -r $TEMPDIR/$REPONAME/templates/http $DEST/components/http     # only support http now
 cp -r $TEMPDIR/$REPONAME/templates/application.yaml $DEST/
 
-# copy readme to techdoc folder
-cp -r $TEMPDIR/$REPONAME/README.md $ROOTDIR/skeleton/techdoc/docs/gitops-application.md
-sed -i "s/{{/\${{ /g" $ROOTDIR/skeleton/techdoc/docs/gitops-application.md
-sed -i "s/}}/ }}/g" $ROOTDIR/skeleton/techdoc/docs/gitops-application.md
 rm -rf $TEMPDIR
 
 # replace {{value}} to ${{ value }} for software templates

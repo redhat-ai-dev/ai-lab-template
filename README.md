@@ -82,6 +82,7 @@ To update the templates from these or any new samples you update the list of imp
 
  `SAMPLE_REPO`/`GITOPS_REPO`/`PIPELINE_REPO` and `SAMPLE_BRANCH`/`GITOPS_BRANCH`/`PIPELINE_BRANCH`
 
+GitOps definitions are contained in [https://github.com/redhat-ai-dev/ai-lab-app](https://github.com/redhat-ai-dev/ai-lab-app/tree/main) and imported into this repository. Tech Docs referencing these definitions are kept in this repository in [./skeleton/gitops-template/docs](./skeleton/gitops-template/docs/), and should be updated whenever the GitOps definitions themselves change.
 
 ## Troubleshooting
 
