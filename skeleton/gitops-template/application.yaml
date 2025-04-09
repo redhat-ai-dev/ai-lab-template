@@ -5,7 +5,7 @@ metadata:
   namespace: ${{ values.argoNS }}
   finalizers: ["resources-finalizer.argocd.argoproj.io"]
 spec:
-  project: ${{ values.argoProject }}
+  project: rolling-demo-software-templates
   source:
     path: ./app-of-apps
     repoURL: ${{ values.repoURL }}.git
