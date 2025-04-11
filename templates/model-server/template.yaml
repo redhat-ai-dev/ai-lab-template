@@ -80,6 +80,7 @@ spec:
           default: GitHub
         repoOwner:
           title: Repository Owner
+          default: ai-rolling-demo
           type: string
           ui:help: The organization, user or project that this repo will belong to
         repoName:
