@@ -58,7 +58,7 @@ In order to run the tests successfully, several requirements must be met:
 These environment variables are necessary for all tests:
  - `DEVELOPER_HUB_URL` base URL of your RHDH instance
  - for use with github:
-   - `GITHUB_TOKEN` github token when using github as source host
+   - `MY_GITHUB_TOKEN` github token when using github as source host
  - for use with gitlab:
    - `GITLAB_TOKEN` gitlab token when using gitlab as source host
    - `GIT_WEBHOOK_SECRET` PaC secret for webhooks, when using gitlab
