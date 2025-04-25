@@ -17,16 +17,16 @@ export MODEL_SERVICE_DESC="A Python binding of LLM inference in C/C++ with minim
 export MODEL_SERVICE_SRC="https://github.com/containers/ai-lab-recipes/tree/main/model_servers/llamacpp_python"
 
 # https://github.com/rh-aiservices-bu/llm-on-openshift/tree/main/llm-servers/vllm/gpu
-export VLLM_CONTAINER="quay.io/rh-aiservices-bu/vllm-openai-ubi9:0.4.2"
+export VLLM_CONTAINER="quay.io/maysunfaisal/vllm-openai-ubi9:v0.8.4"
 export VLLM_DESC="A high throughput, memory efficient inference and serving engine with GPU support for LLMs in OpenShift"
 export VLLM_SRC="https://github.com/rh-aiservices-bu/llm-on-openshift/tree/main/llm-servers/vllm/gpu"
 
-# https://huggingface.co/instructlab/granite-7b-lab
-export LLM_MODEL_NAME="instructlab/granite-7b-lab"
+# https://huggingface.co/ibm-granite/granite-3.1-8b-instruct
+export LLM_MODEL_NAME="ibm-granite/granite-3.1-8b-instruct"
 export LLM_MAX_MODEL_LEN=4096
 export LLM_MODEL_CLASSIFICATION="Text Generation"
 export LLM_MODEL_LICENSE="Apache-2.0"
-export LLM_MODEL_SRC="https://huggingface.co/instructlab/granite-7b-lab"
+export LLM_MODEL_SRC="https://huggingface.co/ibm-granite/granite-3.1-8b-instruct"
 
 # model configurations
 export SUPPORT_LLM=true
