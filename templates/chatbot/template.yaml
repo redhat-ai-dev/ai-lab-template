@@ -340,9 +340,9 @@ spec:
           webhookSecret: pipelines-secret
           webhookSecretKey: webhook.secret
           defaultBranch: main
-          initContainer: quay.io/maysunfaisal/granite-3.1-8b-instruct:latest
-          modelInitCommand: "['cp', '-R', '/model/granite-3.1-8b-instruct', '/shared/granite-3.1-8b-instruct']"
-          modelPath: "/model/granite-3.1-8b-instruct"
+          initContainer: quay.io/maysunfaisal/granite-3.1-8b-instruct-gguf:latest
+          modelInitCommand: "['cp', '-R', '/model/granite-3.1-8b-instruct-GGUF', '/shared/granite-3.1-8b-instruct-GGUF']"
+          modelPath: "/model/granite-3.1-8b-instruct-GGUF"
           appContainer: ${{ 'quay.io/redhat-ai-dev/ai-template-bootstrap-app:latest' if parameters.hostType === 'GitHub' else 'quay.io/redhat-ai-dev/chatbot:latest' }}
           appPort: 8501
           modelServiceContainer: quay.io/ai-lab/llamacpp_python:latest

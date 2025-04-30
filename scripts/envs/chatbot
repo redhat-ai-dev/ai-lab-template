@@ -9,14 +9,14 @@ export APP_TAGS='["ai", "llamacpp", "vllm", "python"]'
 export APP_RUN_COMMAND="streamlit run chatbot_ui.py"
 
 # https://github.com/redhat-ai-dev/developer-images/tree/main/model/granite-7b-lab
-export INIT_CONTAINER="quay.io/maysunfaisal/granite-3.1-8b-instruct:latest"
-export INIT_CONTAINER_COMMAND="['cp', '-R', '/model/granite-3.1-8b-instruct', '/shared/granite-3.1-8b-instruct']"
+export INIT_CONTAINER="quay.io/maysunfaisal/granite-3.1-8b-instruct-gguf:latest"
+export INIT_CONTAINER_COMMAND="['cp', '-R', '/model/granite-3.1-8b-instruct-GGUF', '/shared/granite-3.1-8b-instruct-GGUF']"
 
 # https://github.com/containers/ai-lab-recipes/tree/main/model_servers/llamacpp_python
 export MODEL_SERVICE_CONTAINER="quay.io/ai-lab/llamacpp_python:latest"
 export MODEL_SERVICE_DESC="A Python binding of LLM inference in C/C++ with minimal setup"
 export MODEL_SERVICE_SRC="https://github.com/containers/ai-lab-recipes/tree/main/model_servers/llamacpp_python"
-export MODEL_PATH="/model/granite-3.1-8b-instruct"
+export MODEL_PATH="/model/granite-3.1-8b-instruct-GGUF"
 
 # https://github.com/rh-aiservices-bu/llm-on-openshift/tree/main/llm-servers/vllm/gpu
 export VLLM_CONTAINER="quay.io/maysunfaisal/vllm-openai-ubi9:v0.8.4"
