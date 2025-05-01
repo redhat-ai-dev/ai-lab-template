@@ -229,252 +229,250 @@ spec:
       action: catalog:fetch
       input:
         entityRef: ${{ parameters.modelName }}
-    - id: log-message
-      name: Log Message
-      action: debug:log
+    # - id: log-message
+    #   name: Log Message
+    #   action: debug:log
+    #   input:
+    #     message: ${{ steps['fetchModelComponentUrl'].output.entity | dump }}
+    # SED_APP_SUPPORT_START
+    # Each step executes an action, in this case one templates files into the workspace.
+    # Get the sample source code
+    - id: fetch-base
+      name: Fetch Base
+      action: fetch:template
       input:
-        message: ${{ steps['fetchModelComponentUrl'].output.entity | dump }}
-  #   # SED_APP_SUPPORT_START
-  #   # Each step executes an action, in this case one templates files into the workspace.
-  #   # Get the sample source code
-  #   - id: fetch-base
-  #     name: Fetch Base
-  #     action: fetch:template
-  #     input:
-  #       url: ./content
-  #       targetPath: source
-  #   # Renders all of the template variables into the techdocs and adds them to the source repo
-  #   - id: fetch-skeleton-docs
-  #     name: Fetch Skeleton Techdocs
-  #     action: fetch:template
-  #     input:
-  #       url: ../../skeleton/techdoc
-  #       targetPath: source
-  #       values:
-  #         name: ${{ parameters.name }}
-  #         appSummary: A Large Language Model (LLM)-enabled streamlit chat application. The bot replies with AI generated responses.
-  #         namespace: ${{ parameters.namespace }}
-  #         repoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops
-  #         srcRepoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}
-  #         appContainer: ${{ 'quay.io/redhat-ai-dev/ai-template-bootstrap-app:latest' if parameters.hostType === 'GitHub' else 'quay.io/redhat-ai-dev/chatbot:latest' }}
-  #         appPort: 8501
-  #         appRunCommand: "streamlit run chatbot_ui.py"
-  #         modelServiceContainer: quay.io/ai-lab/llamacpp_python:latest
-  #         modelServicePort: 8001
-  #   # Renders all the template variables into the files and directory names and content, and places the result in the workspace.
-  #   - id: fetch-skeleton
-  #     name: Fetch Skeleton
-  #     action: fetch:template
-  #     input:
-  #       url: ../../skeleton/source-repo
-  #       targetPath: source
-  #       values:
-  #         name: ${{ parameters.name }}
-  #         namespace: ${{ parameters.namespace }}
-  #         description: Secure Supply Chain Example for Chatbot Application
-  #         dockerfile: Containerfile
-  #         buildContext: .
-  #         gitopsSecretName: ${{ 'gitops-auth-secret' if parameters.hostType === 'GitHub' else 'gitlab-auth-secret' }}
-  #         image: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
-  #         tags: '["ai", "llamacpp", "vllm", "python"]'
-  #         owner: ${{ parameters.owner }}
-  #         repoSlug: '${{ parameters.imageOrg }}/${{ parameters.imageName }}'
-  #         defaultBranch: ${{ parameters.branch }}
-  #   - id: fetch-github-action
-  #     name: Fetch GitHub Action
-  #     action: fetch:plain
-  #     if: ${{ parameters.hostType === 'GitHub' }}
-  #     input:
-  #       targetPath: source
-  #       url: ../../skeleton/github-action
-  #   # This action creates a new GitHub repository and publishes the files in the workspace directory to the repository.
-  #   - id: publish-github
-  #     name: Publish Repository to GitHub
-  #     action: publish:github
-  #     if: ${{ parameters.hostType === 'GitHub' }}
-  #     input:
-  #       sourcePath: source
-  #       allowedHosts: ['${{ parameters.githubServer}}']
-  #       description: This is ${{ parameters.name }}
-  #       repoUrl: ${{ parameters.githubServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}
-  #       defaultBranch: ${{ parameters.branch }}
-  #       protectDefaultBranch: true
-  #       allowAutoMerge: true
-  #       deleteBranchOnMerge: true
-  #       requiredStatusCheckContexts: []
-  #       repoVisibility: "public"
-  #       requiredApprovingReviewCount: 0
-  #   # This action creates a new GitLab repository and publishes the files in the workspace directory to the repository.
-  #   - id: publish-gitlab
-  #     name: Publish Repository to GitLab
-  #     action: publish:gitlab
-  #     if: ${{ parameters.hostType === 'GitLab' }}
-  #     input:
-  #       sourcePath: source
-  #       allowedHosts: ['${{ parameters.gitlabServer }}']
-  #       description: This is ${{ parameters.name }}
-  #       repoUrl: ${{ parameters.gitlabServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}
-  #       defaultBranch: ${{ parameters.branch }}
-  #       protectDefaultBranch: false
-  #       repoVisibility: "public"
-  #   # SED_APP_SUPPORT_END
-  #   # The final step is to register our new component in the catalog.
-  #   - id: fetch-gitops-skeleton
-  #     name: Fetch Gitops Skeleton
-  #     action: fetch:template
-  #     input:
-  #       url: ../../skeleton/gitops-template
-  #       targetPath: gitops
-  #       values:
-  #         name: ${{ parameters.name }}
-  #         appName: ${{ parameters.name }}-gitops # for now just use the component name, since it's single component app
-  #         description: This is GitOps manifest for ${{ parameters.name }}
-  #         namespace: ${{ parameters.namespace }}
-  #         rhdhNamespace: rolling-demo-ns
-  #         # example: github.com?owner=<owner>&repo=<srcRepo>, the gitops repo name will be <srcRepo>-gitops
-  #         repoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops
-  #         srcRepoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}
-  #         argoComponentOverlays: './components/${{ parameters.name }}/overlays'
-  #         owner: ${{ parameters.owner }}
-  #         argoNS: openshift-gitops
-  #         argoProject: default
-  #         secretRef: ${{ parameters.hostType === 'GitLab' }}
-  #         gitSecret: gitlab-auth-secret
-  #         gitSecretKey: password
-  #         webhookSecret: pipelines-secret
-  #         webhookSecretKey: webhook.secret
-  #         defaultBranch: main
-  #         initContainer: quay.io/redhat-ai-dev/granite-7b-lab:latest
-  #         modelInitCommand: "['/usr/bin/install', '/model/model.file', '/shared/']"
-  #         modelPath: "/model/model.file"
-  #         appContainer: ${{ 'quay.io/redhat-ai-dev/ai-template-bootstrap-app:latest' if parameters.hostType === 'GitHub' else 'quay.io/redhat-ai-dev/chatbot:latest' }}
-  #         appPort: 8501
-  #         modelServiceContainer: quay.io/ai-lab/llamacpp_python:latest
-  #         modelServicePort: 8001
-  #         # SED_LLM_SERVER_START
-  #         # for vllm
-  #         vllmSelected: ${{ parameters.modelServer === 'vLLM' }}
-  #         vllmModelServiceContainer: quay.io/rh-aiservices-bu/vllm-openai-ubi9:0.4.2
-  #         modelName: ${{ parameters.modelName if parameters.modelServer === 'Existing model server' else 'instructlab/granite-7b-lab' }}
-  #         maxModelLength: 4096
-  #         # SED_LLM_SERVER_END
-  #         existingModelServer: ${{ parameters.modelServer === 'Existing model server' }}
-  #         # SED_EXISTING_SERVER_START
-  #         modelEndpoint: ${{ steps['fetchModelComponentUrl'].output.entity.metadata.links[0].url }}
-  #         modelEndpointSecretName: ${{ parameters.modelEndpointSecretName }}
-  #         modelEndpointSecretKey: ${{ parameters.modelEndpointSecretKey }}
-  #         includeModelEndpointSecret: ${{ parameters.includeModelEndpointSecret }}
-  #         # SED_EXISTING_SERVER_END
-  #         # SED_APP_SUPPORT_START
-  #         # for RHOAI
-  #         rhoaiSelected: ${{ parameters.rhoaiSelected }}
-  #         # SED_APP_SUPPORT_END
-  #         supportApp: true
-  #   - action: fs:rename
-  #     id: renameComponentDir
-  #     name: Rename Component Directory
-  #     input:
-  #       files:
-  #         - from: gitops/components/http
-  #           to: gitops/components/${{ parameters.name }}
-  #           overwrite: true
-  #   - id: publish-github-gitops
-  #     name: Publish GitOps Repository to Github
-  #     action: publish:github
-  #     if: ${{ parameters.hostType === 'GitHub' }}
-  #     input:
-  #       sourcePath: gitops
-  #       allowedHosts: ['${{ parameters.githubServer }}']
-  #       description: This is GitOps repository for ${{ parameters.name }}
-  #       repoUrl: ${{ parameters.githubServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}-gitops
-  #       defaultBranch: "main"
-  #       protectDefaultBranch: false
-  #       repoVisibility: "public"
-  #   # This action creates a new GitLab repository and publishes the files in the workspace directory to the repository.
-  #   - id: publish-gitlab-gitops
-  #     name: Publish GitOps Repository to GitLab
-  #     action: publish:gitlab
-  #     if: ${{ parameters.hostType === 'GitLab' }}
-  #     input:
-  #       sourcePath: gitops
-  #       allowedHosts: ['${{ parameters.gitlabServer }}']
-  #       description: This is GitOps repository for ${{ parameters.name }}
-  #       repoUrl: ${{ parameters.gitlabServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}-gitops
-  #       defaultBranch: "main"
-  #       protectDefaultBranch: false
-  #       repoVisibility: "public"
-  #   - id: wait-for-github-repository
-  #     name: Waiting for Repository Availability
-  #     action: 'debug:wait'
-  #     input:
-  #       seconds: 3
-  #   # SED_APP_SUPPORT_START
-  #   - id: register
-  #     name: Register
-  #     action: catalog:register
-  #     input:
-  #       repoContentsUrl: ${{ steps['publish-github'].output.repoContentsUrl if steps['publish-github'].output else steps['publish-gitlab'].output.repoContentsUrl }}
-  #       catalogInfoPath: '/catalog-info.yaml'
-  #   # SED_APP_SUPPORT_END
-  #   - id: register-gitops
-  #     name: Register Gitops
-  #     action: catalog:register
-  #     input:
-  #       repoContentsUrl: ${{ steps['publish-github-gitops'].output.repoContentsUrl if steps['publish-github-gitops'].output else steps['publish-gitlab-gitops'].output.repoContentsUrl }}
-  #       catalogInfoPath: '/catalog-info.yaml'
-  #   - id: create-argocd-resources
-  #     name: Create ArgoCD Resources
-  #     action: argocd:create-resources
-  #     input:
-  #       appName: ${{ parameters.name }}-app-of-apps
-  #       # name set in rhdh config
-  #       argoInstance: default
-  #       labelValue: rolling-demo
-  #       namespace: openshift-gitops
-  #       repoUrl: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops.git
-  #       path: './app-of-apps'
-  #   # SED_APP_SUPPORT_START
-  #   # PR with empty commit
-  #   - id: trigger-build-pr
-  #     name: PR to Trigger Pipeline Build
-  #     action: publish:github:pull-request
-  #     if: ${{ parameters.hostType === 'GitHub' }}
-  #     input:
-  #       repoUrl: ${{ parameters.githubServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}
-  #       branchName: trigger-pipeline
-  #       gitCommitMessage: trigger pipeline build
-  #       description: "pr to trigger pipeline build"
-  #       title: trigger pipeline build
-  #       sourcePath: source
-  #       targetBranchName: ${{ parameters.branch }}
-  #   # dispatch the workflow to automerge the pr and trigger the pipeline build
-  #   - id: trigger_gh_workflow
-  #     name: Trigger GitHub workflow
-  #     action: github:actions:dispatch
-  #     if: ${{ parameters.hostType === 'GitHub' }}
-  #     input:
-  #       repoUrl: ${{ parameters.githubServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}
-  #       branchOrTagName: ${{ parameters.branch }}
-  #       workflowId: automerge.yml
-  #       workflowInputs: {pr_url: "${{ steps['trigger-build-pr'].output.remoteUrl }}"}
-  # # SED_APP_SUPPORT_END
+        url: ./content
+        targetPath: source
+    # Renders all of the template variables into the techdocs and adds them to the source repo
+    - id: fetch-skeleton-docs
+      name: Fetch Skeleton Techdocs
+      action: fetch:template
+      input:
+        url: ../../skeleton/techdoc
+        targetPath: source
+        values:
+          name: ${{ parameters.name }}
+          appSummary: A Large Language Model (LLM)-enabled streamlit chat application. The bot replies with AI generated responses.
+          namespace: ${{ parameters.namespace }}
+          repoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops
+          srcRepoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}
+          appContainer: ${{ 'quay.io/redhat-ai-dev/ai-template-bootstrap-app:latest' if parameters.hostType === 'GitHub' else 'quay.io/redhat-ai-dev/chatbot:latest' }}
+          appPort: 8501
+          appRunCommand: "streamlit run chatbot_ui.py"
+          modelServiceContainer: quay.io/ai-lab/llamacpp_python:latest
+          modelServicePort: 8001
+    # Renders all the template variables into the files and directory names and content, and places the result in the workspace.
+    - id: fetch-skeleton
+      name: Fetch Skeleton
+      action: fetch:template
+      input:
+        url: ../../skeleton/source-repo
+        targetPath: source
+        values:
+          name: ${{ parameters.name }}
+          namespace: ${{ parameters.namespace }}
+          description: Secure Supply Chain Example for Chatbot Application
+          dockerfile: Containerfile
+          buildContext: .
+          gitopsSecretName: ${{ 'gitops-auth-secret' if parameters.hostType === 'GitHub' else 'gitlab-auth-secret' }}
+          image: '${{ parameters.imageRegistry }}/${{ parameters.imageOrg }}/${{ parameters.imageName }}'
+          tags: '["ai", "llamacpp", "vllm", "python"]'
+          owner: ${{ parameters.owner }}
+          repoSlug: '${{ parameters.imageOrg }}/${{ parameters.imageName }}'
+          defaultBranch: ${{ parameters.branch }}
+    - id: fetch-github-action
+      name: Fetch GitHub Action
+      action: fetch:plain
+      if: ${{ parameters.hostType === 'GitHub' }}
+      input:
+        targetPath: source
+        url: ../../skeleton/github-action
+    # This action creates a new GitHub repository and publishes the files in the workspace directory to the repository.
+    - id: publish-github
+      name: Publish Repository to GitHub
+      action: publish:github
+      if: ${{ parameters.hostType === 'GitHub' }}
+      input:
+        sourcePath: source
+        allowedHosts: ['${{ parameters.githubServer}}']
+        description: This is ${{ parameters.name }}
+        repoUrl: ${{ parameters.githubServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}
+        defaultBranch: ${{ parameters.branch }}
+        protectDefaultBranch: true
+        allowAutoMerge: true
+        deleteBranchOnMerge: true
+        requiredStatusCheckContexts: []
+        repoVisibility: "public"
+        requiredApprovingReviewCount: 0
+    # This action creates a new GitLab repository and publishes the files in the workspace directory to the repository.
+    - id: publish-gitlab
+      name: Publish Repository to GitLab
+      action: publish:gitlab
+      if: ${{ parameters.hostType === 'GitLab' }}
+      input:
+        sourcePath: source
+        allowedHosts: ['${{ parameters.gitlabServer }}']
+        description: This is ${{ parameters.name }}
+        repoUrl: ${{ parameters.gitlabServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}
+        defaultBranch: ${{ parameters.branch }}
+        protectDefaultBranch: false
+        repoVisibility: "public"
+    # SED_APP_SUPPORT_END
+    # The final step is to register our new component in the catalog.
+    - id: fetch-gitops-skeleton
+      name: Fetch Gitops Skeleton
+      action: fetch:template
+      input:
+        url: ../../skeleton/gitops-template
+        targetPath: gitops
+        values:
+          name: ${{ parameters.name }}
+          appName: ${{ parameters.name }}-gitops # for now just use the component name, since it's single component app
+          description: This is GitOps manifest for ${{ parameters.name }}
+          namespace: ${{ parameters.namespace }}
+          rhdhNamespace: rolling-demo-ns
+          # example: github.com?owner=<owner>&repo=<srcRepo>, the gitops repo name will be <srcRepo>-gitops
+          repoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops
+          srcRepoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}
+          argoComponentOverlays: './components/${{ parameters.name }}/overlays'
+          owner: ${{ parameters.owner }}
+          argoNS: openshift-gitops
+          argoProject: default
+          secretRef: ${{ parameters.hostType === 'GitLab' }}
+          gitSecret: gitlab-auth-secret
+          gitSecretKey: password
+          webhookSecret: pipelines-secret
+          webhookSecretKey: webhook.secret
+          defaultBranch: main
+          initContainer: quay.io/redhat-ai-dev/granite-7b-lab:latest
+          modelInitCommand: "['/usr/bin/install', '/model/model.file', '/shared/']"
+          modelPath: "/model/model.file"
+          appContainer: ${{ 'quay.io/redhat-ai-dev/ai-template-bootstrap-app:latest' if parameters.hostType === 'GitHub' else 'quay.io/redhat-ai-dev/chatbot:latest' }}
+          appPort: 8501
+          modelServiceContainer: quay.io/ai-lab/llamacpp_python:latest
+          modelServicePort: 8001
+          # SED_LLM_SERVER_START
+          # for vllm
+          vllmSelected: ${{ parameters.modelServer === 'vLLM' }}
+          vllmModelServiceContainer: quay.io/rh-aiservices-bu/vllm-openai-ubi9:0.4.2
+          modelName: ${{ parameters.modelName | parseEntityRef | pick('name') if parameters.modelServer === 'Existing model server' else 'instructlab/granite-7b-lab' }}
+          maxModelLength: 4096
+          # SED_LLM_SERVER_END
+          existingModelServer: ${{ parameters.modelServer === 'Existing model server' }}
+          # SED_EXISTING_SERVER_START
+          modelEndpoint: ${{ steps['fetchModelComponentUrl'].output.entity.metadata.links[0].url }}
+          modelEndpointSecretName: ${{ parameters.modelEndpointSecretName }}
+          modelEndpointSecretKey: ${{ parameters.modelEndpointSecretKey }}
+          includeModelEndpointSecret: ${{ parameters.includeModelEndpointSecret }}
+          # SED_EXISTING_SERVER_END
+          # SED_APP_SUPPORT_START
+          # for RHOAI
+          rhoaiSelected: ${{ parameters.rhoaiSelected }}
+          # SED_APP_SUPPORT_END
+          supportApp: true
+    - action: fs:rename
+      id: renameComponentDir
+      name: Rename Component Directory
+      input:
+        files:
+          - from: gitops/components/http
+            to: gitops/components/${{ parameters.name }}
+            overwrite: true
+    - id: publish-github-gitops
+      name: Publish GitOps Repository to Github
+      action: publish:github
+      if: ${{ parameters.hostType === 'GitHub' }}
+      input:
+        sourcePath: gitops
+        allowedHosts: ['${{ parameters.githubServer }}']
+        description: This is GitOps repository for ${{ parameters.name }}
+        repoUrl: ${{ parameters.githubServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}-gitops
+        defaultBranch: "main"
+        protectDefaultBranch: false
+        repoVisibility: "public"
+    # This action creates a new GitLab repository and publishes the files in the workspace directory to the repository.
+    - id: publish-gitlab-gitops
+      name: Publish GitOps Repository to GitLab
+      action: publish:gitlab
+      if: ${{ parameters.hostType === 'GitLab' }}
+      input:
+        sourcePath: gitops
+        allowedHosts: ['${{ parameters.gitlabServer }}']
+        description: This is GitOps repository for ${{ parameters.name }}
+        repoUrl: ${{ parameters.gitlabServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}-gitops
+        defaultBranch: "main"
+        protectDefaultBranch: false
+        repoVisibility: "public"
+    - id: wait-for-github-repository
+      name: Waiting for Repository Availability
+      action: 'debug:wait'
+      input:
+        seconds: 3
+    # SED_APP_SUPPORT_START
+    - id: register
+      name: Register
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps['publish-github'].output.repoContentsUrl if steps['publish-github'].output else steps['publish-gitlab'].output.repoContentsUrl }}
+        catalogInfoPath: '/catalog-info.yaml'
+    # SED_APP_SUPPORT_END
+    - id: register-gitops
+      name: Register Gitops
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps['publish-github-gitops'].output.repoContentsUrl if steps['publish-github-gitops'].output else steps['publish-gitlab-gitops'].output.repoContentsUrl }}
+        catalogInfoPath: '/catalog-info.yaml'
+    - id: create-argocd-resources
+      name: Create ArgoCD Resources
+      action: argocd:create-resources
+      input:
+        appName: ${{ parameters.name }}-app-of-apps
+        # name set in rhdh config
+        argoInstance: default
+        labelValue: rolling-demo
+        namespace: openshift-gitops
+        repoUrl: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops.git
+        path: './app-of-apps'
+    # SED_APP_SUPPORT_START
+    # PR with empty commit
+    - id: trigger-build-pr
+      name: PR to Trigger Pipeline Build
+      action: publish:github:pull-request
+      if: ${{ parameters.hostType === 'GitHub' }}
+      input:
+        repoUrl: ${{ parameters.githubServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}
+        branchName: trigger-pipeline
+        gitCommitMessage: trigger pipeline build
+        description: "pr to trigger pipeline build"
+        title: trigger pipeline build
+        sourcePath: source
+        targetBranchName: ${{ parameters.branch }}
+    # dispatch the workflow to automerge the pr and trigger the pipeline build
+    - id: trigger_gh_workflow
+      name: Trigger GitHub workflow
+      action: github:actions:dispatch
+      if: ${{ parameters.hostType === 'GitHub' }}
+      input:
+        repoUrl: ${{ parameters.githubServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}
+        branchOrTagName: ${{ parameters.branch }}
+        workflowId: automerge.yml
+        workflowInputs: {pr_url: "${{ steps['trigger-build-pr'].output.remoteUrl }}"}
+  # SED_APP_SUPPORT_END
 
   # Outputs are displayed to the user after a successful execution of the template.
   output:
     links:
-      - title: foo
-        url: https://foo.bar
       # SED_APP_SUPPORT_START
-      # - title: Source Repository
-      #   url: ${{ steps['publish-github'].output.remoteUrl if steps['publish-github'].output else steps['publish-gitlab'].output.remoteUrl }}
-      # # SED_APP_SUPPORT_END
-      # - title: GitOps Repository
-      #   url: ${{ steps['publish-github-gitops'].output.remoteUrl if steps['publish-github-gitops'].output else steps['publish-gitlab-gitops'].output.remoteUrl }}
-      # # SED_APP_SUPPORT_START
-      # - title: Open Component in Catalog
-      #   icon: catalog
-      #   entityRef: ${{ steps['register'].output.entityRef }}
-      # # SED_APP_SUPPORT_END
-      # - title: Open GitOps Resource in Catalog
-      #   icon: catalog
-      #   entityRef: ${{ steps['register-gitops'].output.entityRef }}
+      - title: Source Repository
+        url: ${{ steps['publish-github'].output.remoteUrl if steps['publish-github'].output else steps['publish-gitlab'].output.remoteUrl }}
+      # SED_APP_SUPPORT_END
+      - title: GitOps Repository
+        url: ${{ steps['publish-github-gitops'].output.remoteUrl if steps['publish-github-gitops'].output else steps['publish-gitlab-gitops'].output.remoteUrl }}
+      # SED_APP_SUPPORT_START
+      - title: Open Component in Catalog
+        icon: catalog
+        entityRef: ${{ steps['register'].output.entityRef }}
+      # SED_APP_SUPPORT_END
+      - title: Open GitOps Resource in Catalog
+        icon: catalog
+        entityRef: ${{ steps['register-gitops'].output.entityRef }}
