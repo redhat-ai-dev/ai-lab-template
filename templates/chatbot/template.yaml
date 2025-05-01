@@ -228,7 +228,7 @@ spec:
       name: Fetch Model URL
       action: catalog:fetch
       input:
-        entityRef: component:default/${{ parameters.modelName }}
+        entityRef: ${{ parameters.modelName }}
     - id: log-message
       name: Log Message
       action: debug:log
