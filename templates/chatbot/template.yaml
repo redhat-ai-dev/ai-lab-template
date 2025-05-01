@@ -233,7 +233,7 @@ spec:
       name: Log Message
       action: debug:log
       input:
-        message: ${{ steps['read-file'].output.content }}
+        message: ${{ steps['fetchModelComponentUrl'].output.entity }}
   #   # SED_APP_SUPPORT_START
   #   # Each step executes an action, in this case one templates files into the workspace.
   #   # Get the sample source code
@@ -459,20 +459,22 @@ spec:
   #       workflowInputs: {pr_url: "${{ steps['trigger-build-pr'].output.remoteUrl }}"}
   # # SED_APP_SUPPORT_END
 
-  # # Outputs are displayed to the user after a successful execution of the template.
-  # output:
-  #   links:
-  #     # SED_APP_SUPPORT_START
-  #     - title: Source Repository
-  #       url: ${{ steps['publish-github'].output.remoteUrl if steps['publish-github'].output else steps['publish-gitlab'].output.remoteUrl }}
-  #     # SED_APP_SUPPORT_END
-  #     - title: GitOps Repository
-  #       url: ${{ steps['publish-github-gitops'].output.remoteUrl if steps['publish-github-gitops'].output else steps['publish-gitlab-gitops'].output.remoteUrl }}
-  #     # SED_APP_SUPPORT_START
-  #     - title: Open Component in Catalog
-  #       icon: catalog
-  #       entityRef: ${{ steps['register'].output.entityRef }}
-  #     # SED_APP_SUPPORT_END
-  #     - title: Open GitOps Resource in Catalog
-  #       icon: catalog
-  #       entityRef: ${{ steps['register-gitops'].output.entityRef }}
+  # Outputs are displayed to the user after a successful execution of the template.
+  output:
+    links:
+      - title: foo
+        url: https://foo.bar
+      # SED_APP_SUPPORT_START
+      # - title: Source Repository
+      #   url: ${{ steps['publish-github'].output.remoteUrl if steps['publish-github'].output else steps['publish-gitlab'].output.remoteUrl }}
+      # # SED_APP_SUPPORT_END
+      # - title: GitOps Repository
+      #   url: ${{ steps['publish-github-gitops'].output.remoteUrl if steps['publish-github-gitops'].output else steps['publish-gitlab-gitops'].output.remoteUrl }}
+      # # SED_APP_SUPPORT_START
+      # - title: Open Component in Catalog
+      #   icon: catalog
+      #   entityRef: ${{ steps['register'].output.entityRef }}
+      # # SED_APP_SUPPORT_END
+      # - title: Open GitOps Resource in Catalog
+      #   icon: catalog
+      #   entityRef: ${{ steps['register-gitops'].output.entityRef }}
