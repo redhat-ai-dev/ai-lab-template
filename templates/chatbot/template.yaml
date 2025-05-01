@@ -233,7 +233,7 @@ spec:
       name: Log Message
       action: debug:log
       input:
-        message: ${{ steps['fetchModelComponentUrl'].output.entity }}
+        message: ${{ steps['fetchModelComponentUrl'].output.entity | dump }}
   #   # SED_APP_SUPPORT_START
   #   # Each step executes an action, in this case one templates files into the workspace.
   #   # Get the sample source code
