@@ -78,7 +78,7 @@ spec:
                     allowArbitraryValues: false
                     catalogFilter:
                       kind: Component
-                      spec.type: 'ai-model'
+                      spec.type: 'model-server'
                 # SED_LLM_SERVER_END
                 includeModelEndpointSecret:
                   title: Is bearer authentication required?
