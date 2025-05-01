@@ -61,7 +61,6 @@ spec:
           oneOf:
             # SED_EXISTING_SERVER_START
             - required:
-                - modelEndpoint
                 # SED_LLM_SERVER_START
                 - modelName
                 # SED_LLM_SERVER_END
