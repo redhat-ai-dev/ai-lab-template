@@ -77,7 +77,7 @@ spec:
                   ui:options:
                     allowArbitraryValues: false
                     catalogFilter:
-                      kind: Component
+                    - kind: Component
                       spec.type: 'model-server'
                 # SED_LLM_SERVER_END
                 includeModelEndpointSecret:
