@@ -248,7 +248,7 @@ spec:
           appContainer: ${{ 'quay.io/redhat-ai-dev/ai-template-bootstrap-app:latest' if parameters.hostType === 'GitHub' else 'quay.io/redhat-ai-dev/rag:latest' }}
           appPort: 8501
           appRunCommand: "streamlit run rag_app.py"
-          modelServiceContainer: quay.io/ai-lab/llamacpp_python:latest
+          modelServiceContainer: quay.io/redhat-ai-dev/llamacpp_python:0.3.8
           modelServicePort: 8001
           customModelName: ${{ parameters.modelName }}
           modelName: ibm-granite/granite-3.1-8b-instruct
@@ -340,17 +340,17 @@ spec:
           webhookSecret: pipelines-secret
           webhookSecretKey: webhook.secret
           defaultBranch: main
-          initContainer: quay.io/maysunfaisal/granite-3.1-8b-instruct-gguf:latest
-          modelInitCommand: "['cp', '-R', '/model/granite-3.1-8b-instruct-GGUF', '/shared/granite-3.1-8b-instruct-GGUF']"
-          modelPath: "/model/granite-3.1-8b-instruct-GGUF"
+          initContainer: quay.io/redhat-ai-dev/granite-3.1-8b-instruct-gguf:latest
+          modelInitCommand: "['/usr/bin/install', '/model/model.file', '/shared/']"
+          modelPath: "/model/model.file"
           appContainer: ${{ 'quay.io/redhat-ai-dev/ai-template-bootstrap-app:latest' if parameters.hostType === 'GitHub' else 'quay.io/redhat-ai-dev/rag:latest' }}
           appPort: 8501
-          modelServiceContainer: quay.io/ai-lab/llamacpp_python:latest
+          modelServiceContainer: quay.io/redhat-ai-dev/llamacpp_python:0.3.8
           modelServicePort: 8001
           # SED_LLM_SERVER_START
           # for vllm
           vllmSelected: ${{ parameters.modelServer === 'vLLM' }}
-          vllmModelServiceContainer: quay.io/maysunfaisal/vllm-openai-ubi9:v0.8.4
+          vllmModelServiceContainer: quay.io/redhat-ai-dev/vllm-openai-ubi9:v0.8.4
           modelName: ${{ parameters.modelName if parameters.modelServer === 'Existing model server' else 'ibm-granite/granite-3.1-8b-instruct' }}
           maxModelLength: 4096
           # SED_LLM_SERVER_END

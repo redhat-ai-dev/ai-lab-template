@@ -350,7 +350,7 @@ spec:
           # SED_LLM_SERVER_START
           # for vllm
           vllmSelected: ${{ parameters.modelServer === 'vLLM' }}
-          vllmModelServiceContainer: quay.io/maysunfaisal/vllm-openai-ubi9:v0.8.4
+          vllmModelServiceContainer: quay.io/redhat-ai-dev/vllm-openai-ubi9:v0.8.4
           modelName: ${{ parameters.modelName if parameters.modelServer === 'Existing model server' else 'Nondzu/Mistral-7B-code-16k-qlora' }}
           maxModelLength: 6144
           # SED_LLM_SERVER_END
