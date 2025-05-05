@@ -9,10 +9,10 @@ export APP_TAGS='["ai", "llamacpp", "vllm", "python"]'
 export APP_RUN_COMMAND="streamlit run codegen-app.py"
 
 # https://github.com/redhat-ai-dev/developer-images/tree/main/model/mistral-7b-code-16k-qlora
-export INIT_CONTAINER="quay.io/redhat-ai-dev/mistral-7b-code-16k-qlora:latest"
+export INIT_CONTAINER="quay.io/maysunfaisal/mistral-7b-instruct-v0.2:latest"
 
 # https://github.com/containers/ai-lab-recipes/tree/main/model_servers/llamacpp_python
-export MODEL_SERVICE_CONTAINER="quay.io/ai-lab/llamacpp_python:latest"
+export MODEL_SERVICE_CONTAINER="quay.io/redhat-ai-dev/llamacpp_python:0.3.8"
 export MODEL_SERVICE_DESC="A Python binding of LLM inference in C/C++ with minimal setup"
 export MODEL_SERVICE_SRC="https://github.com/containers/ai-lab-recipes/tree/main/model_servers/llamacpp_python"
 
@@ -22,8 +22,8 @@ export VLLM_DESC="A high throughput, memory efficient inference and serving engi
 export VLLM_SRC="https://github.com/rh-aiservices-bu/llm-on-openshift/tree/main/llm-servers/vllm/gpu"
 
 # https://huggingface.co/Nondzu/Mistral-7B-code-16k-qlora
-export LLM_MODEL_NAME="Nondzu/Mistral-7B-code-16k-qlora"
-export LLM_MAX_MODEL_LEN=6144
+export LLM_MODEL_NAME="mistralai/Mistral-7B-Instruct-v0.2"
+export LLM_MAX_MODEL_LEN=4096
 export LLM_MODEL_CLASSIFICATION="Text Generation"
 export LLM_MODEL_LICENSE="Apache-2.0"
 export LLM_MODEL_SRC="https://huggingface.co/Nondzu/Mistral-7B-code-16k-qlora"
