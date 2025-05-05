@@ -113,10 +113,10 @@ spec:
                 modelNameDeployed:
                   title: Model Name
                   description: Text Generation | Apache-2.0 | [Learn more](https://huggingface.co/Nondzu/Mistral-7B-code-16k-qlora)
-                  default: TheBloke/Mistral-7B-Instruct-v0.2-GGUF
+                  default: TheBloke/Mistral-7B-Instruct-v0.2-AWQ
                   type: string
                   enum:
-                    - TheBloke/Mistral-7B-Instruct-v0.2-GGUF
+                    - TheBloke/Mistral-7B-Instruct-v0.2-AWQ
             # SED_LLM_LLAMA_SERVER_START
             - properties:
                 modelServer:
@@ -124,10 +124,10 @@ spec:
                 modelNameDeployed:
                   title: Model Name
                   description: Text Generation | Apache-2.0 | [Learn more](https://huggingface.co/Nondzu/Mistral-7B-code-16k-qlora)
-                  default: TheBloke/Mistral-7B-Instruct-v0.2-GGUF
+                  default: TheBloke/Mistral-7B-Instruct-v0.2-AWQ
                   type: string
                   enum:
-                    - TheBloke/Mistral-7B-Instruct-v0.2-GGUF
+                    - TheBloke/Mistral-7B-Instruct-v0.2-AWQ
             # SED_LLM_LLAMA_SERVER_END
             # SED_LLM_SERVER_END
     - title: Application Repository Information
@@ -251,7 +251,7 @@ spec:
           modelServiceContainer: quay.io/redhat-ai-dev/llamacpp_python:0.3.8
           modelServicePort: 8001
           customModelName: ${{ parameters.modelName }}
-          modelName: TheBloke/Mistral-7B-Instruct-v0.2-GGUF
+          modelName: TheBloke/Mistral-7B-Instruct-v0.2-AWQ
           modelSrc: https://huggingface.co/Nondzu/Mistral-7B-code-16k-qlora
           modelServerName: ${{ parameters.modelServer }}
           customModelAndModelServerSelected: ${{ true if parameters.modelServer === 'Existing model server' else false }}
@@ -351,7 +351,7 @@ spec:
           # for vllm
           vllmSelected: ${{ parameters.modelServer === 'vLLM' }}
           vllmModelServiceContainer: quay.io/redhat-ai-dev/vllm-openai-ubi9:v0.8.4
-          modelName: ${{ parameters.modelName if parameters.modelServer === 'Existing model server' else 'TheBloke/Mistral-7B-Instruct-v0.2-GGUF' }}
+          modelName: ${{ parameters.modelName if parameters.modelServer === 'Existing model server' else 'TheBloke/Mistral-7B-Instruct-v0.2-AWQ' }}
           maxModelLength: 4096
           # SED_LLM_SERVER_END
           existingModelServer: ${{ parameters.modelServer === 'Existing model server' }}

@@ -22,7 +22,7 @@ export VLLM_DESC="A high throughput, memory efficient inference and serving engi
 export VLLM_SRC="https://github.com/rh-aiservices-bu/llm-on-openshift/tree/main/llm-servers/vllm/gpu"
 
 # https://huggingface.co/Nondzu/Mistral-7B-code-16k-qlora
-export LLM_MODEL_NAME="TheBloke/Mistral-7B-Instruct-v0.2-GGUF"
+export LLM_MODEL_NAME="TheBloke/Mistral-7B-Instruct-v0.2-AWQ"
 export LLM_MAX_MODEL_LEN=4096
 export LLM_MODEL_CLASSIFICATION="Text Generation"
 export LLM_MODEL_LICENSE="Apache-2.0"
