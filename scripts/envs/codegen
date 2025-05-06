@@ -9,7 +9,7 @@ export APP_TAGS='["ai", "llamacpp", "vllm", "python"]'
 export APP_RUN_COMMAND="streamlit run codegen-app.py"
 
 # https://github.com/redhat-ai-dev/developer-images/tree/main/model/mistral-7b-code-16k-qlora
-export INIT_CONTAINER="quay.io/maysunfaisal/mistral-7b-instruct-v0.2:latest"
+export INIT_CONTAINER="quay.io/redhat-ai-dev/mistral-7b-instruct-v0.2:latest"
 
 # https://github.com/containers/ai-lab-recipes/tree/main/model_servers/llamacpp_python
 export MODEL_SERVICE_CONTAINER="quay.io/redhat-ai-dev/llamacpp_python:0.3.8"

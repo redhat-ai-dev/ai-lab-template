@@ -340,7 +340,7 @@ spec:
           webhookSecret: pipelines-secret
           webhookSecretKey: webhook.secret
           defaultBranch: main
-          initContainer: quay.io/maysunfaisal/mistral-7b-instruct-v0.2:latest
+          initContainer: quay.io/redhat-ai-dev/mistral-7b-instruct-v0.2:latest
           modelInitCommand: "['/usr/bin/install', '/model/model.file', '/shared/']"
           modelPath: "/model/model.file"
           appContainer: ${{ 'quay.io/redhat-ai-dev/ai-template-bootstrap-app:latest' if parameters.hostType === 'GitHub' else 'quay.io/redhat-ai-dev/codegen:latest' }}
