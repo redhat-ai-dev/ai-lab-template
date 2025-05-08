@@ -8,25 +8,25 @@ export APP_SUMMARY="A Large Language Model (LLM)-enabled streamlit code generati
 export APP_TAGS='["ai", "llamacpp", "vllm", "python"]'
 export APP_RUN_COMMAND="streamlit run codegen-app.py"
 
-# https://github.com/redhat-ai-dev/developer-images/tree/main/model/mistral-7b-code-16k-qlora
+# https://github.com/redhat-ai-dev/developer-images/tree/main/models/mistral-7b-instruct-v0.2
 export INIT_CONTAINER="quay.io/redhat-ai-dev/mistral-7b-instruct-v0.2:latest"
 
-# https://github.com/containers/ai-lab-recipes/tree/main/model_servers/llamacpp_python
+# https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/llamacpp_python/0.3.8
 export MODEL_SERVICE_CONTAINER="quay.io/redhat-ai-dev/llamacpp_python:0.3.8"
 export MODEL_SERVICE_DESC="A Python binding of LLM inference in C/C++ with minimal setup"
-export MODEL_SERVICE_SRC="https://github.com/containers/ai-lab-recipes/tree/main/model_servers/llamacpp_python"
+export MODEL_SERVICE_SRC="https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/llamacpp_python/0.3.8"
 
-# https://github.com/rh-aiservices-bu/llm-on-openshift/tree/main/llm-servers/vllm/gpu
+# https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/vllm/0.8.4
 export VLLM_CONTAINER="quay.io/redhat-ai-dev/vllm-openai-ubi9:v0.8.4"
 export VLLM_DESC="A high throughput, memory efficient inference and serving engine with GPU support for LLMs in OpenShift"
-export VLLM_SRC="https://github.com/rh-aiservices-bu/llm-on-openshift/tree/main/llm-servers/vllm/gpu"
+export VLLM_SRC="https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/vllm/0.8.4"
 
-# https://huggingface.co/Nondzu/Mistral-7B-code-16k-qlora
+# https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.2-AWQ
 export LLM_MODEL_NAME="TheBloke/Mistral-7B-Instruct-v0.2-AWQ"
 export LLM_MAX_MODEL_LEN=4096
 export LLM_MODEL_CLASSIFICATION="Text Generation"
 export LLM_MODEL_LICENSE="Apache-2.0"
-export LLM_MODEL_SRC="https://huggingface.co/Nondzu/Mistral-7B-code-16k-qlora"
+export LLM_MODEL_SRC="https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.2-AWQ"
 
 # model configurations
 export SUPPORT_LLM=true
