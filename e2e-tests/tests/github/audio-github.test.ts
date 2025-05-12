@@ -1,12 +1,15 @@
 import { ApplicationInfo, RepositoryInfo, DeploymentInfo } from "../../API/types";
 import { generateComponentName, templateSuite } from "../../suite/template";
+import { loadDefaultModel } from "../../util/models";
 
 const template = 'audio-to-text'
 const name = generateComponentName(template);
+const modelServer = 'whisper.cpp';
+
 const appInfo: ApplicationInfo = {
   name: name,
-  modelServer: 'whisper.cpp',
-  modelNameDeployed: 'ggerganov/whisper.cpp'
+  modelServer: modelServer,
+  modelNameDeployed: loadDefaultModel(template, modelServer)
 };
 const repoInfo: RepositoryInfo = {
   branch: 'main',
