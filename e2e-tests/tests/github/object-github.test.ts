@@ -1,12 +1,15 @@
 import { ApplicationInfo, RepositoryInfo, DeploymentInfo } from "../../API/types";
 import { generateComponentName, templateSuite } from "../../suite/template";
+import { loadDefaultModel } from "../../util/models";
 
 const template = 'object-detection'
 const name = generateComponentName(template);
+const modelServer = 'detr-resnet-101';
+
 const appInfo: ApplicationInfo = {
   name: name,
-  modelServer: 'detr-resnet-101',
-  modelNameDeployed: 'facebook/detr-resnet-101'
+  modelServer: modelServer,
+  modelNameDeployed: loadDefaultModel(template, modelServer)
 };
 const repoInfo: RepositoryInfo = {
   branch: 'main',

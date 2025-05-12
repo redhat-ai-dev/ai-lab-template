@@ -1,12 +1,15 @@
 import { ApplicationInfo, DeploymentInfo, RepositoryInfo } from '../../API/types';
 import { generateComponentName, templateSuite } from '../../suite/template';
+import { loadDefaultModel } from '../../util/models';
 
 const template = 'rag'
 const name = generateComponentName(template);
+const modelServer = 'llama.cpp';
+
 const appInfo: ApplicationInfo = {
   name: name,
-  modelServer: 'llama.cpp',
-  modelNameDeployed: 'instructlab/granite-7b-lab'
+  modelServer: modelServer,
+  modelNameDeployed: loadDefaultModel(template, modelServer)
 };
 const repoInfo: RepositoryInfo = {
   branch: 'main',
