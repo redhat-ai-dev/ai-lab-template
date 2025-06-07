@@ -146,6 +146,7 @@ spec:
           default: GitHub
         repoOwner:
           title: Repository Owner
+          default: ai-rolling-demo
           type: string
           ui:help: The organization, user or project that this repo will belong to
         repoName:
@@ -196,6 +197,7 @@ spec:
           ui:help: "You can also provide the on-prem registry host, example: quay-tv2pb.apps.cluster-tv2pb.sandbox1194.opentlc.com"
         imageOrg:
           title: Image Organization
+          default: rhdhpai-rolling-demo
           type: string
           description: The organization, user or project that this repo will belong to
         imageName:
@@ -326,13 +328,13 @@ spec:
           appName: ${{ parameters.name }}-gitops # for now just use the component name, since it's single component app
           description: This is GitOps manifest for ${{ parameters.name }}
           namespace: ${{ parameters.namespace }}
-          rhdhNamespace: ai-rhdh
+          rhdhNamespace: rolling-demo-ns
           # example: github.com?owner=<owner>&repo=<srcRepo>, the gitops repo name will be <srcRepo>-gitops
           repoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops
           srcRepoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}
           argoComponentOverlays: './components/${{ parameters.name }}/overlays'
           owner: ${{ parameters.owner }}
-          argoNS: ai-rhdh
+          argoNS: openshift-gitops
           argoProject: default
           secretRef: ${{ parameters.hostType === 'GitLab' }}
           gitSecret: gitlab-auth-secret
@@ -431,7 +433,8 @@ spec:
         appName: ${{ parameters.name }}-app-of-apps
         # name set in rhdh config
         argoInstance: default
-        namespace: ai-rhdh
+        labelValue: rolling-demo
+        namespace: openshift-gitops
         repoUrl: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops.git
         path: './app-of-apps'
     # SED_APP_SUPPORT_START
