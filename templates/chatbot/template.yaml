@@ -32,12 +32,10 @@ spec:
           title: Owner
           type: string
           description: Owner of the component
-          default: user:guest
+          default: user:default/evanshortiss
           ui:field: OwnerPicker
           ui:options:
-            catalogFilter:
-              kind: [Group, User]
-              readonly: false
+            allowArbitraryValues: false
         modelServer:
           # SED_LLM_SERVER_START
           title: Model Server
@@ -63,22 +61,23 @@ spec:
           oneOf:
             # SED_EXISTING_SERVER_START
             - required:
-                - modelEndpoint
                 # SED_LLM_SERVER_START
                 - modelName
                 # SED_LLM_SERVER_END
               properties:
                 modelServer:
                   const: Existing model server
-                modelEndpoint:
-                  title: Model Server Endpoint
-                  type: string
-                  description: "The endpoint for an existing model server."
                 # SED_LLM_SERVER_START
                 modelName:
                   title: Model Name
                   type: string
-                  ui:help: "The name of the model deployed on the model server you would like to use."
+                  description: Model
+                  ui:field: EntityPicker
+                  ui:options:
+                    allowArbitraryValues: false
+                    catalogFilter:
+                    - kind: Component
+                      spec.type: 'model-server'
                 # SED_LLM_SERVER_END
                 includeModelEndpointSecret:
                   title: Is bearer authentication required?
@@ -225,6 +224,11 @@ spec:
   # These steps are executed in the scaffolder backend, using data that we gathered
   # via the parameters above.
   steps:
+    - id: fetchModelComponentUrl
+      name: Fetch Model URL
+      action: catalog:fetch
+      input:
+        entityRef: ${{ parameters.modelName }}
     # SED_APP_SUPPORT_START
     # Each step executes an action, in this case one templates files into the workspace.
     # Get the sample source code
@@ -358,7 +362,7 @@ spec:
           # SED_LLM_SERVER_END
           existingModelServer: ${{ parameters.modelServer === 'Existing model server' }}
           # SED_EXISTING_SERVER_START
-          modelEndpoint: ${{ parameters.modelEndpoint }}
+          modelEndpoint: ${{ steps['fetchModelComponentUrl'].output.entity.metadata.links[0].url }}
           modelEndpointSecretName: ${{ parameters.modelEndpointSecretName }}
           modelEndpointSecretKey: ${{ parameters.modelEndpointSecretKey }}
           includeModelEndpointSecret: ${{ parameters.includeModelEndpointSecret }}

@@ -168,6 +168,7 @@ spec:
           ui:help: "You can also provide the on-prem registry host, example: quay-tv2pb.apps.cluster-tv2pb.sandbox1194.opentlc.com"
         imageOrg:
           title: Image Organization
+          default: rhdhpai-rolling-demo
           type: string
           description: The organization, user or project that this repo will belong to
         imageName:
