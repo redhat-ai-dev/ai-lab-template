@@ -40,7 +40,7 @@ export const templateSuite = (template: AITemplate, appInfo: ApplicationInfo, re
 
       hub = new DeveloperHubClient(hubUrl);
       if (repoInfo.hostType === 'GitHub') {
-        gitToken = process.env.GITHUB_TOKEN || '';
+        gitToken = process.env.MY_GITHUB_TOKEN || '';
         git = new GitHubClient(gitToken);
       } else {
         gitToken = process.env.GITLAB_TOKEN || '';
@@ -85,8 +85,8 @@ export const templateSuite = (template: AITemplate, appInfo: ApplicationInfo, re
     it('template finishes without errors', async () => {
       const options = hub.createTemplateOptions(template, appInfo, repoInfo, deploymentInfo);
       const taskId = await hub.createComponentTask(options);
-      await hub.waitForTask(taskId.id);
-    }, 60000);
+      await hub.waitForTask(taskId.id, 20);
+    }, 120000);
     
     it('gitops repository is created', async () => {
       expect(await git.checkRepositoryExists(repoInfo.repoOwner, `${repoInfo.repoName}-gitops`)).toBe(true);
@@ -99,8 +99,8 @@ export const templateSuite = (template: AITemplate, appInfo: ApplicationInfo, re
 
       if (repoInfo.hostType === 'GitHub') {
         it('blank pull request is automatically created and merged', async () => {
-          await git.waitPullMerged(repoInfo.repoOwner, repoInfo.repoName, 1);
-        }, 30000);
+          await git.waitPullMerged(repoInfo.repoOwner, repoInfo.repoName, 1, 30);
+        }, 70000);
       }
 
       if (repoInfo.hostType === 'GitLab') {

@@ -32,3 +32,10 @@ export SUPPORT_DETR=true
 export APP_INTERFACE_CONTAINER="quay.io/redhat-ai-dev/object_detection:latest"
 
 export TEMPLATE_SOURCE_URL="https://github.com/redhat-ai-dev/ai-lab-samples/tree/main/object-detection"
+
+# application configuration
+# Reference the above info as different names for templating purposes.
+# Should probably be refactored.
+export MODEL_NAME="${DETR_MODEL_NAME}"
+export MODEL_SRC="${DETR_MODEL_SRC}"
+export MODEL_SERVICE_SRC_OTHER="${MODEL_SERVICE_SRC}"

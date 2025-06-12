@@ -30,3 +30,10 @@ export SUPPORT_ASR=true
 export APP_INTERFACE_CONTAINER="quay.io/redhat-ai-dev/audio-to-text:latest"
 
 export TEMPLATE_SOURCE_URL="https://github.com/redhat-ai-dev/ai-lab-samples/tree/main/audio-to-text"
+
+# application configuration
+# Reference the above info as different names for templating purposes.
+# Should probably be refactored.
+export MODEL_NAME="${ASR_MODEL_NAME}"
+export MODEL_SRC="${ASR_MODEL_SRC}"
+export MODEL_SERVICE_SRC_OTHER="${MODEL_SERVICE_SRC}"

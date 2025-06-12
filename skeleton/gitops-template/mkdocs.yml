@@ -2,8 +2,6 @@ site_name: 'Documentation'
 
 nav:
   - Home: index.md
-  - Pipelines: pipelines.md
-  - OpenShift AI: rhoai.md
 
 plugins:
   - techdocs-core

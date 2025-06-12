@@ -8,25 +8,25 @@ export APP_SUMMARY="RAG (Retrieval Augmented Generation) streamlit chat applicat
 export APP_TAGS='["ai", "llamacpp", "vllm", "python", "rag", "database"]'
 export APP_RUN_COMMAND="streamlit run rag_app.py"
 
-# https://github.com/redhat-ai-dev/developer-images/tree/main/model/granite-7b-lab
-export INIT_CONTAINER="quay.io/redhat-ai-dev/granite-7b-lab:latest"
+# https://github.com/redhat-ai-dev/developer-images/tree/main/models/granite-3.1-8b-instruct-gguf
+export INIT_CONTAINER="quay.io/redhat-ai-dev/granite-3.1-8b-instruct-gguf:latest"
 
-# https://github.com/containers/ai-lab-recipes/tree/main/model_servers/llamacpp_python
-export MODEL_SERVICE_CONTAINER="quay.io/ai-lab/llamacpp_python:latest"
+# https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/llamacpp_python/0.3.8
+export MODEL_SERVICE_CONTAINER="quay.io/redhat-ai-dev/llamacpp_python:0.3.8"
 export MODEL_SERVICE_DESC="A Python binding of LLM inference in C/C++ with minimal setup"
-export MODEL_SERVICE_SRC="https://github.com/containers/ai-lab-recipes/tree/main/model_servers/llamacpp_python"
+export MODEL_SERVICE_SRC="https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/llamacpp_python/0.3.8"
 
-# https://github.com/rh-aiservices-bu/llm-on-openshift/tree/main/llm-servers/vllm/gpu
-export VLLM_CONTAINER="quay.io/rh-aiservices-bu/vllm-openai-ubi9:0.4.2"
+# https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/vllm/0.8.4
+export VLLM_CONTAINER="quay.io/redhat-ai-dev/vllm-openai-ubi9:v0.8.4"
 export VLLM_DESC="A high throughput, memory efficient inference and serving engine with GPU support for LLMs in OpenShift"
-export VLLM_SRC="https://github.com/rh-aiservices-bu/llm-on-openshift/tree/main/llm-servers/vllm/gpu"
+export VLLM_SRC="https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/vllm/0.8.4"
 
-# https://huggingface.co/instructlab/granite-7b-lab
-export LLM_MODEL_NAME="instructlab/granite-7b-lab"
+# https://huggingface.co/ibm-granite/granite-3.1-8b-instruct
+export LLM_MODEL_NAME="ibm-granite/granite-3.1-8b-instruct"
 export LLM_MAX_MODEL_LEN=4096
 export LLM_MODEL_CLASSIFICATION="Text Generation"
 export LLM_MODEL_LICENSE="Apache-2.0"
-export LLM_MODEL_SRC="https://huggingface.co/instructlab/granite-7b-lab"
+export LLM_MODEL_SRC="https://huggingface.co/ibm-granite/granite-3.1-8b-instruct"
 
 # model configurations
 export SUPPORT_LLM=true
@@ -40,3 +40,11 @@ export DB_CONTAINER="quay.io/redhat-ai-dev/chroma:latest"
 export DB_PORT=8000
 
 export TEMPLATE_SOURCE_URL="https://github.com/redhat-ai-dev/ai-lab-samples/tree/main/rag"
+
+# application configuration
+# Reference the above info as different names for templating purposes.
+# Should probably be refactored.
+export MODEL_NAME="${LLM_MODEL_NAME}"
+export MODEL_SRC="${LLM_MODEL_SRC}"
+export MODEL_SERVICE_SRC_OTHER="${MODEL_SERVICE_SRC}"
+export MODEL_SERVICE_SRC_VLLM="${VLLM_SRC}"

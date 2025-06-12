@@ -5,7 +5,7 @@
 
 ## Application Information
 
-The application created by this AI Software Template utilizes the [instructlab/granite-7b-lab](https://huggingface.co/instructlab/granite-7b-lab) model. This is classified as a "Text Generation" model and is licensed under the Apache-2.0 license.
+The application created by this AI Software Template utilizes the [ibm-granite/granite-3.1-8b-instruct](https://huggingface.co/ibm-granite/granite-3.1-8b-instruct) model. This is classified as a "Text Generation" model and is licensed under the Apache-2.0 license.
 
 This application relies on [Langchain's python package](https://python.langchain.com/docs/introduction/) to simplify communication with the Model Service and uses [Streamlit](https://streamlit.io/) for the UI layer. This Chatbot takes conversational input from a user. Based on the input and data from previous conversations, the Chatbot formulates an appropriate response to the prompt. You can view an example of this application in the following image:
 

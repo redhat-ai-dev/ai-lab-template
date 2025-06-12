@@ -32,17 +32,19 @@ spec:
           title: Owner
           type: string
           description: Owner of the component
-          default: user:default/evanshortiss
+          default: user:guest
           ui:field: OwnerPicker
           ui:options:
-            allowArbitraryValues: false
+            catalogFilter:
+              kind: [Group, User]
+              readonly: false
         modelServer:
           # SED_LLM_SERVER_START
           title: Model Server
           description: |
-            llama.cpp: A Python binding of LLM inference in C/C++ with minimal setup. | [Learn more](https://github.com/containers/ai-lab-recipes/tree/main/model_servers/llamacpp_python)
+            llama.cpp: A Python binding of LLM inference in C/C++ with minimal setup. | [Learn more](https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/llamacpp_python/0.3.8)
 
-            vLLM: A high throughput, memory efficient inference and serving engine with GPU support for LLMs in OpenShift. If you choose vLLM, ensure that your cluster has Nvidia GPU supported (with compute capability 7.0 or higher). Also, it should have enough CPU & memory resources for the model you would like to work with. | [Learn more](https://github.com/rh-aiservices-bu/llm-on-openshift/tree/main/llm-servers/vllm/gpu)
+            vLLM: A high throughput, memory efficient inference and serving engine with GPU support for LLMs in OpenShift. If you choose vLLM, ensure that your cluster has Nvidia GPU supported (with compute capability 7.0 or higher). Also, it should have enough CPU & memory resources for the model you would like to work with. | [Learn more](https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/vllm/0.8.4)
           # SED_LLM_LLAMA_SERVER_START
           default: llama.cpp
           # SED_LLM_LLAMA_SERVER_END
@@ -61,23 +63,22 @@ spec:
           oneOf:
             # SED_EXISTING_SERVER_START
             - required:
+                - modelEndpoint
                 # SED_LLM_SERVER_START
                 - modelName
                 # SED_LLM_SERVER_END
               properties:
                 modelServer:
                   const: Existing model server
+                modelEndpoint:
+                  title: Model Server Endpoint
+                  type: string
+                  description: "The endpoint for an existing model server."
                 # SED_LLM_SERVER_START
                 modelName:
                   title: Model Name
                   type: string
-                  description: Model
-                  ui:field: EntityPicker
-                  ui:options:
-                    allowArbitraryValues: false
-                    catalogFilter:
-                    - kind: Component
-                      spec.type: 'model-server'
+                  ui:help: "The name of the model deployed on the model server you would like to use."
                 # SED_LLM_SERVER_END
                 includeModelEndpointSecret:
                   title: Is bearer authentication required?
@@ -111,22 +112,22 @@ spec:
                   const: vLLM
                 modelNameDeployed:
                   title: Model Name
-                  description: Text Generation | Apache-2.0 | [Learn more](https://huggingface.co/instructlab/granite-7b-lab)
-                  default: instructlab/granite-7b-lab
+                  description: Text Generation | Apache-2.0 | [Learn more](https://huggingface.co/ibm-granite/granite-3.1-8b-instruct)
+                  default: ibm-granite/granite-3.1-8b-instruct
                   type: string
                   enum:
-                    - instructlab/granite-7b-lab
+                    - ibm-granite/granite-3.1-8b-instruct
             # SED_LLM_LLAMA_SERVER_START
             - properties:
                 modelServer:
                   const: llama.cpp
                 modelNameDeployed:
                   title: Model Name
-                  description: Text Generation | Apache-2.0 | [Learn more](https://huggingface.co/instructlab/granite-7b-lab)
-                  default: instructlab/granite-7b-lab
+                  description: Text Generation | Apache-2.0 | [Learn more](https://huggingface.co/ibm-granite/granite-3.1-8b-instruct)
+                  default: ibm-granite/granite-3.1-8b-instruct
                   type: string
                   enum:
-                    - instructlab/granite-7b-lab
+                    - ibm-granite/granite-3.1-8b-instruct
             # SED_LLM_LLAMA_SERVER_END
             # SED_LLM_SERVER_END
     - title: Application Repository Information
@@ -224,11 +225,6 @@ spec:
   # These steps are executed in the scaffolder backend, using data that we gathered
   # via the parameters above.
   steps:
-    - id: fetchModelComponentUrl
-      name: Fetch Model URL
-      action: catalog:fetch
-      input:
-        entityRef: ${{ parameters.modelName }}
     # SED_APP_SUPPORT_START
     # Each step executes an action, in this case one templates files into the workspace.
     # Get the sample source code
@@ -254,8 +250,15 @@ spec:
           appContainer: ${{ 'quay.io/redhat-ai-dev/ai-template-bootstrap-app:latest' if parameters.hostType === 'GitHub' else 'quay.io/redhat-ai-dev/chatbot:latest' }}
           appPort: 8501
           appRunCommand: "streamlit run chatbot_ui.py"
-          modelServiceContainer: quay.io/ai-lab/llamacpp_python:latest
+          modelServiceContainer: quay.io/redhat-ai-dev/llamacpp_python:0.3.8
           modelServicePort: 8001
+          customModelName: ${{ parameters.modelName }}
+          modelName: ibm-granite/granite-3.1-8b-instruct
+          modelSrc: https://huggingface.co/ibm-granite/granite-3.1-8b-instruct
+          modelServerName: ${{ parameters.modelServer }}
+          customModelAndModelServerSelected: ${{ true if parameters.modelServer === 'Existing model server' else false }}
+          modelServiceSrcVLLM: https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/vllm/0.8.4
+          modelServiceSrcOther: https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/llamacpp_python/0.3.8
     # Renders all the template variables into the files and directory names and content, and places the result in the workspace.
     - id: fetch-skeleton
       name: Fetch Skeleton
@@ -339,23 +342,23 @@ spec:
           webhookSecret: pipelines-secret
           webhookSecretKey: webhook.secret
           defaultBranch: main
-          initContainer: quay.io/redhat-ai-dev/granite-7b-lab:latest
+          initContainer: quay.io/redhat-ai-dev/granite-3.1-8b-instruct-gguf:latest
           modelInitCommand: "['/usr/bin/install', '/model/model.file', '/shared/']"
           modelPath: "/model/model.file"
           appContainer: ${{ 'quay.io/redhat-ai-dev/ai-template-bootstrap-app:latest' if parameters.hostType === 'GitHub' else 'quay.io/redhat-ai-dev/chatbot:latest' }}
           appPort: 8501
-          modelServiceContainer: quay.io/ai-lab/llamacpp_python:latest
+          modelServiceContainer: quay.io/redhat-ai-dev/llamacpp_python:0.3.8
           modelServicePort: 8001
           # SED_LLM_SERVER_START
           # for vllm
           vllmSelected: ${{ parameters.modelServer === 'vLLM' }}
-          vllmModelServiceContainer: quay.io/rh-aiservices-bu/vllm-openai-ubi9:0.4.2
-          modelName: ${{ parameters.modelName | parseEntityRef | pick('name') if parameters.modelServer === 'Existing model server' else 'instructlab/granite-7b-lab' }}
+          vllmModelServiceContainer: quay.io/redhat-ai-dev/vllm-openai-ubi9:v0.8.4
+          modelName: ${{ parameters.modelName if parameters.modelServer === 'Existing model server' else 'ibm-granite/granite-3.1-8b-instruct' }}
           maxModelLength: 4096
           # SED_LLM_SERVER_END
           existingModelServer: ${{ parameters.modelServer === 'Existing model server' }}
           # SED_EXISTING_SERVER_START
-          modelEndpoint: ${{ steps['fetchModelComponentUrl'].output.entity.metadata.links[0].url }}
+          modelEndpoint: ${{ parameters.modelEndpoint }}
           modelEndpointSecretName: ${{ parameters.modelEndpointSecretName }}
           modelEndpointSecretKey: ${{ parameters.modelEndpointSecretKey }}
           includeModelEndpointSecret: ${{ parameters.includeModelEndpointSecret }}
@@ -365,6 +368,12 @@ spec:
           rhoaiSelected: ${{ parameters.rhoaiSelected }}
           # SED_APP_SUPPORT_END
           supportApp: true
+          modelServerName: ${{ parameters.modelServer }}
+          modelServiceSrcVLLM: https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/vllm/0.8.4
+          modelServiceSrcOther: https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/llamacpp_python/0.3.8
+          imageRegistry: ${{ parameters.imageRegistry }}
+          imageOrg: ${{ parameters.imageOrg }}
+          imageName: ${{ parameters.imageName }}
     - action: fs:rename
       id: renameComponentDir
       name: Rename Component Directory
