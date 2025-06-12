@@ -45,7 +45,7 @@ The source code for this RAG application is available at [github.com/redhat-ai-d
 
 !!! tip
 
-  When prompting the model you should ensure you use clear and concise language. Vague or overly broad prompts can produce incorrect responses!
+    When prompting the model you should ensure you use clear and concise language. Vague or overly broad prompts can produce incorrect responses!
 
 ## **Technologies Used**
 
