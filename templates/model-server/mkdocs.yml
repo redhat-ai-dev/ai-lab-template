@@ -1,5 +1,5 @@
-site_name: 'Documentation'
+site_name: 'Template Information'
 nav:
-  - Home: index.md
+  - Resources: index.md
 plugins:
   - techdocs-core

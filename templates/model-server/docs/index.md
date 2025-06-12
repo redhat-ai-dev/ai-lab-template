@@ -1,26 +1,24 @@
-# AI Software Template
+# **Model Server Software Template**
 
-This AI Software Template can be used to create a new GitOps deployment repository for a Model Server, No Application. This Software Template does not generate or configure an application. You can utilize this model server with other Software Templates, like a Chatbot Application for instance.
+This AI Software Template can be used to create a new GitOps deployment repository for a model server. You can use this model server alongside other Software Templates, like a Chatbot, or for other use.
 
-As a user you will be able to customize each section of the template, such as:
+!!! warning
 
-### **Application Information**
+    This will **not** deploy a sample application! This will only deploy the model server that an application can use.
 
-- Application name
+## **Deployed Resources**
 
-- Owner
+By running this template you will receive the following resources:
 
-### **Repository Information**
+- [ibm-granite/granite-3.1-8b-instruct](https://huggingface.co/ibm-granite/granite-3.1-8b-instruct) model served by a [vLLM](https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/vllm/0.8.4) inference server.
 
-- GitHub/GitLab repository
+!!! info
 
-- Repository owner
+    You will need to have GPUs available on your cluster for vLLM usage!
 
-- Name and branch for the repository
+This deployed model and model server is accessible for you to use how you see fit, some examples include:
 
-### **Deployment Information**
+- Building your own custom AI application.
+- Hitting the server via CLI.
+- Learning how AI systems work/are deployed.
 
-- Application deployment namespace
-
-
-For more information please check out our general template documentation in our [source code repository](https://github.com/redhat-ai-dev/ai-lab-template). If you are interested in the ibm-granite/granite-3.1-8b-instruct model being used for this template, refer to the hugging face [page](https://huggingface.co/ibm-granite/granite-3.1-8b-instruct)!

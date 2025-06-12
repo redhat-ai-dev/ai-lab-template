@@ -1,29 +1,44 @@
-# AI Software Template
+<!-- Original Recipe README: https://github.com/containers/ai-lab-recipes/blob/main/recipes/natural_language_processing/codegen/README.md
+-->
 
-This AI Software Template can be used to create a new source code repository and a new GitOps deployment repository for a Code Generation Application.
+# **Codegen Software Template**
 
-As a user you will be able to customize each section of the template, such as:
+## **Using The Template**
 
-### **Application Information**
+This AI Software Template provides you with some customization to alter the final generated result. Aside from being able to input your desired name for the application and container image you can control:
 
-- Application name
+- The owner listed through Red Hat Developer Hub (RHDH).
+- The desired GitHub/GitLab organization and repository.
+- The namespace the application and applicable model servers are deployed to.
 
-- Owner
+!!! tip "Git Repositories"
 
-- Model server of choice
+    You can choose between GitHub and GitLab as your desired Source Code Management (SCM) platform, and the template fields will update accordingly!
 
-### **Repository Information**
 
-- GitHub/GitLab repository
+This template provides the option to supply your own model and model server. By utilizing this option you will need to ensure that the models support Text Generation tasks.
 
-- Repository owner
+## **Deployable Application**
 
-- Name and branch for the repository
+This AI Software Template will create a web application that utilizes the [TheBloke/Mistral-7B-Instruct-v0.2-AWQ](https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.2-AWQ) model to generate text responses to your queries. To access this model you will have a choice between 2 separate inference servers:
 
-### **Deployment Information**
+!!! info
 
-- Application deployment namespace
+    You will need to have GPUs available on your cluster for vLLM usage!
 
-- Image registry and image name
+- Llamacpp_python
+  - A simple Python binding of the Llamacpp LLM inference server.
+- vLLM
+  - A high throughput, memory efficient inference and serving engine with GPU support for LLMs.
 
-For more information, see the Template [source code repository](https://github.com/redhat-ai-dev/ai-lab-template).
+The image below is an example of what you can expect to see from your deployed application. This example shows a brief request to the application asking for a Python webserver. The speed of the response is determined by your choice of Llamacpp_python (slower) vs. vLLM (faster).
+
+![Example of Application](./images/codegen.png)
+
+The source code for this Codegen application is available at [github.com/redhat-ai-dev/ai-lab-samples/tree/main/codegen](https://github.com/redhat-ai-dev/ai-lab-samples/tree/main/codegen).
+
+## **Technologies Used**
+
+This application was created with Python 3.11, and heavily relies on [Langchain](https://python.langchain.com/docs/introduction/) to simplify the communication with the chosen model service (Llamacpp_python/vLLM).
+
+[Streamlit](https://streamlit.io/) is utilized to construct the entire application web interface.
