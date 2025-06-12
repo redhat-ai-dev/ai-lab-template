@@ -1,0 +1,5 @@
+site_name: 'Template Information'
+nav:
+  - Application: index.md
+plugins:
+  - techdocs-core
