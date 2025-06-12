@@ -10,13 +10,7 @@ function apply-configurations() {
     SAMPLENAME=$2
     TEMPLATE_TECHDOC_TYPE=$3
 
-    # add template card docs
-    # if [ $TEMPLATE_TECHDOC_TYPE == "app" ]; then
-    #     # cp -r $SKELETON_DIR/template-card-techdocs/$TEMPLATE_TECHDOC_TYPE/docs/$SAMPLENAME $DEST/docs
-    # fi
     cp -r $ROOT_DIR/documentation/$TEMPLATE_TECHDOC_TYPE/$SAMPLENAME $DEST/docs
-    # mkdir -p $DEST/docs && cp -r $SKELETON_DIR/template-card-techdocs/$TEMPLATE_TECHDOC_TYPE/docs/common/* $DEST/docs/
-    # cp -r $SKELETON_DIR/template-card-techdocs/$TEMPLATE_TECHDOC_TYPE/mkdocs.yml $DEST/mkdocs.yml
     cp -r $ROOT_DIR/documentation/$TEMPLATE_TECHDOC_TYPE/mkdocs.yml $DEST/mkdocs.yml
 
     cp $SKELETON_DIR/template.yaml $DEST/template.yaml
@@ -37,34 +31,6 @@ function apply-configurations() {
     sed -i "s!sed.edit.DESCRIPTION!$APP_DESC!g" $DEST/template.yaml
     sed -i "s!sed.edit.APPTAGS!$APP_TAGS!g" $DEST/template.yaml
     sed -i "s!sed.edit.CATALOG_DESCRIPTION!Secure Supply Chain Example for $APP_DISPLAY_NAME!g" $DEST/template.yaml
-
-    # # shared template card techdoc for all templates
-    # sed -i "s!sed.edit.APP_DISPLAY_NAME!$APP_DISPLAY_NAME!g" $DEST/docs/index.md
-    # sed -i "s!sed.edit.TEMPLATE_SOURCE_URL!$TEMPLATE_SOURCE_URL!g" $DEST/docs/index.md
-    # sed -i "s!sed.edit.LLM_MODEL_NAME!$LLM_MODEL_NAME!g" $DEST/docs/index.md
-    # sed -i "s!sed.edit.LLM_MODEL_SRC!$LLM_MODEL_SRC!g" $DEST/docs/index.md
-
-    # # application specific techdoc updates
-    # # sed will exit with code 0 if not found (for different formats)
-    # if [ $TEMPLATE_TECHDOC_TYPE == "app" ]; then
-    #     sed -i "s!sed.edit.APP_DISPLAY_NAME!$APP_DISPLAY_NAME!g" $DEST/docs/application.md
-    #     sed -i "s!sed.edit.TEMPLATE_SOURCE_URL!$TEMPLATE_SOURCE_URL!g" $DEST/docs/application.md
-        
-    #     sed -i "s!sed.edit.ASR_MODEL_NAME!$ASR_MODEL_NAME!g" $DEST/docs/application.md
-    #     sed -i "s!sed.edit.ASR_MODEL_SRC!$ASR_MODEL_SRC!g" $DEST/docs/application.md
-    #     sed -i "s!sed.edit.ASR_MODEL_LICENSE!$ASR_MODEL_LICENSE!g" $DEST/docs/application.md
-    #     sed -i "s!sed.edit.ASR_MODEL_CLASSIFICATION!$ASR_MODEL_CLASSIFICATION!g" $DEST/docs/application.md
-
-    #     sed -i "s!sed.edit.DETR_MODEL_NAME!$DETR_MODEL_NAME!g" $DEST/docs/application.md
-    #     sed -i "s!sed.edit.DETR_MODEL_SRC!$DETR_MODEL_SRC!g" $DEST/docs/application.md
-    #     sed -i "s!sed.edit.DETR_MODEL_LICENSE!$DETR_MODEL_LICENSE!g" $DEST/docs/application.md
-    #     sed -i "s!sed.edit.DETR_MODEL_CLASSIFICATION!$DETR_MODEL_CLASSIFICATION!g" $DEST/docs/application.md
-
-    #     sed -i "s!sed.edit.LLM_MODEL_NAME!$LLM_MODEL_NAME!g" $DEST/docs/application.md
-    #     sed -i "s!sed.edit.LLM_MODEL_SRC!$LLM_MODEL_SRC!g" $DEST/docs/application.md
-    #     sed -i "s!sed.edit.LLM_MODEL_CLASSIFICATION!$LLM_MODEL_CLASSIFICATION!g" $DEST/docs/application.md
-    #     sed -i "s!sed.edit.LLM_MODEL_LICENSE!$LLM_MODEL_LICENSE!g" $DEST/docs/application.md
-    # fi
 
     if [ $SUPPORT_APP == false ]; then
         sed -i '/# SED_APP_SUPPORT_START/,/# SED_APP_SUPPORT_END/d' $DEST/template.yaml
