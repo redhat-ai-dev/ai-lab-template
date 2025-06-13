@@ -47,7 +47,7 @@ You chose to use the provided model that comes with this AI Software Template. A
 In order to access this model the template deployed a model server. You chose **[${{ values.modelServerName }}]({%- if values.modelServerName == 'vLLM' %} ${{ values.modelServiceSrcVLLM }} {%- else %} ${{ values.modelServiceSrcOther }} {%- endif %})** as your server.
 {%- endif %}
 
-# Deployment Information
+# **Deployment Information**
 
 If you are interested in seeing the deployed Kubernetes resources, all resources were deployed into your chosen namespace of ${{ values.namespace }}. You can access this namespace through the web console or via your CLI.
 
