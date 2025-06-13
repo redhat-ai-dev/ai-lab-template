@@ -1,5 +1,9 @@
 # Running Samples in OpenShift AI
 
+!!! warning
+
+   In order to run your applications with an RHOAI workbench you *must* have checked the '*Create Workbench for OpenShift AI*' box during template execution.
+
 This document outlines how you can build and run your sample applications within an OpenShift AI workbench.
 
 ## Prerequisites
