@@ -1,5 +1,15 @@
 # USAGE
 
+## Prerequisite
+
+### Red Hat Developer Hub
+
+The AI Software Templates have been tested on Red Hat Developer Hub release 1.2+.
+
+### Backstage
+
+The AI Software Templates should work on Backstage version 1.26.5+.
+
 ## Usage in Red Hat Developer Hub
 
 To import these templates click `Register Existing Component` on the Software Templates page.
