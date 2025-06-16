@@ -2,7 +2,7 @@
 
 If you would like to contribute to the Software Templates on this repository, there are a few processes that you would need to follow. 
 
-The Software Templates are found in the [../templates](./templates) directory and the reference reusable content are in the [../skeleton](./skeleton) directory.  The Software Templates are maintained by importing external resources. This allows the external resources to be standalone, developed independently, evolved and then imported.
+The Software Templates are found in the [../templates](../templates) directory and the reference reusable content are in the [../skeleton](../skeleton) directory.  The Software Templates are maintained by importing external resources. This allows the external resources to be standalone, developed independently, evolved and then imported.
 
 This document addresses how you can contribute for 
 - Pipelines
@@ -16,7 +16,7 @@ To update and/or contribute to the Pipelines, head over to the [rhdh-pipelines](
 
 The [update-tekton-definition](../scripts/update-tekton-definition) script copies over the necessary resources from the rhdh-pipelines repository into the [skeleton](../skeleton/) directory.
 
-At this moment, the Software Templates supports Tekton. All the Tekton resources - PipelineRun, Pipeline and Task are located in the rhdh-piplines repository.
+At this moment, the Software Templates support Tekton. All the Tekton resources - PipelineRun, Pipeline and Task are located in the rhdh-piplines repository.
 
 
 ## GitOps
@@ -25,7 +25,7 @@ To update and/or contribute to the GitOps, head over to the [ai-lab-app](https:/
 
 The [import-gitops-template](../scripts/import-gitops-template) script copies over the necessary resources from the ai-lab-app repository into the [skeleton](../skeleton/) directory.
 
-At this moment, the Software Templates supports ArgoCD. All the ArgoCD Applications and Kubernetes/OpenShift resources to run the sample application are located in the ai-lab-app repository.
+At this moment, the Software Templates support ArgoCD. All the ArgoCD Applications and Kubernetes/OpenShift resources to run the sample application are located in the ai-lab-app repository.
 
 ## AI Samples
 
