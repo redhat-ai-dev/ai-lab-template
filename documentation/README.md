@@ -6,4 +6,4 @@ All Tech Docs for AI Software Templates that deploy applications can be found in
 
 The Tech Docs contained in this directory are packaged alongside the Template content as they are designed to show up on the Template Card themselves. You can find an example of this below:
 
-![Template Card Tech Doc Example](../assets/template-card-techdoc-example.png)
+![Template Card Tech Doc Example](../docs/images/template-card-techdoc-example.png)
