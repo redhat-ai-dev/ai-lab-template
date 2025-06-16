@@ -34,6 +34,6 @@ The image below is an example of what you can expect to see from your deployed a
 
 The source code for this Audio to Text application is available at [github.com/redhat-ai-dev/ai-lab-samples/tree/main/object-detection](https://github.com/redhat-ai-dev/ai-lab-samples/tree/main/object-detection).
 
-### **Technologies Used**
+## **Technologies Used**
 
 This application was created with Python 3.11, and relies on [FastAPI](https://fastapi.tiangolo.com/) for HTTP communication and [Streamlit](https://streamlit.io/) to construct the entire application web interface.
