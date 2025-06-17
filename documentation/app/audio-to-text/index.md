@@ -24,7 +24,7 @@ This AI Software Template will create a web application that utilizes the [ggerg
 
 !!! info
 
-    This model is classified as an "Automatic Speed Recognition (ASR)" model. These models are specifically trained and designed to accurately transcribe spoken language into written text!
+    This Software Template uses an "Automatic Speed Recognition (ASR)" model. These models are specifically trained and designed to accurately transcribe spoken language into written text!
 
     The model provided for use with this application is licensed under the MIT license.
 
