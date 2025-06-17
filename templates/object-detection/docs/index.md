@@ -5,7 +5,7 @@
 
 ## **Using the Software Template**
 
-This AI Software Template provides you with some customization to alter the final generated result. Aside from being able to input your desired name for the application and container image you can control:
+This AI Software Template allows you to customize the final generated result. In addition to specifying the application name and container image, you can also control the following actions:
 
 - The owner listed through Red Hat Developer Hub (RHDH)
 - The desired GitHub/GitLab organization and repository
@@ -16,11 +16,11 @@ This AI Software Template provides you with some customization to alter the fina
     You can choose between GitHub and GitLab as your desired Source Code Management (SCM) platform, and the template fields will update accordingly!
 
 
-This template provides the option to supply your own model and model server. By utilizing this option you will need to ensure that the model supports Object Detection tasks.
+With this template, you can supply your own model and model server. By utilizing this option, ensure that you provide models that supports Object Detection tasks.
 
 ## **Deployable Application**
 
-This AI Software Template will create a web application that utilizes the [facebook/detr-resnet-101](https://huggingface.co/facebook/detr-resnet-101) model to identify objects from images. 
+This AI Software Template creates a web application that utilizes the [facebook/detr-resnet-101](https://huggingface.co/facebook/detr-resnet-101) model to identify objects from images. 
 
 !!! info
 
@@ -28,12 +28,12 @@ This AI Software Template will create a web application that utilizes the [faceb
 
     The model provided for use with this application is licensed under the Apache-2.0 license.
 
-The image below is an example of what you can expect to see from your deployed application. This example shows the identification of various objects in the image, ranging from cats to the couch itself.
+The following image depicts an example of what you can expect to see from your deployed application. This example displays the identification of various objects in the image, ranging from cats to the couch itself.
 
 ![Example of Application](./images/object-detection.png)
 
 The source code for this Audio to Text application is available at [github.com/redhat-ai-dev/ai-lab-samples/tree/main/object-detection](https://github.com/redhat-ai-dev/ai-lab-samples/tree/main/object-detection).
 
-## **Technologies Used**
+## **Technologies used**
 
 This application was created with Python 3.11, and relies on [FastAPI](https://fastapi.tiangolo.com/) for HTTP communication and [Streamlit](https://streamlit.io/) to construct the entire application web interface.

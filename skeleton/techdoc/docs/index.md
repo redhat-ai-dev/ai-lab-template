@@ -10,7 +10,7 @@ Congratulations! You deployed an application from an AI Software Template. The t
 
 # **Usage**
 
-To access the ${{ values.name }} application that was deployed using the Software Template, you can follow along with the instructions below:
+To access the ${{ values.name }} application that was deployed using the Software Template, complete the following instructions:
 
 !!! tip
 
@@ -31,7 +31,7 @@ From that view, to navigate straight to your sample application, you can click t
 # **Model & Model Server Information**
 
 {%- if values.customModelAndModelServerSelected %}
-You chose to provide your own model server. As part of providing your own server you have to provide a useable model. The following model name is accessible through your model server endpoint:
+You chose to provide your own model server. As part of providing your own server, you have to provide a useable model. The following model name is accessible through your model server endpoint:
 
 - ${{ values.customModelName }}
 

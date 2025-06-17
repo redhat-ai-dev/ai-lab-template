@@ -1,6 +1,6 @@
 # **Model Server Software Template**
 
-This AI Software Template can be used to create a new GitOps deployment repository for a model server. You can use this model server alongside other Software Templates, like a Chatbot, or for other use.
+You can use this AI Software Template to create a new GitOps deployment repository for a model server. You can use this model server with other Software Templates, like a Chatbot, or for other use.
 
 !!! warning
 
@@ -8,7 +8,7 @@ This AI Software Template can be used to create a new GitOps deployment reposito
 
 ## **Deployed Resources**
 
-By running this template you will receive the following resources:
+By running this template, you will receive the following resources:
 
 - [ibm-granite/granite-3.1-8b-instruct](https://huggingface.co/ibm-granite/granite-3.1-8b-instruct) model served by a [vLLM](https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/vllm/0.8.4) inference server.
 

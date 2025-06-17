@@ -20,7 +20,7 @@ With this template, you can supply your own model and model server. By utilizing
 
 ## **Deployable Application**
 
-This AI Software Template will create a web application that utilizes the [ggerganov/whisper.cpp](https://huggingface.co/ggerganov/whisper.cpp) model to transform audio files into text. 
+This AI Software Template creates a web application that utilizes the [ggerganov/whisper.cpp](https://huggingface.co/ggerganov/whisper.cpp) model to transform audio files into text. 
 
 !!! info
 
@@ -28,7 +28,7 @@ This AI Software Template will create a web application that utilizes the [ggerg
 
     The model provided for use with this application is licensed under the MIT license.
 
-The image below is an example of what you can expect to see from your deployed application. This example shows the text result of an audio file (*harvard_1.wav*) uploaded by the user. For best results you should ensure that you upload high-quality audio files, and limit background noise that could interfere with the transcription.
+The following image depicts an example of what you can expect to see from your deployed application. This example displays the text result of an audio file (*harvard_1.wav*) uploaded by the user. For best results, you should ensure that you upload high-quality audio files, and limit background noise that might interfere with the transcription.
 
 ![Example of Application](./images/audio-to-text.png)
 
@@ -43,7 +43,7 @@ The image below is an example of what you can expect to see from your deployed a
 
 The source code for this Audio to Text application is available at [github.com/redhat-ai-dev/ai-lab-samples/tree/main/audio-to-text](https://github.com/redhat-ai-dev/ai-lab-samples/tree/main/audio-to-text).
 
-## **Technologies Used**
+## **Technologies used**
 
 This application was created with Python 3.11, and heavily relies on [Langchain](https://python.langchain.com/docs/introduction/) to simplify the communication with the model service (whisper.cpp).
 

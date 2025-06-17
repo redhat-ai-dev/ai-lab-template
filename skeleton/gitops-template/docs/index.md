@@ -1,6 +1,6 @@
 # **AI Software Template GitOps**
 
-This repository contains the necessary content required for managing GitOps. It was created as part of an AI Software Template execution. The associated source component is available for reference in the **Overview** tab. You can find an example of this reference in the following image.
+This repository contains the necessary content required for managing GitOps. It was created as part of an AI Software Template execution. The associated source component is available for reference in the **Overview** tab as described in the following image.
 
 ![Overview Tab](./images/overview-dependency.png)
 
@@ -11,7 +11,7 @@ During the template setup a custom model server was entered. Therefore, no model
 
 {%- else %}
 
-A deployment with the below characteristics was made based on input from the AI Software Template.
+A deployment with the following characteristics was made based on input from the AI Software Template.
 
 ## **Model & Model Server**
 
