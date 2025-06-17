@@ -8,7 +8,7 @@
 This AI Software Template provides you with some customization to alter the final generated result. Aside from being able to input your desired name for the application and container image you can control:
 
 - The owner listed through Red Hat Developer Hub (RHDH)
-- The desired GitHub/GitLab organization and repository.
+- The desired GitHub/GitLab organization and repository
 - The namespace the application and applicable model servers are deployed to.
 
 !!! tip "Git Repositories"
