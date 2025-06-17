@@ -10,7 +10,7 @@ Congratulations! You deployed an application from an AI Software Template. The t
 
 # **Usage**
 
-To access the application that was deployed from your use of the template, you can follow along with the instructions below:
+To access the ${{ values.name }} application that was deployed using the Software Template, you can follow along with the instructions below:
 
 !!! tip
 
