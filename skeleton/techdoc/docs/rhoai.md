@@ -2,7 +2,7 @@
 
 !!! warning
 
-      In order to run your applications with an RHOAI workbench you *must* have checked the '*Create Workbench for OpenShift AI*' box during template execution.
+      In order to run your applications with an RHOAI workbench, you *have* checked the '*Create Workbench for OpenShift AI*' box during the template execution.
 
 This document outlines how you can build and run your sample applications within an OpenShift AI workbench.
 
