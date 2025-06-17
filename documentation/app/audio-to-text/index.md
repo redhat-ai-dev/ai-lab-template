@@ -3,7 +3,7 @@
 
 # **Audio to Text Software Template**
 
-## **Using The Template**
+## **Using the Software Template**
 
 This AI Software Template allows you to customize the final generated result. In addition to specifying the application name and container image, you can also control the following actions:
 

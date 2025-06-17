@@ -3,7 +3,7 @@
 
 # **Audio to Text Software Template**
 
-## **Using The Template**
+## **Using the Software Template**
 
 This AI Software Template allows you to customize the final generated result. In addition to specifying the application name and container image, you can also control the following actions:
 
@@ -16,7 +16,7 @@ This AI Software Template allows you to customize the final generated result. In
     You can choose between GitHub and GitLab as your desired Source Code Management (SCM) platform, and the template fields will update accordingly!
 
 
-This template provides the option to supply your own model and model server. By utilizing this option you will need to ensure that the models provided support Automatic Speech Recognition (ASR) tasks.
+With this template, you can supply your own model and model server. By utilizing this option, ensure that you provide models that support Automatic Speech Recognition (ASR) tasks.
 
 ## **Deployable Application**
 

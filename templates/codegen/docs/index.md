@@ -3,7 +3,7 @@
 
 # **Codegen Software Template**
 
-## **Using The Template**
+## **Using the Software Template**
 
 This AI Software Template provides you with some customization to alter the final generated result. Aside from being able to input your desired name for the application and container image you can control:
 
