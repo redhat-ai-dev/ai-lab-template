@@ -16,11 +16,9 @@ This AI Software Template allows you to customize the final generated result. In
     You can choose between GitHub and GitLab as your desired Source Code Management (SCM) platform, and the template fields will update accordingly!
 
 
-With this template, you can supply your own model and model server. By utilizing this option, ensure that you provide models that support Text Generation tasks.
-
 ## **Deployable Application**
 
-This AI Software Template creates a web application that utilizes the [ibm-granite/granite-3.1-8b-instruct](https://huggingface.co/ibm-granite/granite-3.1-8b-instruct) model to generate text reponses based on user prompts. To access this model you will have a choice between 2 separate inference servers:
+This AI Software Template creates a web application that utilizes a Text Generation model to generate responses to your queries. To support this, you can choose between three inference server options:
 
 !!! info
 
@@ -28,8 +26,13 @@ This AI Software Template creates a web application that utilizes the [ibm-grani
 
 - Llamacpp_python
   - A simple Python binding of the Llamacpp LLM inference server.
+  - Serves the [ibm-granite/granite-3.1-8b-instruct](https://huggingface.co/ibm-granite/granite-3.1-8b-instruct) model.
 - vLLM
   - A high throughput, memory efficient inference and serving engine with GPU support for LLMs.
+  - Serves the [ibm-granite/granite-3.1-8b-instruct](https://huggingface.co/ibm-granite/granite-3.1-8b-instruct) model.
+- Bring-Your-Own
+  - You can supply your own model server and model.
+  - You must ensure that you provide a model that supports Text Generation tasks.
 
 !!! info
 

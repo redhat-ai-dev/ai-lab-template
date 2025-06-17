@@ -16,11 +16,9 @@ This AI Software Template allows you to customize the final generated result. In
     You can choose between GitHub and GitLab as your desired Source Code Management (SCM) platform, and the template fields will update accordingly!
 
 
-With this template, you can supply your own model and model server. By utilizing this option, ensure that you provide models that support Text Generation tasks.
-
 ## **Deployable Application**
 
-This AI Software Template will create a web application that utilizes the [TheBloke/Mistral-7B-Instruct-v0.2-AWQ](https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.2-AWQ) model to generate text responses to your queries. To access this model, you can choose between two separate inference servers:
+This AI Software Template creates a web application that utilizes a Text Generation model to generate responses to your queries. To support this, you can choose between three inference server options:
 
 !!! info
 
@@ -28,8 +26,14 @@ This AI Software Template will create a web application that utilizes the [TheBl
 
 - Llamacpp_python
   - A simple Python binding of the Llamacpp LLM inference server.
+  - Serves the [TheBloke/Mistral-7B-Instruct-v0.2-AWQ](https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.2-AWQ) model.
 - vLLM
   - A high throughput, memory efficient inference and serving engine with GPU support for LLMs.
+  - Serves the [TheBloke/Mistral-7B-Instruct-v0.2-AWQ](https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.2-AWQ) model.
+- Bring-Your-Own
+  - You can supply your own model server and model.
+  - You must ensure that you provide a model that supports Text Generation tasks.
+
 
 The following image depicts an example of what you can expect to see from your deployed application. This example display a brief request to the application asking for a Python webserver. You can determine the speed of the response by choosing `Llamacpp_python` (slower) or `vLLM` (faster).
 
