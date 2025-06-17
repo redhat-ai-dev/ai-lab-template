@@ -5,11 +5,11 @@
 
 ## **Using The Template**
 
-This AI Software Template provides you with some customization to alter the final generated result. Aside from being able to input your desired name for the application and container image, you can control:
+This AI Software Template allows you to customize the final generated result. In addition to specifying the application name and container image, you can also control the following actions:
 
-- The owner listed through Red Hat Developer Hub (RHDH).
-- The desired GitHub/GitLab organization and repository.
-- The namespace the application and applicable model servers are deployed to.
+- The owner listed through Red Hat Developer Hub (RHDH)
+- The desired GitHub/GitLab organization and repository
+- The namespace the application and applicable model servers are deployed to
 
 !!! tip "Git Repositories"
 
@@ -24,7 +24,7 @@ This AI Software Template will create a web application that utilizes the [ggerg
 
 !!! info
 
-    This model is classified as an "Automatic Speed Recognition (ASR)" model. These models are specifically trained and designed to accurately transcribe spoken language into written text!
+    This Software Template uses an "Automatic Speed Recognition (ASR)" model. These models are specifically trained and designed to accurately transcribe spoken language into written text!
 
     The model provided for use with this application is licensed under the MIT license.
 

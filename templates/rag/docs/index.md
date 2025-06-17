@@ -9,14 +9,14 @@ This AI Software Template provides you with some customization to alter the fina
 
 - The owner listed through Red Hat Developer Hub (RHDH)
 - The desired GitHub/GitLab organization and repository
-- The namespace the application and applicable model servers are deployed to.
+- The namespace the application and applicable model servers are deployed to
 
 !!! tip "Git Repositories"
 
     You can choose between GitHub and GitLab as your desired Source Code Management (SCM) platform, and the template fields will update accordingly!
 
 
-With this template, you can supply your own model and model server. By utilizing this option, ensure that you provide models that support Text Generation tasks.
+This template provides the option to supply your own model and model server. By utilizing this option you will need to ensure that the models support Text Generation tasks.
 
 ## **Deployable Application**
 
@@ -37,7 +37,7 @@ This AI Software Template will create a web application that utilizes the [ibm-g
 
     The model provided for use with this application is licensed under the Apache-2.0 license.
 
-The following image depicts what you can expect to see from your deployed application. This example displays the chat window as well as the section where you can upload reference documents. Retrieval-Augmented Generation (RAG) allows the model to reference documents you provide to enhance the accuracy of responses!
+The image below is an example of what you can expect to see from your deployed application. This example shows the chat window as well as the section where you can upload reference documents. Retrieval-Augmented Generation (RAG) allows the model to reference documents you provide to enhance the accuracy of responses!
 
 ![Example of Application](./images/rag.png)
 

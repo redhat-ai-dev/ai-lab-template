@@ -18,7 +18,7 @@ By running this template you will receive the following resources:
 
 This deployed model and model server is accessible for you to use how you see fit, some examples include:
 
-- Building your own custom AI application.
-- Hitting the server via CLI.
-- Learning how AI systems work/are deployed.
+- Building your own custom AI application
+- Hitting the server via CLI
+- Learning how AI systems work/are deployed
 
