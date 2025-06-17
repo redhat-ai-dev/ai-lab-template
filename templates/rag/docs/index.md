@@ -37,7 +37,7 @@ This AI Software Template will create a web application that utilizes the [ibm-g
 
     The model provided for use with this application is licensed under the Apache-2.0 license.
 
-The image below is an example of what you can expect to see from your deployed application. This example shows the chat window as well as the section where you can upload reference documents. Retrieval-Augmented Generation (RAG) allows the model to reference documents you provide to enhance the accuracy of responses!
+The following image depicts what you can expect to see from your deployed application. This example displays the chat window as well as the section where you can upload reference documents. Retrieval-Augmented Generation (RAG) allows the model to reference documents you provide to enhance the accuracy of responses!
 
 ![Example of Application](./images/rag.png)
 
