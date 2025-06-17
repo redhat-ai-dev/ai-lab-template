@@ -16,7 +16,7 @@ This AI Software Template provides you with some customization to alter the fina
     You can choose between GitHub and GitLab as your desired Source Code Management (SCM) platform, and the template fields will update accordingly!
 
 
-This template provides the option to supply your own model and model server. By utilizing this option you will need to ensure that the models support Text Generation tasks.
+With this template, you can supply your own model and model server. By utilizing this option, ensure that you provide models that support Text Generation tasks.
 
 ## **Deployable Application**
 
