@@ -15,4 +15,4 @@ This application was created with Python 3.11, and relies on [FastAPI](https://f
 For additional information, see:
 
 - [The Deployable Application](./application.md)
-- [Using the Audio to Text Software Template](./usage.md)
+- [Using the Object Detection Software Template](./usage.md)

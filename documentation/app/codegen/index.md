@@ -24,4 +24,4 @@ This application was created with Python 3.11, and heavily relies on [Langchain]
 For additional information, see:
 
 - [The Deployable Application](./application.md)
-- [Using the Chatbot Software Template](./usage.md)
+- [Using the Codegen Software Template](./usage.md)

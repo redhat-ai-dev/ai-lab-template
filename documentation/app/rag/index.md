@@ -22,3 +22,8 @@ By choosing this template you can deploy a Retrieval-Augmented Generation (RAG) 
 This application was created with Python 3.11, and heavily relies on [Langchain](https://python.langchain.com/docs/introduction/) to simplify the communication with the chosen model service (Llamacpp_python/vLLM). Additionally, the UI serving is handled by [Streamlit](https://streamlit.io/).
 
 A vector database is required for the use of Retrieval-Augmented Generation (RAG). This application utilizes [ChromaDB](https://www.trychroma.com/) to handle all storage tasks.
+
+For additional information, see:
+
+- [The Deployable Application](./application.md)
+- [Using the RAG Software Template](./usage.md)
