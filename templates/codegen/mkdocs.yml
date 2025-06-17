@@ -1,5 +1,7 @@
-site_name: 'Template Information'
+site_name: 'Template Documentation'
 nav:
-  - Application: index.md
+  - Overview: overview.md
+  - Template Usage: usage.md
+  - Deployed Application: application.md
 plugins:
   - techdocs-core
