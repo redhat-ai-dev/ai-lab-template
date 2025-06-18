@@ -365,9 +365,9 @@ spec:
           # for RHOAI
           rhoaiSelected: ${{ parameters.rhoaiSelected }}
           # SED_APP_SUPPORT_END
-          # SED_DB_START
           # Database is required for the RAG templates
           dbRequired: true
+          # SED_DB_START
           dbContainer: quay.io/redhat-ai-dev/chroma:latest
           dbPort: 8000
           # SED_DB_END

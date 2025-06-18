@@ -405,9 +405,9 @@ spec:
           # for RHOAI
           rhoaiSelected: ${{ parameters.rhoaiSelected }}
           # SED_APP_SUPPORT_END
-          # SED_DB_START
           # Database is required for the RAG templates
           dbRequired: ${SUPPORT_DB}
+          # SED_DB_START
           dbContainer: ${DB_CONTAINER}
           dbPort: ${DB_PORT}
           # SED_DB_END

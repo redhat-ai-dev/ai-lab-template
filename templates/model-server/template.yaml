@@ -167,6 +167,8 @@ spec:
           maxModelLength: 4096
           # SED_LLM_SERVER_END
           existingModelServer: ${{ parameters.modelServer === 'Existing model server' }}
+          # Database is required for the RAG templates
+          dbRequired: false
           supportApp: false
           modelServerName: ${{ parameters.modelServer }}
           modelServiceSrcVLLM: 

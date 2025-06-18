@@ -365,6 +365,8 @@ spec:
           # for RHOAI
           rhoaiSelected: ${{ parameters.rhoaiSelected }}
           # SED_APP_SUPPORT_END
+          # Database is required for the RAG templates
+          dbRequired: false
           supportApp: true
           modelServerName: ${{ parameters.modelServer }}
           modelServiceSrcVLLM: https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/vllm/0.8.4
