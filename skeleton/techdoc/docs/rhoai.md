@@ -1,8 +1,12 @@
-# Running Samples in OpenShift AI
+# **Running Samples in OpenShift AI**
+
+!!! warning
+
+      In order to run your applications with an RHOAI workbench, you *have* checked the '*Create Workbench for OpenShift AI*' box during the template execution.
 
 This document outlines how you can build and run your sample applications within an OpenShift AI workbench.
 
-## Prerequisites
+## **Prerequisites**
 
 - Red Hat OpenShift AI installed, and `Create workbench for OpenShift AI` selected during component creation.
 - `oc` cli installed
@@ -10,7 +14,7 @@ This document outlines how you can build and run your sample applications within
 - Permissions to run `oc port-forward` on the cluster, specifically an account with the following roles:
    - `get`, `create`, and `list` for the `pods/portforward` subresource
 
-## Running the Sample
+## **Running the Sample**
 
 1) On the Console, click the square "apps" icon on the upper-right corner (next to the notifications icon). `Openshift AI` is listed in the drop-down list.
 
@@ -34,7 +38,7 @@ This document outlines how you can build and run your sample applications within
 
 7) Run `${{ values.appRunCommand }}` to run the sample in the workbench.
 
-## Accessing the Sample
+## **Accessing the Sample**
 
 With the sample app now running, complete the following steps to access the sample app in your browser:
 

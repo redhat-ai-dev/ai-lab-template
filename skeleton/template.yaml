@@ -392,6 +392,7 @@ spec:
           vllmSelected: ${{ parameters.modelServer === 'vLLM' }}
           vllmModelServiceContainer: ${VLLM_CONTAINER}
           modelName: ${{ parameters.modelName if parameters.modelServer === 'Existing model server' else '${LLM_MODEL_NAME}' }}
+          modelSrc: ${MODEL_SRC}
           maxModelLength: ${LLM_MAX_MODEL_LEN}
           # SED_LLM_SERVER_END
           existingModelServer: ${{ parameters.modelServer === 'Existing model server' }}

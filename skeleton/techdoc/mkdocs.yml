@@ -1,8 +1,7 @@
 site_name: 'Documentation'
 
 nav:
-  - Home: index.md
-  - Pipelines: pipelines.md
+  - Application: index.md
   - OpenShift AI: rhoai.md
 
 plugins:
