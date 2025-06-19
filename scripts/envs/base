@@ -16,6 +16,7 @@ export SUPPORT_EXISTING_SERVER=true
 
 # Database configurations
 export SUPPORT_DB=false
+export CLEANUP_DB=true
 
 # application configuration
 export SUPPORT_APP=true

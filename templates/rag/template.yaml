@@ -378,6 +378,15 @@ spec:
           imageRegistry: ${{ parameters.imageRegistry }}
           imageOrg: ${{ parameters.imageOrg }}
           imageName: ${{ parameters.imageName }}
+    - id: cleanupDatabaseResources
+      action: fs:delete
+      name: Cleanup Unused Database Resources
+      if: false
+      input:
+        files:
+          - 'gitops/components/http/base/deployment-database.yaml'
+          - 'gitops/components/http/base/service-database.yaml'
+          - 'gitops/components/http/base/database-config.yaml'
     - action: fs:rename
       id: renameComponentDir
       name: Rename Component Directory
