@@ -192,6 +192,13 @@ spec:
       input:
         files:
           - 'gitops/components/http/base/rhoai'
+    - id: cleanupvLLMResources
+      action: fs:delete
+      name: Cleanup Unused vLLM Resources
+      if: ${{ parameters.modelServer !== 'vLLM' }}
+      input:
+        files:
+          - 'gitops/components/http/base/pvc.yaml'
     - action: fs:rename
       id: renameComponentDir
       name: Rename Component Directory
