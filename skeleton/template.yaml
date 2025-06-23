@@ -427,6 +427,13 @@ spec:
           - 'gitops/components/http/base/deployment-database.yaml'
           - 'gitops/components/http/base/service-database.yaml'
           - 'gitops/components/http/base/database-config.yaml'
+    - id: cleanupRhoaiResources
+      action: fs:delete
+      name: Cleanup Unused RHOAI Resources
+      if: ${{ not parameters.rhoaiSelected }}
+      input:
+        files:
+          - 'gitops/components/http/base/rhoai'
     - action: fs:rename
       id: renameComponentDir
       name: Rename Component Directory
