@@ -401,6 +401,14 @@ spec:
       input:
         files:
           - 'gitops/components/http/base/pvc.yaml'
+    - id: cleanupModelServerResources
+      action: fs:delete
+      name: Cleanup Unused Model Server Resources
+      if: ${{ parameters.modelServer === 'Existing model server' }}
+      input:
+        files:
+          - 'gitops/components/http/base/deployment-model-server.yaml'
+          - 'gitops/components/http/base/service-model-server.yaml'
     - action: fs:rename
       id: renameComponentDir
       name: Rename Component Directory
