@@ -28,3 +28,4 @@ export SUPPORT_EXISTING_SERVER=false
 
 # application configuration
 export SUPPORT_APP=false
+export CLEANUP_APP=true

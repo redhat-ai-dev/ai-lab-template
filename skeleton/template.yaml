@@ -449,6 +449,15 @@ spec:
         files:
           - 'gitops/components/http/base/deployment-model-server.yaml'
           - 'gitops/components/http/base/service-model-server.yaml'
+    - id: cleanupApplicationResources
+      action: fs:delete
+      name: Cleanup Unused Application Resources
+      if: ${CLEANUP_APP}
+      input:
+        files:
+          - 'gitops/components/http/base/deployment.yaml'
+          - 'gitops/components/http/base/service.yaml'
+          - 'gitops/components/http/base/route.yaml'
     - action: fs:rename
       id: renameComponentDir
       name: Rename Component Directory
