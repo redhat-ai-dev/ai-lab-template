@@ -1,12 +1,20 @@
-# AI Software Template
+# **Introduction**
 
-# Background
+Congratulations! You deployed an application from an AI Software Template. The template has created a new source code repository for the application code, as well as a new GitOps deployment repository to handle deployment related tasks.
 
-You deployed this application named **${{ values.name }}** from an AI Software Template! This template created a new source code repository as well as a new GitOps deployment repository for you. You are able to find more information related to these repository locations in [Repository Information](#repository-information).
+!!! info
 
-# Usage
+    **Source Code Repository:** [${{ values.srcRepoURL }}](${{ values.srcRepoURL }})
 
-The template you used contains the deployment of a sample application. To access this sample application, complete the following instructions.
+    **GitOps Repository:** [${{ values.repoURL }}](${{ values.repoURL }})
+
+# **Usage**
+
+To access the ${{ values.name }} application that was deployed using the Software Template, complete the following instructions:
+
+!!! tip
+
+    All of this information can be found as part of your deployed **Component** in the Red Hat Developer Hub (RHDH) UI!
 
 You can view the Topology of deployed resources by navigating to the **Topology** tab in your RHDH ribbon:
 
@@ -16,25 +24,33 @@ From that view, to navigate straight to your sample application, you can click t
 
 ![Topology View Application Link](./images/topology-app-link.png)
 
-# Model & Model Server Information
+!!! info
+
+    If you are met with a placeholder web page your application may still be building and has not yet been deployed! You can verify this by checking the **CI** tab to see if all related pipeline tasks have completed.
+
+# **Model & Model Server Information**
 
 {%- if values.customModelAndModelServerSelected %}
-You have chosen to provide your own model server. Due to this documentation potentially going to a public repository, the endpoint URL has been omitted. During the template setup, you provided the following model name to be accessible through the endpoint: 
+You chose to provide your own model server. As part of providing your own server, you have to provide a useable model. The following model name is accessible through your model server endpoint:
 
-- **${{ values.customModelName }}**
+- ${{ values.customModelName }}
+
+!!! info
+
+    These Tech Docs can be included in *public* repositories. Due to this we have omitted the model server URL for your security.
 {%- else %}
-The following model was deployed by the template for your use: **[${{ values.modelName }}](${{ values.modelSrc }})**.
 
-This model is accessible through a model service. You chose **[${{ values.modelServerName }}]({%- if values.modelServerName == 'vLLM' %} ${{ values.modelServiceSrcVLLM }} {%- else %} ${{ values.modelServiceSrcOther }} {%- endif %})** as your service.
+You chose to use the provided model that comes with this AI Software Template. As a result the following model was deployed for your use:
+
+- [${{ values.modelName }}](${{ values.modelSrc }})
+
+In order to access this model the template deployed a model server. You chose **[${{ values.modelServerName }}]({%- if values.modelServerName == 'vLLM' %} ${{ values.modelServiceSrcVLLM }} {%- else %} ${{ values.modelServiceSrcOther }} {%- endif %})** as your server.
 {%- endif %}
 
-# Repository Information
+# **Deployment Information**
 
-The source code for your chosen application can be found in [${{ values.srcRepoURL }}](${{ values.srcRepoURL }}).
+If you are interested in seeing the deployed Kubernetes resources, all resources were deployed into your chosen namespace of ${{ values.namespace }}. You can access this namespace through the web console or via your CLI.
 
-The GitOps repository, which contains the Kubernetes manifests for the application can be found in 
-[${{ values.repoURL }}](${{ values.repoURL }}). 
+!!! tip
 
-# Deployment Information
-
-You can find deployed resources from this template in the **${{ values.namespace }}** namespace.
+    You can also login to your ArgoCD server to see the Argo view for deployed resources, such as your application itself!
