@@ -2,14 +2,14 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app.kubernetes.io/instance: ${{ values.name }}-database
+    app.kubernetes.io/instance: {{values.name}}-database
     app.kubernetes.io/managed-by: kustomize
-    app.kubernetes.io/name: ${{ values.name }}-database
-  name: ${{ values.name }}-database
+    app.kubernetes.io/name: {{values.name}}-database
+  name: {{values.name}}-database
 spec:
   ports:
-    - port: ${{ values.dbPort }}
+    - port: {{values.dbPort}}
       protocol: TCP
-      targetPort: ${{ values.dbPort }}
+      targetPort: {{values.dbPort}}
   selector:
-    app.kubernetes.io/instance: ${{ values.name }}-database
+    app.kubernetes.io/instance: {{values.name}}-database
