@@ -14,7 +14,6 @@ export INIT_CONTAINER="quay.io/redhat-ai-dev/whisper-small:latest"
 # https://github.com/containers/ai-lab-recipes/blob/main/model_servers/whispercpp/base/Containerfile
 # https://github.com/ggerganov/whisper.cpp/blob/v1.7.6/examples/server/README.md
 export MODEL_SERVICE_CONTAINER="quay.io/redhat-ai-dev/whispercpp:1.7.6"
-
 export MODEL_SERVICE_DESC="Simple HTTP server where WAV Files are passed to the inference model via HTTP requests" 
 export MODEL_SERVICE_SRC="https://github.com/containers/ai-lab-recipes/tree/main/model_servers/whispercpp"
 
