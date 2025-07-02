@@ -326,6 +326,8 @@ spec:
           # for RHOAI
           rhoaiSelected: ${{ parameters.rhoaiSelected }}
           # SED_APP_SUPPORT_END
+          # Database is required for the RAG templates
+          dbRequired: false
           supportApp: true
           modelServerName: ${{ parameters.modelServer }}
           modelServiceSrcVLLM: https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/vllm/0.8.4
@@ -333,6 +335,46 @@ spec:
           imageRegistry: ${{ parameters.imageRegistry }}
           imageOrg: ${{ parameters.imageOrg }}
           imageName: ${{ parameters.imageName }}
+    - id: cleanupDatabaseResources
+      action: fs:delete
+      name: Cleanup Unused Database Resources
+      if: true
+      input:
+        files:
+          - 'gitops/components/http/base/deployment-database.yaml'
+          - 'gitops/components/http/base/service-database.yaml'
+          - 'gitops/components/http/base/database-config.yaml'
+    - id: cleanupRhoaiResources
+      action: fs:delete
+      name: Cleanup Unused RHOAI Resources
+      if: ${{ not parameters.rhoaiSelected }}
+      input:
+        files:
+          - 'gitops/components/http/base/rhoai'
+    - id: cleanupvLLMResources
+      action: fs:delete
+      name: Cleanup Unused vLLM Resources
+      if: ${{ parameters.modelServer !== 'vLLM' }}
+      input:
+        files:
+          - 'gitops/components/http/base/pvc.yaml'
+    - id: cleanupModelServerResources
+      action: fs:delete
+      name: Cleanup Unused Model Server Resources
+      if: ${{ parameters.modelServer === 'Existing model server' }}
+      input:
+        files:
+          - 'gitops/components/http/base/deployment-model-server.yaml'
+          - 'gitops/components/http/base/service-model-server.yaml'
+    - id: cleanupApplicationResources
+      action: fs:delete
+      name: Cleanup Unused Application Resources
+      if: false
+      input:
+        files:
+          - 'gitops/components/http/base/deployment.yaml'
+          - 'gitops/components/http/base/service.yaml'
+          - 'gitops/components/http/base/route.yaml'
     - action: fs:rename
       id: renameComponentDir
       name: Rename Component Directory
