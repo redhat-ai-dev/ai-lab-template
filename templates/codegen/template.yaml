@@ -34,10 +34,7 @@ spec:
           description: Owner of the component
           default: user:guest
           ui:field: OwnerPicker
-          ui:options:
-            catalogFilter:
-              kind: [Group, User]
-              readonly: false
+          ui:options: {}
         modelServer:
           # SED_LLM_SERVER_START
           title: Model Server
