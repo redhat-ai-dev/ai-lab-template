@@ -8,10 +8,10 @@ export APP_SUMMARY="An AI-enabled audio transcription streamlit application. Upl
 export APP_TAGS='["ai", "whispercpp", "python", "asr"]'
 export APP_RUN_COMMAND="streamlit run whisper_client.py"
 
-# https://github.com/redhat-ai-dev/developer-images/tree/main/model/whisper-small
+# https://github.com/redhat-ai-dev/developer-images/tree/main/models/whisper-small/Containerfile
 export INIT_CONTAINER="quay.io/redhat-ai-dev/whisper-small:latest"
 
-# https://github.com/containers/ai-lab-recipes/blob/main/model_servers/whispercpp/base/Containerfile
+# https://github.com/redhat-ai-dev/developer-images/blob/main/model-servers/whispercpp/1.7.6/Containerfile
 # https://github.com/ggerganov/whisper.cpp/blob/v1.7.6/examples/server/README.md
 export MODEL_SERVICE_CONTAINER="quay.io/redhat-ai-dev/whispercpp:1.7.6"
 export MODEL_SERVICE_DESC="Simple HTTP server where WAV Files are passed to the inference model via HTTP requests" 
