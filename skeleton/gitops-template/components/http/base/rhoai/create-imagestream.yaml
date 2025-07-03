@@ -1,13 +1,13 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: create-imagestream-{{values.appName}}
+  name: create-imagestream-${{ values.appName }}
 spec:
   template:
     metadata:
-      name: create-imagestream-{{values.appName}}
+      name: create-imagestream-${{ values.appName }}
     spec:
-      serviceAccountName: {{values.name}}-dsp-job
+      serviceAccountName: ${{ values.name }}-dsp-job
       containers:
         - name: create-imagestream
           image: quay.io/redhat-ai-dev/utils:latest

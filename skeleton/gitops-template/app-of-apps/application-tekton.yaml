@@ -1,22 +1,22 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: {{values.name}}-app-tekton
-  namespace: {{values.argoNS}}
+  name: ${{ values.name }}-app-tekton
+  namespace: ${{ values.argoNS }}
   finalizers: ["resources-finalizer.argocd.argoproj.io"]
 spec:
-  project: {{values.argoProject}}
+  project: ${{ values.argoProject }}
   source:
-    path: {{values.argoComponentOverlays}}/tekton
-    repoURL: {{values.repoURL}}.git
+    path: ${{ values.argoComponentOverlays }}/tekton
+    repoURL: ${{ values.repoURL }}.git
     targetRevision: main
   destination:
-    namespace: {{values.namespace}}
+    namespace: ${{ values.namespace }}
     server: https://kubernetes.default.svc
   syncPolicy:
     managedNamespaceMetadata:
       labels:
-        argocd.argoproj.io/managed-by: {{values.argoNS}}
+        argocd.argoproj.io/managed-by: ${{ values.argoNS }}
     automated:
       prune: true
       selfHeal: true
