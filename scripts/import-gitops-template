@@ -28,26 +28,3 @@ cp -r $TEMPDIR/$REPONAME/templates/http $DEST/components/http     # only support
 cp -r $TEMPDIR/$REPONAME/templates/application.yaml $DEST/
 
 rm -rf $TEMPDIR
-
-# replace {{value}} to ${{ value }} for software templates
-sed -i "s/{{/\${{ /g" $DEST/application.yaml
-sed -i "s/}}/ }}/g" $DEST/application.yaml
-
-function iterate() {
-  local dir="$1"
-
-  for file in "$dir"/*; do
-    if [ -f "$file" ]; then
-      sed -i "s/{{/\${{ /g" $file
-      sed -i "s/}}/ }}/g" $file
-    fi
-
-    if [ -d "$file" ]; then
-      iterate "$file"
-    fi
-  done
-}
-
-iterate $DEST/components
-iterate $DEST/app-of-apps
-
