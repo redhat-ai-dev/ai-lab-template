@@ -17,7 +17,20 @@ spec:
       required:
         - name
         - owner
+        - argoNS
+        - argoInstance
+        - argoProject
         - modelServer
+      ui:order:
+        - name
+        - owner
+        - argoNS
+        - argoInstance
+        - argoProject
+        - includeArgoLabel
+        - argoAppLabel
+        - modelServer
+        - '*'
       properties:
         name:
           title: Name
@@ -35,6 +48,28 @@ spec:
           default: user:guest
           ui:field: OwnerPicker
           ui:options: {}
+        argoNS:
+          title: ArgoCD Namespace
+          type: string
+          description: The target namespace of the ArgoCD deployment
+          default: ai-rhdh
+          maxLength: 63
+        argoInstance:
+          title: ArgoCD Instance
+          type: string
+          description: The target ArgoCD instance name
+          default: default
+          maxLength: 63
+        argoProject:
+          title: ArgoCD Project
+          type: string
+          description: The target ArgoCD project name
+          default: default
+          maxLength: 63
+        includeArgoLabel:
+          title: Include ArgoCD App Label?
+          type: boolean
+          description: Indicates whether to include a user provided ArgoCD Application Label to set
         modelServer:
           # SED_LLM_SERVER_START
           title: Model Server
@@ -47,6 +82,17 @@ spec:
             - vLLM
           # SED_LLM_SERVER_END
       dependencies:
+        includeArgoLabel:
+          oneOf:
+            - required:
+                - argoAppLabel
+              properties:
+                includeArgoLabel:
+                  const: true
+                argoAppLabel:
+                  title: ArgoCD Application Label
+                  type: string
+                  description: Define the label RHDH will use to identify the ArgoCD Applications
         modelServer:
           oneOf:
             # SED_LLM_SERVER_START
@@ -141,8 +187,8 @@ spec:
           srcRepoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}
           argoComponentOverlays: './components/${{ parameters.name }}/overlays'
           owner: ${{ parameters.owner }}
-          argoNS: ai-rhdh
-          argoProject: default
+          argoNS: ${{ parameters.argoNS }}
+          argoProject: ${{ parameters.argoProject }}
           secretRef: ${{ parameters.hostType === 'GitLab' }}
           gitSecret: gitlab-auth-secret
           gitSecretKey: password
@@ -264,8 +310,9 @@ spec:
       input:
         appName: ${{ parameters.name }}-app-of-apps
         # name set in rhdh config
-        argoInstance: default
-        namespace: ai-rhdh
+        argoInstance: ${{ parameters.argoInstance }}
+        namespace: ${{ parameters.argoNS }}
+        labelValue: ${{ parameters.argoAppLabel if parameters.includeArgoLabel else '' }}
         repoUrl: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops.git
         path: './app-of-apps'
 
