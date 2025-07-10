@@ -9,7 +9,11 @@ const modelServer = 'detr-resnet-101';
 const appInfo: ApplicationInfo = {
   name: name,
   modelServer: modelServer,
-  modelNameDeployed: loadDefaultModel(template, modelServer)
+  modelNameDeployed: loadDefaultModel(template, modelServer),
+  argoNS: process.env.ARGO_NS ?? 'ai-rhdh',
+  argoInstance: process.env.ARGO_INSTANCE ?? 'default',
+  argoProject: process.env.ARGO_PROJECT ?? 'default',
+  includeArgoLabel: false
 };
 const repoInfo: RepositoryInfo = {
   branch: 'main',
@@ -26,4 +30,4 @@ const deploymentInfo: DeploymentInfo = {
   rhoaiSelected: true
 };
 
-templateSuite(template, appInfo, repoInfo, deploymentInfo, process.env.RHDH_NAMESPACE ?? 'ai-rhdh');
+templateSuite(template, appInfo, repoInfo, deploymentInfo);

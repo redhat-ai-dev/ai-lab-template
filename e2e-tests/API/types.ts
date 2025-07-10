@@ -3,7 +3,7 @@ import { PipelineRunKind, TaskRunKind } from '@janus-idp/shared-react';
 
 export type TaskIdReponse = { id: string }
 
-interface ExistingModel {
+interface IExistingModel {
   name: string
   owner?: string
   modelServer: 'Existing model server'
@@ -11,8 +11,9 @@ interface ExistingModel {
   modelName: string
   includeModelEndpointSecret: false
 }
+export type ExistingModel = IExistingModel & ArgoInfo
 
-export interface ExistingModelSecret {
+interface IExistingModelSecret {
   name: string
   owner?: string
   modelServer: 'Existing model server'
@@ -22,22 +23,40 @@ export interface ExistingModelSecret {
   modelEndpointSecretName: string
   modelEndpointSecretKey: string
 }
+export type ExistingModelSecret = IExistingModelSecret & ArgoInfo
 
-interface DeployedModel {
+interface IDeployedModel {
   name: string
   owner?: string
   modelServer: 'llama.cpp' | 'vLLM' | 'whisper.cpp' | 'detr-resnet-101'
   modelNameDeployed: string
 }
+export type DeployedModel = IDeployedModel & ArgoInfo
 
-interface StandaloneModel {
+interface IStandaloneModel {
   name: string
   owner?: string
   modelServer: 'vLLM'
   modelNameDeployed: 'ibm-granite/granite-3.1-8b-instruct'
 }
+export type StandaloneModel = IStandaloneModel & ArgoInfo
 
-export type ApplicationInfo = ExistingModel | ExistingModelSecret | DeployedModel | StandaloneModel;
+interface ArgoProject {
+  argoNS: string
+  argoInstance: string
+  argoProject: string
+  includeArgoLabel: false
+}
+interface ArgoProjectLabeled {
+  argoNS: string
+  argoInstance: string
+  argoProject: string
+  includeArgoLabel: true
+  argoAppLabel: string
+}
+type ArgoInfo = ArgoProject | ArgoProjectLabeled
+
+export type ApplicationInfo = ExistingModel | ExistingModelSecret | DeployedModel | StandaloneModel
 
 interface GithubInfo {
   hostType: 'GitHub'
