@@ -76,6 +76,9 @@ export class DeveloperHubClient {
       values: {
         name: appInfo.name,
         owner: appInfo.owner ? appInfo.owner : 'user:guest',
+        argoNS: appInfo.argoNS,
+        argoProject: appInfo.argoProject ?? 'default',
+        argoInstance: appInfo.argoInstance ?? 'default',
         modelServer: appInfo.modelServer,
         hostType: repoInfo.hostType,
         repoOwner: repoInfo.repoOwner,
@@ -83,6 +86,9 @@ export class DeveloperHubClient {
         branch: repoInfo.branch,
         namespace: deploymentInfo.namespace
       }
+    }
+    if (appInfo.includeArgoLabel === true) {
+      taskOptions.values.argoAppLabel = appInfo.argoAppLabel;
     }
     if (isApplicationDeployment(deploymentInfo)) {
       taskOptions.values.imageRegistry = deploymentInfo.imageRegistry;

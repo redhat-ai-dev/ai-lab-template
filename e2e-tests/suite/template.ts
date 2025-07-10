@@ -17,7 +17,7 @@ function hasSecret(object: ApplicationInfo): object is ExistingModelSecret {
   return (object as ExistingModelSecret).includeModelEndpointSecret !== undefined;
 }
 
-export const templateSuite = (template: AITemplate, appInfo: ApplicationInfo, repoInfo: RepositoryInfo, deploymentInfo: DeploymentInfo, rhdhNamespace: string) => {
+export const templateSuite = (template: AITemplate, appInfo: ApplicationInfo, repoInfo: RepositoryInfo, deploymentInfo: DeploymentInfo) => {
   let title = `${template} on ${repoInfo.hostType}`
 
   if (isApplicationDeployment(deploymentInfo)) {
@@ -66,7 +66,7 @@ export const templateSuite = (template: AITemplate, appInfo: ApplicationInfo, re
         await git.deleteRepository(repoInfo.repoOwner, `${repoInfo.repoName}-gitops`);
 
         // remove gitops application & resources
-        await kube.deleteArgoCDApplication(appInfo.name, rhdhNamespace);
+        await kube.deleteArgoCDApplication(appInfo.name, appInfo.argoNS);
 
         // remove AI workbench
         if (isApplicationDeployment(deploymentInfo) && deploymentInfo.rhoaiSelected) {
@@ -140,7 +140,7 @@ export const templateSuite = (template: AITemplate, appInfo: ApplicationInfo, re
 
     it('wait for argocd application to sync and be healhy', async () => {
       const revision = await git.getLatestRevision(repoInfo.repoOwner, `${repoInfo.repoName}-gitops`);
-      await kube.waitForArgoCDApplicationToBeHealthy(`${appInfo.name}-app`, rhdhNamespace, revision, 10 * 60000);
+      await kube.waitForArgoCDApplicationToBeHealthy(`${appInfo.name}-app`, appInfo.argoNS, revision, 10 * 60000);
     }, 10 * 61000);
 
     if (isApplicationDeployment(deploymentInfo)) {

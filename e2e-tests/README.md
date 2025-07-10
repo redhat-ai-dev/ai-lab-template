@@ -72,7 +72,10 @@ Use the following environment variables to customize the existing tests:
  - `IMAGE_REGISTRY` sets the registry that will host the images created (default `quay.io`)
  - `IMAGE_ORG` sets the organization in the image registry that will own the images
  - `DEPLOYMENT_NAMESPACE` sets the namespace your applications will be deployed to on the cluster
- - `RHDH_NAMESPACE` the namespace that houses the developer hub instance and argocd applications
+ - `RHDH_NAMESPACE` the namespace that houses the developer hub instance
+ - `ARGO_NS` namespace ArgoCD applications will be deployed to
+ - `ARGO_INSTANCE` The target ArgoCD instance name (default `default`)
+ - `ARGO_PROJECT` The target ArgoCD project name (default `default`)
 
 ## Running the tests
 
