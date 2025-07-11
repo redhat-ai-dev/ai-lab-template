@@ -12,6 +12,7 @@ function apply-configurations() {
 
     cp -r $ROOT_DIR/documentation/$TEMPLATE_TECHDOC_TYPE/$SAMPLENAME $DEST/docs
     cp -r $ROOT_DIR/documentation/$TEMPLATE_TECHDOC_TYPE/mkdocs.yml $DEST/mkdocs.yml
+    cp $ROOT_DIR/documentation/$TEMPLATE_TECHDOC_TYPE/template-prerequisites.md $DEST/docs/template-prerequisites.md
 
     cp $SKELETON_DIR/template.yaml $DEST/template.yaml
 
