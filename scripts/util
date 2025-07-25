@@ -65,6 +65,9 @@ function apply-configurations() {
     if [ $SUPPORT_EXISTING_SERVER == false ]; then
         sed -i '/# SED_EXISTING_SERVER_START/,/# SED_EXISTING_SERVER_END/d' $DEST/template.yaml
     fi
+    if [ $SUPPORT_MODEL_CATALOG == false ]; then
+        sed -i '/# SED_EXISTING_FROM_CATALOG_START/,/# SED_EXISTING_FROM_CATALOG_END/d' $DEST/template.yaml
+    fi
 
     source $ROOT_DIR/properties
     cat $DEST/template.yaml | envsubst >$DEST/new-template.yaml

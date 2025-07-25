@@ -14,6 +14,7 @@ export SUPPORT_DETR=false
 
 # model server configuration
 export SUPPORT_EXISTING_SERVER=true
+export SUPPORT_MODEL_CATALOG=false
 
 # Database configurations
 export SUPPORT_DB=false
