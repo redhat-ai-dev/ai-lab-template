@@ -77,9 +77,14 @@ spec:
           description: A simple FastAPI application for use with the DEtection TRansformer (DETR) models. The deployed model on the server must support object detection. | [Learn more](https://github.com/containers/ai-lab-recipes/tree/main/model_servers/object_detection_python)
           type: string
           default: detr-resnet-101
+          ui:enumDisabled: 
+            - Create a new model server
+            - Select an existing model server
           enum:
+            - Create a new model server
             - detr-resnet-101
             # SED_DETR_MODEL_SERVER_END
+            - Select an existing model server
             # SED_EXISTING_SERVER_START
             - Existing model server
             # SED_EXISTING_SERVER_END

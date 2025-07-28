@@ -77,9 +77,14 @@ spec:
           description: Simple HTTP server where WAV Files are passed to the inference model via HTTP requests. The deployed model on the server must support automatic speech recognition (ASR). | [Learn more](https://github.com/containers/ai-lab-recipes/tree/main/model_servers/whispercpp)
           type: string
           default: whisper.cpp
+          ui:enumDisabled: 
+            - Create a new model server
+            - Select an existing model server
           enum:
+            - Create a new model server
             - whisper.cpp
           # SED_ASR_MODEL_SERVER_END
+            - Select an existing model server
             # SED_EXISTING_SERVER_START
             - Existing model server
             # SED_EXISTING_SERVER_END
