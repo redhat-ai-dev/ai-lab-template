@@ -10,6 +10,7 @@ metadata:
     backstage.io/techdocs-ref: dir:.
 spec:
   type: service
+  owner: rhdh-pai
   # These parameters are used to generate the input form in the frontend, and are
   # used to gather input data for the execution of the template.
   parameters:

@@ -41,6 +41,7 @@ function apply-configurations() {
     sed -i "s!sed.edit.DESCRIPTION!$APP_DESC!g" $DEST/template.yaml
     sed -i "s!sed.edit.APPTAGS!$APP_TAGS!g" $DEST/template.yaml
     sed -i "s!sed.edit.CATALOG_DESCRIPTION!Secure Supply Chain Example for $APP_DISPLAY_NAME!g" $DEST/template.yaml
+    sed -i "s!sed.edit.OWNER!$APP_OWNER!g" $DEST/template.yaml
 
     if [ $SUPPORT_APP == false ]; then
         sed -i '/# SED_APP_SUPPORT_START/,/# SED_APP_SUPPORT_END/d' $DEST/template.yaml

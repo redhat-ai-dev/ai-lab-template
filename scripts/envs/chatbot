@@ -6,6 +6,7 @@ export APP_DISPLAY_NAME="Chatbot Application"
 export APP_DESC="Build your own Large Language Model (LLM)-enabled chat application. Pick from the model servers available or bring your own."
 export APP_SUMMARY="A Large Language Model (LLM)-enabled streamlit chat application. The bot replies with AI generated responses."
 export APP_TAGS='["ai", "llamacpp", "vllm", "python"]'
+export APP_OWNER='rhdh-pai'
 export APP_RUN_COMMAND="streamlit run chatbot_ui.py"
 
 # https://github.com/redhat-ai-dev/developer-images/tree/main/models/granite-3.1-8b-instruct-gguf

@@ -5,6 +5,7 @@ export APP_NAME="object-detection"
 export APP_DISPLAY_NAME="Object Detection Application"
 export APP_DESC="Identify and locate objects in an image using an AI-enabled object detection application. Pick from the DEtection TRansformer (DETR) model servers or bring your own DEtection TRansformer (DETR)."
 export APP_SUMMARY="A DEtection TRansformer (DETR) model streamlit application. Upload an image to identify and locate objects in the image."
+export APP_OWNER='rhdh-pai'
 export APP_TAGS='["ai", "detr", "python"]'
 export APP_RUN_COMMAND="streamlit run object_detection_client.py"
 
