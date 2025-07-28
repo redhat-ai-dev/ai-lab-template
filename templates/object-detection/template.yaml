@@ -79,7 +79,7 @@ spec:
           title: Include ArgoCD App Label?
           type: boolean
           description: Indicates whether to include a user provided ArgoCD Application Label to set
-	        default: true
+          default: true
         modelServer:
           # SED_DETR_MODEL_SERVER_START
           title: Model Server
