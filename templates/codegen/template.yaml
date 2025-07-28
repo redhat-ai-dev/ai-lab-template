@@ -52,7 +52,7 @@ spec:
           title: ArgoCD Namespace
           type: string
           description: The target namespace of the ArgoCD deployment
-          default: ai-rhdh
+          default: openshift-gitops
           maxLength: 63
         argoInstance:
           title: ArgoCD Instance
