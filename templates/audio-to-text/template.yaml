@@ -61,7 +61,7 @@ spec:
           title: ArgoCD Namespace
           type: string
           description: The target namespace of the ArgoCD deployment
-          default: ai-rhdh
+          default: openshift-gitops
           maxLength: 63
         argoInstance:
           title: ArgoCD Instance
@@ -79,6 +79,7 @@ spec:
           title: Include ArgoCD App Label?
           type: boolean
           description: Indicates whether to include a user provided ArgoCD Application Label to set
+          default: true
         modelServer:
           # SED_ASR_MODEL_SERVER_START
           title: Model Server
@@ -274,6 +275,7 @@ spec:
           ui:help: "You can also provide the on-prem registry host, example: quay-tv2pb.apps.cluster-tv2pb.sandbox1194.opentlc.com"
         imageOrg:
           title: Image Organization
+          default: rhdhpai-rolling-demo
           type: string
           description: The organization, user or project that this repo will belong to
         imageName:
@@ -428,7 +430,7 @@ spec:
           name: ${{ parameters.name }}
           appName: ${{ parameters.name }}-gitops # for now just use the component name, since it's single component app
           description: This is GitOps manifest for ${{ parameters.name }}
-          namespace: ${{ parameters.remoteClusterDeploymentNamespace if parameters.deployArgoCDApplicationOnRemoteCluster else parameters.namespace }}
+          namespace: ${{ parameters.namespace }}
           rhdhNamespace: ai-rhdh
           # example: github.com?owner=<owner>&repo=<srcRepo>, the gitops repo name will be <srcRepo>-gitops
           repoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops
