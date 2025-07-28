@@ -10,9 +10,18 @@ function apply-configurations() {
     SAMPLENAME=$2
     TEMPLATE_TECHDOC_TYPE=$3
 
-    cp -r $ROOT_DIR/documentation/$TEMPLATE_TECHDOC_TYPE/$SAMPLENAME $DEST/docs
-    cp -r $ROOT_DIR/documentation/$TEMPLATE_TECHDOC_TYPE/mkdocs.yml $DEST/mkdocs.yml
-    cp $ROOT_DIR/documentation/$TEMPLATE_TECHDOC_TYPE/template-prerequisites.md $DEST/docs/template-prerequisites.md
+    DOC_SRC_ROOT="$ROOT_DIR/documentation/$TEMPLATE_TECHDOC_TYPE"
+    SAMPLE_DOC_SRC="$DOC_SRC_ROOT/$SAMPLENAME"
+    PREREQ_DOC_SRC="$DOC_SRC_ROOT/template-prerequisites.md"
+    if [ -d $DOC_SRC_ROOT ]; then
+        if [ -d $SAMPLE_DOC_SRC ]; then
+            cp -r $SAMPLE_DOC_SRC $DEST/docs
+            if [ -f $PREREQ_DOC_SRC ]; then
+                cp $PREREQ_DOC_SRC $DEST/docs/template-prerequisites.md
+            fi
+        fi
+        cp -r $DOC_SRC_ROOT/mkdocs.yml $DEST/mkdocs.yml
+    fi
 
     cp $SKELETON_DIR/template.yaml $DEST/template.yaml
 
