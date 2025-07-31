@@ -6,7 +6,6 @@ export APP_DISPLAY_NAME="Code Generation Application"
 export APP_DESC="Build your own Large Language Model (LLM)-enabled code generation application to generate code source from a natural language. Pick from the model servers available or bring your own."
 export APP_SUMMARY="A Large Language Model (LLM)-enabled streamlit code generation application. This specialized bot helps with code related queries."
 export APP_TAGS='["ai", "llamacpp", "vllm", "python"]'
-export APP_OWNER='rhdh-pai'
 export APP_RUN_COMMAND="streamlit run codegen-app.py"
 
 # https://github.com/redhat-ai-dev/developer-images/tree/main/models/mistral-7b-instruct-v0.2

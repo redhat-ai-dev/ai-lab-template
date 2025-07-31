@@ -5,7 +5,6 @@ export APP_NAME="model-server"
 export APP_DISPLAY_NAME="Model Server, No Application"
 export APP_DESC="Deploy a granite-3.1 8b model with a vLLM server. While no application is configured, this model server can be utilized in other Software Templates, like a Chatbot Application for instance."
 export APP_SUMMARY="A granite-3.1 8b model server deployment."
-export APP_OWNER='rhdh-pai'
 export APP_TAGS='["ai", "vllm", "modelserver"]'
 
 # https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/vllm/0.8.4
