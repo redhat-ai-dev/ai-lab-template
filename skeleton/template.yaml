@@ -84,7 +84,9 @@ spec:
           type: string
           ui:enumDisabled: 
             - Create a new model server
+            # SED_EXISTING_START
             - Select an existing model server
+            # SED_EXISTING_END
           enum:
             - Create a new model server
             - vLLM
@@ -99,7 +101,9 @@ spec:
           default: whisper.cpp
           ui:enumDisabled: 
             - Create a new model server
+            # SED_EXISTING_START
             - Select an existing model server
+            # SED_EXISTING_END
           enum:
             - Create a new model server
             - whisper.cpp
@@ -111,11 +115,14 @@ spec:
           default: detr-resnet-101
           ui:enumDisabled: 
             - Create a new model server
+            # SED_EXISTING_START
             - Select an existing model server
+            # SED_EXISTING_END
           enum:
             - Create a new model server
             - detr-resnet-101
             # SED_DETR_MODEL_SERVER_END
+            # SED_EXISTING_START
             - Select an existing model server
             # SED_EXISTING_SERVER_START
             - Existing model server
@@ -123,6 +130,7 @@ spec:
             # SED_EXISTING_FROM_CATALOG_START
             - Model server from the catalog
             # SED_EXISTING_FROM_CATALOG_END
+            # SED_EXISTING_END
       dependencies:
         includeArgoLabel:
           oneOf:
@@ -137,6 +145,7 @@ spec:
                   description: Define the label RHDH will use to identify the ArgoCD Applications
         modelServer:
           oneOf:
+            # SED_EXISTING_START
             # SED_EXISTING_SERVER_START
             - required:
                 - modelEndpoint
@@ -182,30 +191,6 @@ spec:
                           - modelEndpointSecretName
                           - modelEndpointSecretKey
             # SED_EXISTING_SERVER_END
-            # SED_LLM_SERVER_START
-            - properties:
-                modelServer:
-                  const: vLLM
-                modelNameDeployed:
-                  title: Model Name
-                  description: ${LLM_MODEL_CLASSIFICATION} | ${LLM_MODEL_LICENSE} | [Learn more](${LLM_MODEL_SRC})
-                  default: ${LLM_MODEL_NAME}
-                  type: string
-                  enum:
-                    - ${LLM_MODEL_NAME}
-            # SED_LLM_LLAMA_SERVER_START
-            - properties:
-                modelServer:
-                  const: llama.cpp
-                modelNameDeployed:
-                  title: Model Name
-                  description: ${LLM_MODEL_CLASSIFICATION} | ${LLM_MODEL_LICENSE} | [Learn more](${LLM_MODEL_SRC})
-                  default: ${LLM_MODEL_NAME}
-                  type: string
-                  enum:
-                    - ${LLM_MODEL_NAME}
-            # SED_LLM_LLAMA_SERVER_END
-            # SED_LLM_SERVER_END
             # SED_EXISTING_FROM_CATALOG_START
             - required:
                 - catalogModel
@@ -222,12 +207,6 @@ spec:
                     catalogFilter:
                       kind: resource
                       spec.type: ai-model
-                catalogModelEndpoint:
-                  title: Model Server Endpoint
-                  type: string
-                  description: "The endpoint for an existing model server."
-                  ui:options:
-                    readonly: true
                 includeModelEndpointSecret:
                   title: Is bearer authentication required?
                   type: boolean
@@ -254,6 +233,31 @@ spec:
                           - modelEndpointSecretName
                           - modelEndpointSecretKey
             # SED_EXISTING_FROM_CATALOG_END
+            # SED_EXISTING_END
+            # SED_LLM_SERVER_START
+            - properties:
+                modelServer:
+                  const: vLLM
+                modelNameDeployed:
+                  title: Model Name
+                  description: ${LLM_MODEL_CLASSIFICATION} | ${LLM_MODEL_LICENSE} | [Learn more](${LLM_MODEL_SRC})
+                  default: ${LLM_MODEL_NAME}
+                  type: string
+                  enum:
+                    - ${LLM_MODEL_NAME}
+            # SED_LLM_LLAMA_SERVER_START
+            - properties:
+                modelServer:
+                  const: llama.cpp
+                modelNameDeployed:
+                  title: Model Name
+                  description: ${LLM_MODEL_CLASSIFICATION} | ${LLM_MODEL_LICENSE} | [Learn more](${LLM_MODEL_SRC})
+                  default: ${LLM_MODEL_NAME}
+                  type: string
+                  enum:
+                    - ${LLM_MODEL_NAME}
+            # SED_LLM_LLAMA_SERVER_END
+            # SED_LLM_SERVER_END
             # SED_ASR_MODEL_SERVER_START
             - properties:
                 modelServer:
@@ -371,6 +375,39 @@ spec:
   # These steps are executed in the scaffolder backend, using data that we gathered
   # via the parameters above.
   steps:
+    # SED_EXISTING_START
+    # SED_EXISTING_FROM_CATALOG_START
+    # Fetches the ai-model entity if selected
+    - id: fetch-model-from-catalog
+      name: Fetch Model From Catalog
+      action: catalog:fetch
+      if: ${{ parameters.modelServer === 'Model server from the catalog' }}
+      input:
+        entityRef: ${{ parameters.catalogModel }}
+    # Fetches the API entity of the fetched model-server entity
+    - id: fetch-model-api-from-catalog
+      name: Fetch Model API From Catalog
+      action: catalog:query:plus
+      if: ${{ parameters.modelServer === 'Model server from the catalog' }}
+      input:
+        queries:
+          - limit: 1
+            fields:
+              - spec.definition
+            filter:
+              kind: API
+              relations.dependencyOf: ${{ steps['fetch-model-from-catalog'].output.entity.spec.dependencyOf[0] | pick('name') }}
+    - id: parse-api-definition
+      name: Parse Model API Definition
+      action: json
+      if: ${{ parameters.modelServer === 'Model server from the catalog' }}
+      input:
+        commonParams:
+          encoding: raw
+        sources:
+          - content: ${{ steps['fetch-model-api-from-catalog'].output.results[0][0].spec.definition }}
+    # SED_EXISTING_FROM_CATALOG_END
+    # SED_EXISTING_END
     # SED_APP_SUPPORT_START
     # Each step executes an action, in this case one templates files into the workspace.
     # Get the sample source code
@@ -398,11 +435,11 @@ spec:
           appRunCommand: "${APP_RUN_COMMAND}"
           modelServiceContainer: ${MODEL_SERVICE_CONTAINER}
           modelServicePort: ${MODEL_SERVICE_PORT}
-          customModelName: ${{ parameters.modelName }}
+          customModelName: ${{ steps['fetch-model-from-catalog'].output.entity.metadata.name if parameters.modelServer === 'Model server from the catalog' else parameters.modelName }}
           modelName: ${MODEL_NAME}
           modelSrc: ${MODEL_SRC}
           modelServerName: ${{ parameters.modelServer }}
-          customModelAndModelServerSelected: ${{ true if parameters.modelServer === 'Existing model server' else false }}
+          customModelAndModelServerSelected: ${{ true if parameters.modelServer === 'Existing model server' || parameters.modelServer === 'Model server from the catalog' else false }}
           modelServiceSrcVLLM: ${MODEL_SERVICE_SRC_VLLM}
           modelServiceSrcOther: ${MODEL_SERVICE_SRC_OTHER}
     # Renders all the template variables into the files and directory names and content, and places the result in the workspace.
@@ -499,17 +536,17 @@ spec:
           # for vllm
           vllmSelected: ${{ parameters.modelServer === 'vLLM' }}
           vllmModelServiceContainer: ${VLLM_CONTAINER}
-          modelName: ${{ parameters.modelName if parameters.modelServer === 'Existing model server' else '${LLM_MODEL_NAME}' }}
+          modelName: "${{ parameters.modelServer === 'Existing model server' ? parameters.modelName : (parameters.modelServer === 'Model server from the catalog' ? steps['fetch-model-from-catalog'].output.entity.metadata.name : '${LLM_MODEL_NAME}') }}"
           modelSrc: ${MODEL_SRC}
           maxModelLength: ${LLM_MAX_MODEL_LEN}
           # SED_LLM_SERVER_END
-          existingModelServer: ${{ parameters.modelServer === 'Existing model server' }}
-          # SED_EXISTING_SERVER_START
-          modelEndpoint: ${{ parameters.modelEndpoint }}
+          existingModelServer: ${{ parameters.modelServer === 'Existing model server' || parameters.modelServer === 'Model server from the catalog' }}
+          # SED_EXISTING_START
+          modelEndpoint: ${{ steps['parse-api-definition'].results[0].servers[0].url if parameters.modelServer === 'Model server from the catalog' else parameters.modelEndpoint }}
           modelEndpointSecretName: ${{ parameters.modelEndpointSecretName }}
           modelEndpointSecretKey: ${{ parameters.modelEndpointSecretKey }}
           includeModelEndpointSecret: ${{ parameters.includeModelEndpointSecret }}
-          # SED_EXISTING_SERVER_END
+          # SED_EXISTING_END
           # SED_APP_SUPPORT_START
           # for RHOAI
           rhoaiSelected: ${{ parameters.rhoaiSelected }}
@@ -553,7 +590,7 @@ spec:
     - id: cleanupModelServerResources
       action: fs:delete
       name: Cleanup Unused Model Server Resources
-      if: ${{ parameters.modelServer === 'Existing model server' }}
+      if: ${{ parameters.modelServer === 'Existing model server' || parameters.modelServer === 'Model server from the catalog' }}
       input:
         files:
           - 'gitops/components/http/base/deployment-model-server.yaml'
