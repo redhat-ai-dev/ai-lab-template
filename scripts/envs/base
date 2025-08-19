@@ -13,6 +13,7 @@ export SUPPORT_ASR=false
 export SUPPORT_DETR=false
 
 # model server configuration
+export SUPPORT_EXISTING=true
 export SUPPORT_EXISTING_SERVER=true
 export SUPPORT_MODEL_CATALOG=false
 
