@@ -414,7 +414,7 @@ spec:
           # SED_LLM_SERVER_END
           existingModelServer: ${{ parameters.modelServer === 'Existing model server' || parameters.modelServer === 'Model server from the catalog' }}
           # SED_EXISTING_START
-          modelEndpoint: ${{ steps['parse-api-definition'].results[0].servers[0].url if parameters.modelServer === 'Model server from the catalog' else parameters.modelEndpoint }}
+          modelEndpoint: ${{ steps['fetch-model-server-from-catalog'].output.entity.metadata.links[1].url if parameters.modelServer === 'Model server from the catalog' else parameters.modelEndpoint }}
           modelEndpointSecretName: ${{ parameters.modelEndpointSecretName }}
           modelEndpointSecretKey: ${{ parameters.modelEndpointSecretKey }}
           includeModelEndpointSecret: ${{ parameters.includeModelEndpointSecret }}

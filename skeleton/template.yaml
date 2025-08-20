@@ -384,28 +384,13 @@ spec:
       if: ${{ parameters.modelServer === 'Model server from the catalog' }}
       input:
         entityRef: ${{ parameters.catalogModel }}
-    # Fetches the API entity of the fetched model-server entity
-    - id: fetch-model-api-from-catalog
-      name: Fetch Model API From Catalog
-      action: catalog:query:plus
+    # Fetches the model-server entity of the selected ai-model
+    - id: fetch-model-server-from-catalog
+      name: Fetch Model Server From Catalog
+      action: catalog:fetch
       if: ${{ parameters.modelServer === 'Model server from the catalog' }}
       input:
-        queries:
-          - limit: 1
-            fields:
-              - spec.definition
-            filter:
-              kind: API
-              relations.dependencyOf: ${{ steps['fetch-model-from-catalog'].output.entity.spec.dependencyOf[0] | pick('name') }}
-    - id: parse-api-definition
-      name: Parse Model API Definition
-      action: json
-      if: ${{ parameters.modelServer === 'Model server from the catalog' }}
-      input:
-        commonParams:
-          encoding: raw
-        sources:
-          - content: ${{ steps['fetch-model-api-from-catalog'].output.results[0][0].spec.definition }}
+        entityRef: ${{ steps['fetch-model-from-catalog'].output.entity.spec.dependencyOf[0] }}
     # SED_EXISTING_FROM_CATALOG_END
     # SED_EXISTING_END
     # SED_APP_SUPPORT_START
@@ -542,7 +527,7 @@ spec:
           # SED_LLM_SERVER_END
           existingModelServer: ${{ parameters.modelServer === 'Existing model server' || parameters.modelServer === 'Model server from the catalog' }}
           # SED_EXISTING_START
-          modelEndpoint: ${{ steps['parse-api-definition'].results[0].servers[0].url if parameters.modelServer === 'Model server from the catalog' else parameters.modelEndpoint }}
+          modelEndpoint: ${{ steps['fetch-model-server-from-catalog'].output.entity.metadata.links[1].url if parameters.modelServer === 'Model server from the catalog' else parameters.modelEndpoint }}
           modelEndpointSecretName: ${{ parameters.modelEndpointSecretName }}
           modelEndpointSecretKey: ${{ parameters.modelEndpointSecretKey }}
           includeModelEndpointSecret: ${{ parameters.includeModelEndpointSecret }}
