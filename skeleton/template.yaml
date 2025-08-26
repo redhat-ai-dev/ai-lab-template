@@ -204,8 +204,8 @@ spec:
                   const: Choose from the Catalog model server(s)
                 modelServerDescription:
                   type: 'null'
+                  # SED_LLM_SERVER_START
                   description: Select a model from the RHDH catalog you wish to use with your application.
-                # SED_LLM_SERVER_START
                 catalogModel:
                   title: Model name
                   type: string
@@ -216,8 +216,9 @@ spec:
                     catalogFilter:
                       kind: resource
                       spec.type: ai-model
-                # SED_LLM_SERVER_END
-                # SED_DETR_MODEL_SERVER_START
+                  # SED_LLM_SERVER_END
+                  # SED_DETR_MODEL_SERVER_START
+                  description: Select a model server from the RHDH catalog you wish to use with your application.
                 catalogModelServer:
                   title: Model Server Entity
                   type: string
@@ -228,8 +229,9 @@ spec:
                     catalogFilter:
                       kind: component
                       spec.type: model-server
-                # SED_DETR_MODEL_SERVER_END
-                # SED_ASR_MODEL_SERVER_START
+                  # SED_DETR_MODEL_SERVER_END
+                  # SED_ASR_MODEL_SERVER_START
+                  description: Select a model server from the RHDH catalog you wish to use with your application.
                 catalogModelServer:
                   title: Model Server Entity
                   type: string
