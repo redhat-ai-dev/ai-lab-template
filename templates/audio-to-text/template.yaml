@@ -74,7 +74,6 @@ spec:
         modelServer:
           # SED_ASR_MODEL_SERVER_START
           title: Model Server
-          description: Simple HTTP server where WAV Files are passed to the inference model via HTTP requests. The deployed model on the server must support automatic speech recognition (ASR). | [Learn more](https://github.com/containers/ai-lab-recipes/tree/main/model_servers/whispercpp)
           type: string
           default: whisper.cpp
           ui:enumDisabled: 
@@ -113,6 +112,9 @@ spec:
               properties:
                 modelServer:
                   const: Existing model server
+                modelServerDescription:
+                  type: 'null'
+                  description: Fill in the endpoint and model name (LLM Server) you wish to use with your application.
                 modelEndpoint:
                   title: Model Server Endpoint
                   type: string
@@ -148,6 +150,9 @@ spec:
             - properties:
                 modelServer:
                   const: whisper.cpp
+                modelServerDescription:
+                  type: 'null'
+                  description: Simple HTTP server where WAV Files are passed to the inference model via HTTP requests. The deployed model on the server must support automatic speech recognition (ASR). | [Learn more](https://github.com/containers/ai-lab-recipes/tree/main/model_servers/whispercpp)
                 modelNameDeployed:
                   title: Model Name
                   description: Automatic Speech Recognition | MIT | [Learn more](https://huggingface.co/ggerganov/whisper.cpp)
