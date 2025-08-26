@@ -151,7 +151,15 @@ spec:
                   const: Bring you own model server
                 modelServerDescription:
                   type: 'null'
-                  description: Fill in the endpoint and model name (LLM Server) you wish to use with your application.
+                  # SED_LLM_SERVER_START
+                  description: Fill in the model server endpoint and model name you wish to use with your application.
+                  # SED_LLM_SERVER_END
+                  # SED_DETR_MODEL_SERVER_START
+                  description: Fill in the model server endpoint you wish to use with your application.
+                  # SED_DETR_MODEL_SERVER_END
+                  # SED_ASR_MODEL_SERVER_START
+                  description: Fill in the model server endpoint you wish to use with your application.
+                  # SED_ASR_MODEL_SERVER_END
                 modelEndpoint:
                   title: Model Server Endpoint
                   type: string
