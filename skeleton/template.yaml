@@ -205,6 +205,7 @@ spec:
                 modelServerDescription:
                   type: 'null'
                   description: Select a model from the RHDH catalog you wish to use with your application.
+                # SED_LLM_SERVER_START
                 catalogModel:
                   title: Model name
                   type: string
@@ -215,6 +216,31 @@ spec:
                     catalogFilter:
                       kind: resource
                       spec.type: ai-model
+                # SED_LLM_SERVER_END
+                # SED_DETR_MODEL_SERVER_START
+                catalogModelServer:
+                  title: Model Server Entity
+                  type: string
+                  ui:help: "The model server chosen from the model catalog."
+                  ui:field: EntityPicker
+                  ui:options:
+                    allowedKinds: []
+                    catalogFilter:
+                      kind: component
+                      spec.type: model-server
+                # SED_DETR_MODEL_SERVER_END
+                # SED_ASR_MODEL_SERVER_START
+                catalogModelServer:
+                  title: Model Server Entity
+                  type: string
+                  ui:help: "The model server chosen from the model catalog."
+                  ui:field: EntityPicker
+                  ui:options:
+                    allowedKinds: []
+                    catalogFilter:
+                      kind: component
+                      spec.type: model-server
+                # SED_ASR_MODEL_SERVER_END
                 includeModelEndpointSecret:
                   title: Is bearer authentication required?
                   type: boolean
@@ -397,6 +423,7 @@ spec:
   steps:
     # SED_EXISTING_START
     # SED_EXISTING_FROM_CATALOG_START
+    # SED_LLM_SERVER_START
     # Fetches the ai-model entity if selected
     - id: fetch-model-from-catalog
       name: Fetch Model From Catalog
@@ -404,13 +431,22 @@ spec:
       if: ${{ parameters.modelServer === 'Choose from the Catalog model server(s)' }}
       input:
         entityRef: ${{ parameters.catalogModel }}
+    # SED_LLM_SERVER_END
     # Fetches the model-server entity of the selected ai-model
     - id: fetch-model-server-from-catalog
       name: Fetch Model Server From Catalog
       action: catalog:fetch
       if: ${{ parameters.modelServer === 'Choose from the Catalog model server(s)' }}
       input:
+        # SED_LLM_SERVER_START
         entityRef: ${{ steps['fetch-model-from-catalog'].output.entity.spec.dependencyOf[0] }}
+        # SED_LLM_SERVER_END
+        # SED_ASR_MODEL_SERVER_START
+        entityRef: ${{ parameters.catalogModelServer }}
+        # SED_ASR_MODEL_SERVER_END
+        # SED_DETR_MODEL_SERVER_START
+        entityRef: ${{ parameters.catalogModelServer }}
+        # SED_DETR_MODEL_SERVER_END
     # SED_EXISTING_FROM_CATALOG_END
     # SED_EXISTING_END
     # SED_APP_SUPPORT_START
