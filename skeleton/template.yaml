@@ -198,7 +198,15 @@ spec:
             # SED_EXISTING_SERVER_END
             # SED_EXISTING_FROM_CATALOG_START
             - required:
+                # SED_LLM_SERVER_START
                 - catalogModel
+                # SED_LLM_SERVER_END
+                # SED_ASR_MODEL_SERVER_START
+                - catalogModelServer
+                # SED_ASR_MODEL_SERVER_END
+                # SED_DETR_MODEL_SERVER_START
+                - catalogModelServer
+                # SED_DETR_MODEL_SERVER_END
               properties:
                 modelServer:
                   const: Choose from the Catalog model server(s)
