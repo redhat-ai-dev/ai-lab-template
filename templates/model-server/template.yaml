@@ -219,13 +219,13 @@ spec:
           # for vllm
           vllmSelected: ${{ parameters.modelServer === 'vLLM' }}
           vllmModelServiceContainer: quay.io/redhat-ai-dev/vllm-openai-ubi9:v0.8.4
-          modelName: ${{ parameters.modelName if parameters.modelServer === 'Existing model server' else (steps['fetch-model-from-catalog'].output.entity.metadata.name if parameters.modelServer === 'Model server from the catalog' else 'ibm-granite/granite-3.1-8b-instruct') }}
+          modelName: ${{ parameters.modelName if parameters.modelServer === 'Bring you own model server' else (steps['fetch-model-from-catalog'].output.entity.metadata.name if parameters.modelServer === 'Choose from the Catalog model server(s)' else 'ibm-granite/granite-3.1-8b-instruct') }}
           modelSrc: 
           maxModelLength: 4096
           # SED_LLM_SERVER_END
-          existingModelServer: ${{ parameters.modelServer === 'Existing model server' || parameters.modelServer === 'Model server from the catalog' }}
+          existingModelServer: ${{ parameters.modelServer === 'Bring you own model server' || parameters.modelServer === 'Choose from the Catalog model server(s)' }}
           # SED_EXISTING_START
-          modelEndpoint: ${{ steps['fetch-model-server-from-catalog'].output.entity.metadata.links[1].url if parameters.modelServer === 'Model server from the catalog' else parameters.modelEndpoint }}
+          modelEndpoint: ${{ steps['fetch-model-server-from-catalog'].output.entity.metadata.links[1].url if parameters.modelServer === 'Choose from the Catalog model server(s)' else parameters.modelEndpoint }}
           modelEndpointSecretName: ${{ parameters.modelEndpointSecretName }}
           modelEndpointSecretKey: ${{ parameters.modelEndpointSecretKey }}
           includeModelEndpointSecret: ${{ parameters.includeModelEndpointSecret }}
@@ -265,7 +265,7 @@ spec:
     - id: cleanupModelServerResources
       action: fs:delete
       name: Cleanup Unused Model Server Resources
-      if: ${{ parameters.modelServer === 'Existing model server' || parameters.modelServer === 'Model server from the catalog' }}
+      if: ${{ parameters.modelServer === 'Bring you own model server' || parameters.modelServer === 'Choose from the Catalog model server(s)' }}
       input:
         files:
           - 'gitops/components/http/base/deployment-model-server.yaml'

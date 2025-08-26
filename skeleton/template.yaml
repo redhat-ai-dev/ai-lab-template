@@ -119,10 +119,10 @@ spec:
             # SED_EXISTING_START
             - Select an existing model server
             # SED_EXISTING_SERVER_START
-            - Existing model server
+            - Bring you own model server
             # SED_EXISTING_SERVER_END
             # SED_EXISTING_FROM_CATALOG_START
-            - Model server from the catalog
+            - Choose from the Catalog model server(s)
             # SED_EXISTING_FROM_CATALOG_END
             # SED_EXISTING_END
       dependencies:
@@ -148,7 +148,7 @@ spec:
                 # SED_LLM_SERVER_END
               properties:
                 modelServer:
-                  const: Existing model server
+                  const: Bring you own model server
                 modelServerDescription:
                   type: 'null'
                   description: Fill in the endpoint and model name (LLM Server) you wish to use with your application.
@@ -193,7 +193,7 @@ spec:
                 - catalogModel
               properties:
                 modelServer:
-                  const: Model server from the catalog
+                  const: Choose from the Catalog model server(s)
                 modelServerDescription:
                   type: 'null'
                   description: Select a model from the RHDH catalog you wish to use with your application.
@@ -393,14 +393,14 @@ spec:
     - id: fetch-model-from-catalog
       name: Fetch Model From Catalog
       action: catalog:fetch
-      if: ${{ parameters.modelServer === 'Model server from the catalog' }}
+      if: ${{ parameters.modelServer === 'Choose from the Catalog model server(s)' }}
       input:
         entityRef: ${{ parameters.catalogModel }}
     # Fetches the model-server entity of the selected ai-model
     - id: fetch-model-server-from-catalog
       name: Fetch Model Server From Catalog
       action: catalog:fetch
-      if: ${{ parameters.modelServer === 'Model server from the catalog' }}
+      if: ${{ parameters.modelServer === 'Choose from the Catalog model server(s)' }}
       input:
         entityRef: ${{ steps['fetch-model-from-catalog'].output.entity.spec.dependencyOf[0] }}
     # SED_EXISTING_FROM_CATALOG_END
@@ -432,11 +432,11 @@ spec:
           appRunCommand: "${APP_RUN_COMMAND}"
           modelServiceContainer: ${MODEL_SERVICE_CONTAINER}
           modelServicePort: ${MODEL_SERVICE_PORT}
-          customModelName: ${{ steps['fetch-model-from-catalog'].output.entity.metadata.name if parameters.modelServer === 'Model server from the catalog' else parameters.modelName }}
+          customModelName: ${{ steps['fetch-model-from-catalog'].output.entity.metadata.name if parameters.modelServer === 'Choose from the Catalog model server(s)' else parameters.modelName }}
           modelName: ${MODEL_NAME}
           modelSrc: ${MODEL_SRC}
           modelServerName: ${{ parameters.modelServer }}
-          customModelAndModelServerSelected: ${{ true if parameters.modelServer === 'Existing model server' || parameters.modelServer === 'Model server from the catalog' else false }}
+          customModelAndModelServerSelected: ${{ true if parameters.modelServer === 'Bring you own model server' || parameters.modelServer === 'Choose from the Catalog model server(s)' else false }}
           modelServiceSrcVLLM: ${MODEL_SERVICE_SRC_VLLM}
           modelServiceSrcOther: ${MODEL_SERVICE_SRC_OTHER}
     # Renders all the template variables into the files and directory names and content, and places the result in the workspace.
@@ -533,13 +533,13 @@ spec:
           # for vllm
           vllmSelected: ${{ parameters.modelServer === 'vLLM' }}
           vllmModelServiceContainer: ${VLLM_CONTAINER}
-          modelName: ${{ parameters.modelName if parameters.modelServer === 'Existing model server' else (steps['fetch-model-from-catalog'].output.entity.metadata.name if parameters.modelServer === 'Model server from the catalog' else '${LLM_MODEL_NAME}') }}
+          modelName: ${{ parameters.modelName if parameters.modelServer === 'Bring you own model server' else (steps['fetch-model-from-catalog'].output.entity.metadata.name if parameters.modelServer === 'Choose from the Catalog model server(s)' else '${LLM_MODEL_NAME}') }}
           modelSrc: ${MODEL_SRC}
           maxModelLength: ${LLM_MAX_MODEL_LEN}
           # SED_LLM_SERVER_END
-          existingModelServer: ${{ parameters.modelServer === 'Existing model server' || parameters.modelServer === 'Model server from the catalog' }}
+          existingModelServer: ${{ parameters.modelServer === 'Bring you own model server' || parameters.modelServer === 'Choose from the Catalog model server(s)' }}
           # SED_EXISTING_START
-          modelEndpoint: ${{ steps['fetch-model-server-from-catalog'].output.entity.metadata.links[1].url if parameters.modelServer === 'Model server from the catalog' else parameters.modelEndpoint }}
+          modelEndpoint: ${{ steps['fetch-model-server-from-catalog'].output.entity.metadata.links[1].url if parameters.modelServer === 'Choose from the Catalog model server(s)' else parameters.modelEndpoint }}
           modelEndpointSecretName: ${{ parameters.modelEndpointSecretName }}
           modelEndpointSecretKey: ${{ parameters.modelEndpointSecretKey }}
           includeModelEndpointSecret: ${{ parameters.includeModelEndpointSecret }}
@@ -587,7 +587,7 @@ spec:
     - id: cleanupModelServerResources
       action: fs:delete
       name: Cleanup Unused Model Server Resources
-      if: ${{ parameters.modelServer === 'Existing model server' || parameters.modelServer === 'Model server from the catalog' }}
+      if: ${{ parameters.modelServer === 'Bring you own model server' || parameters.modelServer === 'Choose from the Catalog model server(s)' }}
       input:
         files:
           - 'gitops/components/http/base/deployment-model-server.yaml'
