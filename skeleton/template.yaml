@@ -74,10 +74,6 @@ spec:
         modelServer:
           # SED_LLM_SERVER_START
           title: Model Server
-          description: |
-            llama.cpp: ${MODEL_SERVICE_DESC}. | [Learn more](${MODEL_SERVICE_SRC})
-
-            vLLM: ${VLLM_DESC}. If you choose vLLM, ensure that your cluster has Nvidia GPU supported (with compute capability 7.0 or higher). Also, it should have enough CPU & memory resources for the model you would like to work with. | [Learn more](${VLLM_SRC})
           # SED_LLM_LLAMA_SERVER_START
           default: llama.cpp
           # SED_LLM_LLAMA_SERVER_END
@@ -96,7 +92,6 @@ spec:
           # SED_LLM_SERVER_END
           # SED_ASR_MODEL_SERVER_START
           title: Model Server
-          description: ${MODEL_SERVICE_DESC}. The deployed model on the server must support automatic speech recognition (ASR). | [Learn more](${MODEL_SERVICE_SRC})
           type: string
           default: whisper.cpp
           ui:enumDisabled: 
@@ -110,7 +105,6 @@ spec:
           # SED_ASR_MODEL_SERVER_END
           # SED_DETR_MODEL_SERVER_START
           title: Model Server
-          description: ${MODEL_SERVICE_DESC}. The deployed model on the server must support object detection. | [Learn more](${MODEL_SERVICE_SRC})
           type: string
           default: detr-resnet-101
           ui:enumDisabled: 
@@ -155,6 +149,9 @@ spec:
               properties:
                 modelServer:
                   const: Existing model server
+                modelServerDescription:
+                  type: 'null'
+                  description: Fill in the endpoint and model name (LLM Server) you wish to use with your application.
                 modelEndpoint:
                   title: Model Server Endpoint
                   type: string
@@ -197,6 +194,9 @@ spec:
               properties:
                 modelServer:
                   const: Model server from the catalog
+                modelServerDescription:
+                  type: 'null'
+                  description: Select a model from the RHDH catalog you wish to use with your application.
                 catalogModel:
                   title: Model name
                   type: string
@@ -238,6 +238,9 @@ spec:
             - properties:
                 modelServer:
                   const: vLLM
+                modelServerDescription:
+                  type: 'null'
+                  description: ${VLLM_DESC}. If you choose vLLM, ensure that your cluster has Nvidia GPU supported (with compute capability 7.0 or higher). Also, it should have enough CPU & memory resources for the model you would like to work with. | [Learn more](${VLLM_SRC})
                 modelNameDeployed:
                   title: Model Name
                   description: ${LLM_MODEL_CLASSIFICATION} | ${LLM_MODEL_LICENSE} | [Learn more](${LLM_MODEL_SRC})
@@ -249,6 +252,9 @@ spec:
             - properties:
                 modelServer:
                   const: llama.cpp
+                modelServerDescription:
+                  type: 'null'
+                  description: ${MODEL_SERVICE_DESC}. | [Learn more](${MODEL_SERVICE_SRC})
                 modelNameDeployed:
                   title: Model Name
                   description: ${LLM_MODEL_CLASSIFICATION} | ${LLM_MODEL_LICENSE} | [Learn more](${LLM_MODEL_SRC})
@@ -262,6 +268,9 @@ spec:
             - properties:
                 modelServer:
                   const: whisper.cpp
+                modelServerDescription:
+                  type: 'null'
+                  description: ${MODEL_SERVICE_DESC}. The deployed model on the server must support automatic speech recognition (ASR). | [Learn more](${MODEL_SERVICE_SRC})
                 modelNameDeployed:
                   title: Model Name
                   description: ${ASR_MODEL_CLASSIFICATION} | ${ASR_MODEL_LICENSE} | [Learn more](${ASR_MODEL_SRC})
@@ -274,6 +283,9 @@ spec:
             - properties:
                 modelServer:
                   const: detr-resnet-101
+                modelServerDescription:
+                  type: 'null'
+                  description: ${MODEL_SERVICE_DESC}. The deployed model on the server must support object detection. | [Learn more](${MODEL_SERVICE_SRC})
                 modelNameDeployed:
                   title: Model Name
                   description: ${DETR_MODEL_CLASSIFICATION} | ${DETR_MODEL_LICENSE} | [Learn more](${DETR_MODEL_SRC})

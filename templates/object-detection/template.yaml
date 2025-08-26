@@ -74,7 +74,6 @@ spec:
         modelServer:
           # SED_DETR_MODEL_SERVER_START
           title: Model Server
-          description: A simple FastAPI application for use with the DEtection TRansformer (DETR) models. The deployed model on the server must support object detection. | [Learn more](https://github.com/containers/ai-lab-recipes/tree/main/model_servers/object_detection_python)
           type: string
           default: detr-resnet-101
           ui:enumDisabled: 
@@ -113,6 +112,9 @@ spec:
               properties:
                 modelServer:
                   const: Existing model server
+                modelServerDescription:
+                  type: 'null'
+                  description: Fill in the endpoint and model name (LLM Server) you wish to use with your application.
                 modelEndpoint:
                   title: Model Server Endpoint
                   type: string
@@ -148,6 +150,9 @@ spec:
             - properties:
                 modelServer:
                   const: detr-resnet-101
+                modelServerDescription:
+                  type: 'null'
+                  description: A simple FastAPI application for use with the DEtection TRansformer (DETR) models. The deployed model on the server must support object detection. | [Learn more](https://github.com/containers/ai-lab-recipes/tree/main/model_servers/object_detection_python)
                 modelNameDeployed:
                   title: Model Name
                   description: Object Detection | Apache-2.0 | [Learn more](https://huggingface.co/facebook/detr-resnet-101)
