@@ -76,7 +76,7 @@ spec:
           title: Model Server
           type: string
           default: detr-resnet-101
-          ui:enumDisabled: 
+          ui:enumDisabled:
             - Create a new model server
             # SED_EXISTING_START
             - Select an existing model server

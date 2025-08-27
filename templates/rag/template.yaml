@@ -78,7 +78,7 @@ spec:
           default: llama.cpp
           # SED_LLM_LLAMA_SERVER_END
           type: string
-          ui:enumDisabled: 
+          ui:enumDisabled:
             - Create a new model server
             # SED_EXISTING_START
             - Select an existing model server

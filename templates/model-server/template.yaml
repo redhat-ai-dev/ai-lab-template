@@ -75,7 +75,7 @@ spec:
           # SED_LLM_SERVER_START
           title: Model Server
           type: string
-          ui:enumDisabled: 
+          ui:enumDisabled:
             - Create a new model server
             # SED_EXISTING_START
             - Select an existing model server
