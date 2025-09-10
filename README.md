@@ -20,3 +20,7 @@ For more information on how to contribute, please read our contributing [guide](
 ## Troubleshooting
 
 For more information about troubleshooting tips, please read our troubleshooting [guide](./docs/TROUBLESHOOTING.md).
+
+## Release
+
+For more information about the release process, please read our release [guide](./docs/RELEASE.md).
