@@ -224,6 +224,8 @@ spec:
                     catalogFilter:
                       kind: resource
                       spec.type: ai-model
+                      spec.dependencyOf:
+                        exists: true
                   # SED_LLM_SERVER_END
                   # SED_DETR_MODEL_SERVER_START
                   description: Select a model server from the RHDH catalog you wish to use with your application.
