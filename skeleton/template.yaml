@@ -595,7 +595,7 @@ spec:
           # SED_LLM_SERVER_END
           existingModelServer: ${{ parameters.modelServer === 'Bring you own model server' || parameters.modelServer === 'Choose from the Catalog model server(s)' }}
           # SED_EXISTING_START
-          modelEndpoint: ${{ steps['fetch-model-server-from-catalog'].output.entity.metadata.links[1].url if parameters.modelServer === 'Choose from the Catalog model server(s)' else parameters.modelEndpoint }}
+          modelEndpoint: ${{ (steps['fetch-model-server-from-catalog'].output.entity.metadata.annotations | pick('rhdh.modelcatalog.io/internal-service-url')) if parameters.modelServer === 'Choose from the Catalog model server(s)' else parameters.modelEndpoint }}
           modelEndpointSecretName: ${{ parameters.modelEndpointSecretName }}
           modelEndpointSecretKey: ${{ parameters.modelEndpointSecretKey }}
           includeModelEndpointSecret: ${{ parameters.includeModelEndpointSecret }}
