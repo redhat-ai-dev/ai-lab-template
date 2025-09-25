@@ -77,16 +77,10 @@ spec:
           type: string
           ui:enumDisabled:
             - Create a new model server
-            # SED_EXISTING_START
-            - Select an existing model server
-            # SED_EXISTING_END
           enum:
             - Create a new model server
             - vLLM
           # SED_LLM_SERVER_END
-            # SED_EXISTING_START
-            - Select an existing model server
-            # SED_EXISTING_END
       dependencies:
         includeArgoLabel:
           oneOf:
@@ -101,8 +95,6 @@ spec:
                   description: Define the label RHDH will use to identify the ArgoCD Applications
         modelServer:
           oneOf:
-            # SED_EXISTING_START
-            # SED_EXISTING_END
             # SED_LLM_SERVER_START
             - properties:
                 modelServer:
@@ -180,8 +172,6 @@ spec:
   # These steps are executed in the scaffolder backend, using data that we gathered
   # via the parameters above.
   steps:
-    # SED_EXISTING_START
-    # SED_EXISTING_END
     # The final step is to register our new component in the catalog.
     - id: fetch-gitops-skeleton
       name: Fetch Gitops Skeleton
@@ -224,12 +214,6 @@ spec:
           maxModelLength: 4096
           # SED_LLM_SERVER_END
           existingModelServer: ${{ parameters.modelServer === 'Bring you own model server' || parameters.modelServer === 'Choose from the Catalog model server(s)' }}
-          # SED_EXISTING_START
-          modelEndpoint: ${{ (steps['fetch-model-server-from-catalog'].output.entity.metadata.annotations | pick('rhdh.modelcatalog.io/internal-service-url')) if parameters.modelServer === 'Choose from the Catalog model server(s)' else parameters.modelEndpoint }}
-          modelEndpointSecretName: ${{ parameters.modelEndpointSecretName }}
-          modelEndpointSecretKey: ${{ parameters.modelEndpointSecretKey }}
-          includeModelEndpointSecret: ${{ parameters.includeModelEndpointSecret }}
-          # SED_EXISTING_END
           # Database is required for the RAG templates
           dbRequired: false
           supportApp: false
