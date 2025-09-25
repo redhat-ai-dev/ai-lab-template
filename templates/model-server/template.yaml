@@ -74,14 +74,18 @@ spec:
         modelServer:
           # SED_LLM_SERVER_START
           title: Model Server
-          description: |
-            
-
-            vLLM: A high throughput, memory efficient inference and serving engine with GPU support for LLMs in OpenShift. If you choose vLLM, ensure that your cluster has Nvidia GPU supported (with compute capability 7.0 or higher). Also, it should have enough CPU & memory resources for the model you would like to work with. | [Learn more](https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/vllm/0.8.4)
           type: string
+          ui:enumDisabled:
+            - Create a new model server
           enum:
+            - Create a new model server
             - vLLM
           # SED_LLM_SERVER_END
+          enumNames:
+            - Create a new model server
+            # SED_LLM_SERVER_START
+            - vLLM
+            # SED_LLM_SERVER_END
       dependencies:
         includeArgoLabel:
           oneOf:
@@ -100,6 +104,9 @@ spec:
             - properties:
                 modelServer:
                   const: vLLM
+                modelServerDescription:
+                  type: 'null'
+                  description: A high throughput, memory efficient inference and serving engine with GPU support for LLMs in OpenShift. If you choose vLLM, ensure that your cluster has Nvidia GPU supported (with compute capability 7.0 or higher). Also, it should have enough CPU & memory resources for the model you would like to work with. | [Learn more](https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/vllm/0.8.4)
                 modelNameDeployed:
                   title: Model Name
                   description: Text Generation | Apache-2.0 | [Learn more](https://huggingface.co/ibm-granite/granite-3.1-8b-instruct)
@@ -207,11 +214,11 @@ spec:
           # for vllm
           vllmSelected: ${{ parameters.modelServer === 'vLLM' }}
           vllmModelServiceContainer: quay.io/redhat-ai-dev/vllm-openai-ubi9:v0.8.4
-          modelName: ${{ parameters.modelName if parameters.modelServer === 'Existing model server' else 'ibm-granite/granite-3.1-8b-instruct' }}
+          modelName: ${{ parameters.modelName if parameters.modelServer === 'Bring you own model server' else (steps['fetch-model-from-catalog'].output.entity.metadata.name if parameters.modelServer === 'choose-from-the-catalog' else 'ibm-granite/granite-3.1-8b-instruct') }}
           modelSrc: 
           maxModelLength: 4096
           # SED_LLM_SERVER_END
-          existingModelServer: ${{ parameters.modelServer === 'Existing model server' }}
+          existingModelServer: ${{ true if parameters.modelServer === 'Bring you own model server' else (true if parameters.modelServer === 'choose-from-the-catalog' else false) }}
           # Database is required for the RAG templates
           dbRequired: false
           supportApp: false
@@ -247,7 +254,7 @@ spec:
     - id: cleanupModelServerResources
       action: fs:delete
       name: Cleanup Unused Model Server Resources
-      if: ${{ parameters.modelServer === 'Existing model server' }}
+      if: ${{ true if parameters.modelServer === 'Bring you own model server' else (true if parameters.modelServer === 'choose-from-the-catalog' else false) }}
       input:
         files:
           - 'gitops/components/http/base/deployment-model-server.yaml'

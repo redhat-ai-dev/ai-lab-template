@@ -24,7 +24,7 @@ export SUPPORT_LLM=true
 export SUPPORT_LLM_LLAMA=false
 
 # model server configuration
-export SUPPORT_EXISTING_SERVER=false
+export SUPPORT_EXISTING=false
 
 # application configuration
 export SUPPORT_APP=false

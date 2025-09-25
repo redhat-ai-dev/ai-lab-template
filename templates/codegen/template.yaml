@@ -74,23 +74,42 @@ spec:
         modelServer:
           # SED_LLM_SERVER_START
           title: Model Server
-          description: |
-            llama.cpp: A Python binding of LLM inference in C/C++ with minimal setup. | [Learn more](https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/llamacpp_python/0.3.8)
-
-            vLLM: A high throughput, memory efficient inference and serving engine with GPU support for LLMs in OpenShift. If you choose vLLM, ensure that your cluster has Nvidia GPU supported (with compute capability 7.0 or higher). Also, it should have enough CPU & memory resources for the model you would like to work with. | [Learn more](https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/vllm/0.8.4)
           # SED_LLM_LLAMA_SERVER_START
           default: llama.cpp
           # SED_LLM_LLAMA_SERVER_END
           type: string
+          ui:enumDisabled:
+            - Create a new model server
+            # SED_EXISTING_START
+            - Select an existing model server
+            # SED_EXISTING_END
           enum:
+            - Create a new model server
             - vLLM
             # SED_LLM_LLAMA_SERVER_START
             - llama.cpp
             # SED_LLM_LLAMA_SERVER_END
           # SED_LLM_SERVER_END
+            # SED_EXISTING_START
+            - Select an existing model server
             # SED_EXISTING_SERVER_START
-            - Existing model server
+            - Bring you own model server
             # SED_EXISTING_SERVER_END
+            # SED_EXISTING_END
+          enumNames:
+            - Create a new model server
+            # SED_LLM_SERVER_START
+            - vLLM
+            # SED_LLM_LLAMA_SERVER_START
+            - llama.cpp
+            # SED_LLM_LLAMA_SERVER_END
+            # SED_LLM_SERVER_END
+            # SED_EXISTING_START
+            - Select an existing model server
+            # SED_EXISTING_SERVER_START
+            - Bring you own model server
+            # SED_EXISTING_SERVER_END
+            # SED_EXISTING_END
       dependencies:
         includeArgoLabel:
           oneOf:
@@ -105,6 +124,7 @@ spec:
                   description: Define the label RHDH will use to identify the ArgoCD Applications
         modelServer:
           oneOf:
+            # SED_EXISTING_START
             # SED_EXISTING_SERVER_START
             - required:
                 - modelEndpoint
@@ -113,7 +133,12 @@ spec:
                 # SED_LLM_SERVER_END
               properties:
                 modelServer:
-                  const: Existing model server
+                  const: Bring you own model server
+                modelServerDescription:
+                  type: 'null'
+                  # SED_LLM_SERVER_START
+                  description: Fill in the model server endpoint and model name you wish to use with your application.
+                  # SED_LLM_SERVER_END
                 modelEndpoint:
                   title: Model Server Endpoint
                   type: string
@@ -150,10 +175,14 @@ spec:
                           - modelEndpointSecretName
                           - modelEndpointSecretKey
             # SED_EXISTING_SERVER_END
+            # SED_EXISTING_END
             # SED_LLM_SERVER_START
             - properties:
                 modelServer:
                   const: vLLM
+                modelServerDescription:
+                  type: 'null'
+                  description: A high throughput, memory efficient inference and serving engine with GPU support for LLMs in OpenShift. If you choose vLLM, ensure that your cluster has Nvidia GPU supported (with compute capability 7.0 or higher). Also, it should have enough CPU & memory resources for the model you would like to work with. | [Learn more](https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/vllm/0.8.4)
                 modelNameDeployed:
                   title: Model Name
                   description: Text Generation | Apache-2.0 | [Learn more](https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.2-AWQ)
@@ -165,6 +194,9 @@ spec:
             - properties:
                 modelServer:
                   const: llama.cpp
+                modelServerDescription:
+                  type: 'null'
+                  description: A Python binding of LLM inference in C/C++ with minimal setup. | [Learn more](https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/llamacpp_python/0.3.8)
                 modelNameDeployed:
                   title: Model Name
                   description: Text Generation | Apache-2.0 | [Learn more](https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.2-AWQ)
@@ -267,6 +299,8 @@ spec:
   # These steps are executed in the scaffolder backend, using data that we gathered
   # via the parameters above.
   steps:
+    # SED_EXISTING_START
+    # SED_EXISTING_END
     # SED_APP_SUPPORT_START
     # Each step executes an action, in this case one templates files into the workspace.
     # Get the sample source code
@@ -294,11 +328,11 @@ spec:
           appRunCommand: "streamlit run codegen-app.py"
           modelServiceContainer: quay.io/redhat-ai-dev/llamacpp_python:0.3.8
           modelServicePort: 8001
-          customModelName: ${{ parameters.modelName }}
+          customModelName: ${{ steps['fetch-model-from-catalog'].output.entity.metadata.name if parameters.modelServer === 'choose-from-the-catalog' else parameters.modelName }}
           modelName: TheBloke/Mistral-7B-Instruct-v0.2-AWQ
           modelSrc: https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.2-AWQ
           modelServerName: ${{ parameters.modelServer }}
-          customModelAndModelServerSelected: ${{ true if parameters.modelServer === 'Existing model server' else false }}
+          customModelAndModelServerSelected: ${{ true if parameters.modelServer === 'Bring you own model server' else (true if parameters.modelServer === 'choose-from-the-catalog' else false) }}
           modelServiceSrcVLLM: https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/vllm/0.8.4
           modelServiceSrcOther: https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/llamacpp_python/0.3.8
     # Renders all the template variables into the files and directory names and content, and places the result in the workspace.
@@ -395,17 +429,17 @@ spec:
           # for vllm
           vllmSelected: ${{ parameters.modelServer === 'vLLM' }}
           vllmModelServiceContainer: quay.io/redhat-ai-dev/vllm-openai-ubi9:v0.8.4
-          modelName: ${{ parameters.modelName if parameters.modelServer === 'Existing model server' else 'TheBloke/Mistral-7B-Instruct-v0.2-AWQ' }}
+          modelName: ${{ parameters.modelName if parameters.modelServer === 'Bring you own model server' else (steps['fetch-model-from-catalog'].output.entity.metadata.name if parameters.modelServer === 'choose-from-the-catalog' else 'TheBloke/Mistral-7B-Instruct-v0.2-AWQ') }}
           modelSrc: https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.2-AWQ
           maxModelLength: 4096
           # SED_LLM_SERVER_END
-          existingModelServer: ${{ parameters.modelServer === 'Existing model server' }}
-          # SED_EXISTING_SERVER_START
-          modelEndpoint: ${{ parameters.modelEndpoint }}
+          existingModelServer: ${{ true if parameters.modelServer === 'Bring you own model server' else (true if parameters.modelServer === 'choose-from-the-catalog' else false) }}
+          # SED_EXISTING_START
+          modelEndpoint: ${{ (steps['fetch-model-server-from-catalog'].output.entity.metadata.annotations | pick('rhdh.modelcatalog.io/internal-service-url')) if parameters.modelServer === 'choose-from-the-catalog' else parameters.modelEndpoint }}
           modelEndpointSecretName: ${{ parameters.modelEndpointSecretName }}
           modelEndpointSecretKey: ${{ parameters.modelEndpointSecretKey }}
           includeModelEndpointSecret: ${{ parameters.includeModelEndpointSecret }}
-          # SED_EXISTING_SERVER_END
+          # SED_EXISTING_END
           # SED_APP_SUPPORT_START
           # for RHOAI
           rhoaiSelected: ${{ parameters.rhoaiSelected }}
@@ -445,7 +479,7 @@ spec:
     - id: cleanupModelServerResources
       action: fs:delete
       name: Cleanup Unused Model Server Resources
-      if: ${{ parameters.modelServer === 'Existing model server' }}
+      if: ${{ true if parameters.modelServer === 'Bring you own model server' else (true if parameters.modelServer === 'choose-from-the-catalog' else false) }}
       input:
         files:
           - 'gitops/components/http/base/deployment-model-server.yaml'
