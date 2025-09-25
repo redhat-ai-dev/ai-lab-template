@@ -91,6 +91,17 @@ spec:
             - Bring you own model server
             # SED_EXISTING_SERVER_END
             # SED_EXISTING_END
+          enumNames:
+            - Create a new model server
+            # SED_DETR_MODEL_SERVER_START
+            - detr-resnet-101
+            # SED_DETR_MODEL_SERVER_END
+            # SED_EXISTING_START
+            - Select an existing model server
+            # SED_EXISTING_SERVER_START
+            - Bring you own model server
+            # SED_EXISTING_SERVER_END
+            # SED_EXISTING_END
       dependencies:
         includeArgoLabel:
           oneOf:
@@ -285,11 +296,11 @@ spec:
           appRunCommand: "streamlit run object_detection_client.py"
           modelServiceContainer: quay.io/redhat-ai-dev/object_detection_python:latest
           modelServicePort: 8000
-          customModelName: ${{ steps['fetch-model-from-catalog'].output.entity.metadata.name if parameters.modelServer === 'Choose from the Catalog model server(s)' else parameters.modelName }}
+          customModelName: ${{ steps['fetch-model-from-catalog'].output.entity.metadata.name if parameters.modelServer === 'choose-from-the-catalog' else parameters.modelName }}
           modelName: facebook/detr-resnet-101
           modelSrc: https://huggingface.co/facebook/detr-resnet-101
           modelServerName: ${{ parameters.modelServer }}
-          customModelAndModelServerSelected: ${{ true if parameters.modelServer === 'Bring you own model server' || parameters.modelServer === 'Choose from the Catalog model server(s)' else false }}
+          customModelAndModelServerSelected: ${{ true if parameters.modelServer === 'Bring you own model server' else (true if parameters.modelServer === 'choose-from-the-catalog' else false) }}
           modelServiceSrcVLLM: https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/vllm/0.8.4
           modelServiceSrcOther: https://github.com/containers/ai-lab-recipes/tree/main/model_servers/object_detection_python
     # Renders all the template variables into the files and directory names and content, and places the result in the workspace.
@@ -382,9 +393,9 @@ spec:
           appPort: 8501
           modelServiceContainer: quay.io/redhat-ai-dev/object_detection_python:latest
           modelServicePort: 8000
-          existingModelServer: ${{ parameters.modelServer === 'Bring you own model server' || parameters.modelServer === 'Choose from the Catalog model server(s)' }}
+          existingModelServer: ${{ true if parameters.modelServer === 'Bring you own model server' else (true if parameters.modelServer === 'choose-from-the-catalog' else false) }}
           # SED_EXISTING_START
-          modelEndpoint: ${{ (steps['fetch-model-server-from-catalog'].output.entity.metadata.annotations | pick('rhdh.modelcatalog.io/internal-service-url')) if parameters.modelServer === 'Choose from the Catalog model server(s)' else parameters.modelEndpoint }}
+          modelEndpoint: ${{ (steps['fetch-model-server-from-catalog'].output.entity.metadata.annotations | pick('rhdh.modelcatalog.io/internal-service-url')) if parameters.modelServer === 'choose-from-the-catalog' else parameters.modelEndpoint }}
           modelEndpointSecretName: ${{ parameters.modelEndpointSecretName }}
           modelEndpointSecretKey: ${{ parameters.modelEndpointSecretKey }}
           includeModelEndpointSecret: ${{ parameters.includeModelEndpointSecret }}
@@ -428,7 +439,7 @@ spec:
     - id: cleanupModelServerResources
       action: fs:delete
       name: Cleanup Unused Model Server Resources
-      if: ${{ parameters.modelServer === 'Bring you own model server' || parameters.modelServer === 'Choose from the Catalog model server(s)' }}
+      if: ${{ true if parameters.modelServer === 'Bring you own model server' else (true if parameters.modelServer === 'choose-from-the-catalog' else false) }}
       input:
         files:
           - 'gitops/components/http/base/deployment-model-server.yaml'

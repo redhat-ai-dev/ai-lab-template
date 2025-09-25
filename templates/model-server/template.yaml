@@ -81,6 +81,11 @@ spec:
             - Create a new model server
             - vLLM
           # SED_LLM_SERVER_END
+          enumNames:
+            - Create a new model server
+            # SED_LLM_SERVER_START
+            - vLLM
+            # SED_LLM_SERVER_END
       dependencies:
         includeArgoLabel:
           oneOf:
@@ -209,11 +214,11 @@ spec:
           # for vllm
           vllmSelected: ${{ parameters.modelServer === 'vLLM' }}
           vllmModelServiceContainer: quay.io/redhat-ai-dev/vllm-openai-ubi9:v0.8.4
-          modelName: ${{ parameters.modelName if parameters.modelServer === 'Bring you own model server' else (steps['fetch-model-from-catalog'].output.entity.metadata.name if parameters.modelServer === 'Choose from the Catalog model server(s)' else 'ibm-granite/granite-3.1-8b-instruct') }}
+          modelName: ${{ parameters.modelName if parameters.modelServer === 'Bring you own model server' else (steps['fetch-model-from-catalog'].output.entity.metadata.name if parameters.modelServer === 'choose-from-the-catalog' else 'ibm-granite/granite-3.1-8b-instruct') }}
           modelSrc: 
           maxModelLength: 4096
           # SED_LLM_SERVER_END
-          existingModelServer: ${{ parameters.modelServer === 'Bring you own model server' || parameters.modelServer === 'Choose from the Catalog model server(s)' }}
+          existingModelServer: ${{ true if parameters.modelServer === 'Bring you own model server' else (true if parameters.modelServer === 'choose-from-the-catalog' else false) }}
           # Database is required for the RAG templates
           dbRequired: false
           supportApp: false
@@ -249,7 +254,7 @@ spec:
     - id: cleanupModelServerResources
       action: fs:delete
       name: Cleanup Unused Model Server Resources
-      if: ${{ parameters.modelServer === 'Bring you own model server' || parameters.modelServer === 'Choose from the Catalog model server(s)' }}
+      if: ${{ true if parameters.modelServer === 'Bring you own model server' else (true if parameters.modelServer === 'choose-from-the-catalog' else false) }}
       input:
         files:
           - 'gitops/components/http/base/deployment-model-server.yaml'

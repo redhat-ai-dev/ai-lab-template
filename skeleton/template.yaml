@@ -122,7 +122,38 @@ spec:
             - Bring you own model server
             # SED_EXISTING_SERVER_END
             # SED_EXISTING_FROM_CATALOG_START
+            - choose-from-the-catalog
+            # SED_EXISTING_FROM_CATALOG_END
+            # SED_EXISTING_END
+          enumNames:
+            - Create a new model server
+            # SED_LLM_SERVER_START
+            - vLLM
+            # SED_LLM_LLAMA_SERVER_START
+            - llama.cpp
+            # SED_LLM_LLAMA_SERVER_END
+            # SED_LLM_SERVER_END
+            # SED_ASR_MODEL_SERVER_START
+            - whisper.cpp
+            # SED_ASR_MODEL_SERVER_END
+            # SED_DETR_MODEL_SERVER_START
+            - detr-resnet-101
+            # SED_DETR_MODEL_SERVER_END
+            # SED_EXISTING_START
+            - Select an existing model server
+            # SED_EXISTING_SERVER_START
+            - Bring you own model server
+            # SED_EXISTING_SERVER_END
+            # SED_EXISTING_FROM_CATALOG_START
+            # SED_LLM_SERVER_START
+            - Choose from the Catalog model(s)
+            # SED_LLM_SERVER_END
+            # SED_ASR_MODEL_SERVER_START
             - Choose from the Catalog model server(s)
+            # SED_ASR_MODEL_SERVER_END
+            # SED_DETR_MODEL_SERVER_START
+            - Choose from the Catalog model server(s)
+            # SED_DETR_MODEL_SERVER_END
             # SED_EXISTING_FROM_CATALOG_END
             # SED_EXISTING_END
       dependencies:
@@ -209,7 +240,7 @@ spec:
                 # SED_DETR_MODEL_SERVER_END
               properties:
                 modelServer:
-                  const: Choose from the Catalog model server(s)
+                  const: choose-from-the-catalog
                 modelServerDescription:
                   type: 'null'
                   # SED_LLM_SERVER_START
@@ -440,7 +471,7 @@ spec:
     - id: fetch-model-from-catalog
       name: Fetch Model From Catalog
       action: catalog:fetch
-      if: ${{ parameters.modelServer === 'Choose from the Catalog model server(s)' }}
+      if: ${{ parameters.modelServer === 'choose-from-the-catalog' }}
       input:
         entityRef: ${{ parameters.catalogModel }}
     # SED_LLM_SERVER_END
@@ -448,7 +479,7 @@ spec:
     - id: fetch-model-server-from-catalog
       name: Fetch Model Server From Catalog
       action: catalog:fetch
-      if: ${{ parameters.modelServer === 'Choose from the Catalog model server(s)' }}
+      if: ${{ parameters.modelServer === 'choose-from-the-catalog' }}
       input:
         # SED_LLM_SERVER_START
         entityRef: ${{ steps['fetch-model-from-catalog'].output.entity.spec.dependencyOf[0] }}
@@ -488,11 +519,11 @@ spec:
           appRunCommand: "${APP_RUN_COMMAND}"
           modelServiceContainer: ${MODEL_SERVICE_CONTAINER}
           modelServicePort: ${MODEL_SERVICE_PORT}
-          customModelName: ${{ steps['fetch-model-from-catalog'].output.entity.metadata.name if parameters.modelServer === 'Choose from the Catalog model server(s)' else parameters.modelName }}
+          customModelName: ${{ steps['fetch-model-from-catalog'].output.entity.metadata.name if parameters.modelServer === 'choose-from-the-catalog' else parameters.modelName }}
           modelName: ${MODEL_NAME}
           modelSrc: ${MODEL_SRC}
           modelServerName: ${{ parameters.modelServer }}
-          customModelAndModelServerSelected: ${{ true if parameters.modelServer === 'Bring you own model server' || parameters.modelServer === 'Choose from the Catalog model server(s)' else false }}
+          customModelAndModelServerSelected: ${{ true if parameters.modelServer === 'Bring you own model server' else (true if parameters.modelServer === 'choose-from-the-catalog' else false) }}
           modelServiceSrcVLLM: ${MODEL_SERVICE_SRC_VLLM}
           modelServiceSrcOther: ${MODEL_SERVICE_SRC_OTHER}
     # Renders all the template variables into the files and directory names and content, and places the result in the workspace.
@@ -589,13 +620,13 @@ spec:
           # for vllm
           vllmSelected: ${{ parameters.modelServer === 'vLLM' }}
           vllmModelServiceContainer: ${VLLM_CONTAINER}
-          modelName: ${{ parameters.modelName if parameters.modelServer === 'Bring you own model server' else (steps['fetch-model-from-catalog'].output.entity.metadata.name if parameters.modelServer === 'Choose from the Catalog model server(s)' else '${LLM_MODEL_NAME}') }}
+          modelName: ${{ parameters.modelName if parameters.modelServer === 'Bring you own model server' else (steps['fetch-model-from-catalog'].output.entity.metadata.name if parameters.modelServer === 'choose-from-the-catalog' else '${LLM_MODEL_NAME}') }}
           modelSrc: ${MODEL_SRC}
           maxModelLength: ${LLM_MAX_MODEL_LEN}
           # SED_LLM_SERVER_END
-          existingModelServer: ${{ parameters.modelServer === 'Bring you own model server' || parameters.modelServer === 'Choose from the Catalog model server(s)' }}
+          existingModelServer: ${{ true if parameters.modelServer === 'Bring you own model server' else (true if parameters.modelServer === 'choose-from-the-catalog' else false) }}
           # SED_EXISTING_START
-          modelEndpoint: ${{ (steps['fetch-model-server-from-catalog'].output.entity.metadata.annotations | pick('rhdh.modelcatalog.io/internal-service-url')) if parameters.modelServer === 'Choose from the Catalog model server(s)' else parameters.modelEndpoint }}
+          modelEndpoint: ${{ (steps['fetch-model-server-from-catalog'].output.entity.metadata.annotations | pick('rhdh.modelcatalog.io/internal-service-url')) if parameters.modelServer === 'choose-from-the-catalog' else parameters.modelEndpoint }}
           modelEndpointSecretName: ${{ parameters.modelEndpointSecretName }}
           modelEndpointSecretKey: ${{ parameters.modelEndpointSecretKey }}
           includeModelEndpointSecret: ${{ parameters.includeModelEndpointSecret }}
@@ -643,7 +674,7 @@ spec:
     - id: cleanupModelServerResources
       action: fs:delete
       name: Cleanup Unused Model Server Resources
-      if: ${{ parameters.modelServer === 'Bring you own model server' || parameters.modelServer === 'Choose from the Catalog model server(s)' }}
+      if: ${{ true if parameters.modelServer === 'Bring you own model server' else (true if parameters.modelServer === 'choose-from-the-catalog' else false) }}
       input:
         files:
           - 'gitops/components/http/base/deployment-model-server.yaml'

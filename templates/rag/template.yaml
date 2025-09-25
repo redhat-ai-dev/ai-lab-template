@@ -96,6 +96,20 @@ spec:
             - Bring you own model server
             # SED_EXISTING_SERVER_END
             # SED_EXISTING_END
+          enumNames:
+            - Create a new model server
+            # SED_LLM_SERVER_START
+            - vLLM
+            # SED_LLM_LLAMA_SERVER_START
+            - llama.cpp
+            # SED_LLM_LLAMA_SERVER_END
+            # SED_LLM_SERVER_END
+            # SED_EXISTING_START
+            - Select an existing model server
+            # SED_EXISTING_SERVER_START
+            - Bring you own model server
+            # SED_EXISTING_SERVER_END
+            # SED_EXISTING_END
       dependencies:
         includeArgoLabel:
           oneOf:
@@ -314,11 +328,11 @@ spec:
           appRunCommand: "streamlit run rag_app.py"
           modelServiceContainer: quay.io/redhat-ai-dev/llamacpp_python:0.3.8
           modelServicePort: 8001
-          customModelName: ${{ steps['fetch-model-from-catalog'].output.entity.metadata.name if parameters.modelServer === 'Choose from the Catalog model server(s)' else parameters.modelName }}
+          customModelName: ${{ steps['fetch-model-from-catalog'].output.entity.metadata.name if parameters.modelServer === 'choose-from-the-catalog' else parameters.modelName }}
           modelName: ibm-granite/granite-3.1-8b-instruct
           modelSrc: https://huggingface.co/ibm-granite/granite-3.1-8b-instruct
           modelServerName: ${{ parameters.modelServer }}
-          customModelAndModelServerSelected: ${{ true if parameters.modelServer === 'Bring you own model server' || parameters.modelServer === 'Choose from the Catalog model server(s)' else false }}
+          customModelAndModelServerSelected: ${{ true if parameters.modelServer === 'Bring you own model server' else (true if parameters.modelServer === 'choose-from-the-catalog' else false) }}
           modelServiceSrcVLLM: https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/vllm/0.8.4
           modelServiceSrcOther: https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/llamacpp_python/0.3.8
     # Renders all the template variables into the files and directory names and content, and places the result in the workspace.
@@ -415,13 +429,13 @@ spec:
           # for vllm
           vllmSelected: ${{ parameters.modelServer === 'vLLM' }}
           vllmModelServiceContainer: quay.io/redhat-ai-dev/vllm-openai-ubi9:v0.8.4
-          modelName: ${{ parameters.modelName if parameters.modelServer === 'Bring you own model server' else (steps['fetch-model-from-catalog'].output.entity.metadata.name if parameters.modelServer === 'Choose from the Catalog model server(s)' else 'ibm-granite/granite-3.1-8b-instruct') }}
+          modelName: ${{ parameters.modelName if parameters.modelServer === 'Bring you own model server' else (steps['fetch-model-from-catalog'].output.entity.metadata.name if parameters.modelServer === 'choose-from-the-catalog' else 'ibm-granite/granite-3.1-8b-instruct') }}
           modelSrc: https://huggingface.co/ibm-granite/granite-3.1-8b-instruct
           maxModelLength: 4096
           # SED_LLM_SERVER_END
-          existingModelServer: ${{ parameters.modelServer === 'Bring you own model server' || parameters.modelServer === 'Choose from the Catalog model server(s)' }}
+          existingModelServer: ${{ true if parameters.modelServer === 'Bring you own model server' else (true if parameters.modelServer === 'choose-from-the-catalog' else false) }}
           # SED_EXISTING_START
-          modelEndpoint: ${{ (steps['fetch-model-server-from-catalog'].output.entity.metadata.annotations | pick('rhdh.modelcatalog.io/internal-service-url')) if parameters.modelServer === 'Choose from the Catalog model server(s)' else parameters.modelEndpoint }}
+          modelEndpoint: ${{ (steps['fetch-model-server-from-catalog'].output.entity.metadata.annotations | pick('rhdh.modelcatalog.io/internal-service-url')) if parameters.modelServer === 'choose-from-the-catalog' else parameters.modelEndpoint }}
           modelEndpointSecretName: ${{ parameters.modelEndpointSecretName }}
           modelEndpointSecretKey: ${{ parameters.modelEndpointSecretKey }}
           includeModelEndpointSecret: ${{ parameters.includeModelEndpointSecret }}
@@ -469,7 +483,7 @@ spec:
     - id: cleanupModelServerResources
       action: fs:delete
       name: Cleanup Unused Model Server Resources
-      if: ${{ parameters.modelServer === 'Bring you own model server' || parameters.modelServer === 'Choose from the Catalog model server(s)' }}
+      if: ${{ true if parameters.modelServer === 'Bring you own model server' else (true if parameters.modelServer === 'choose-from-the-catalog' else false) }}
       input:
         files:
           - 'gitops/components/http/base/deployment-model-server.yaml'
