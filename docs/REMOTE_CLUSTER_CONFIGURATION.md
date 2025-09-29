@@ -9,6 +9,7 @@ This document covers only the ai-rhdh-installer specific configuration steps.
 ---
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 ## Step 1: Configure RHDH with ai-rhdh-installer on your Host Cluster
 =======
 ## Terminology
@@ -40,6 +41,9 @@ The GitOps application is split into two Argo CD Applications (for more informat
 
 ## Step 1: Configure RHDH with ai-rhdh-installer (host cluster)
 >>>>>>> b353956 (RHDHPAI-581: adding UI components and connecting cluster info (#90))
+=======
+## Step 1: Configure RHDH with ai-rhdh-installer on your Host Cluster
+>>>>>>> 09aaf7c (RHDHPAI-581: adding UI components and connecting cluster info)
 
 ### Interactive setup
 
@@ -85,6 +89,7 @@ When prompted:
 The installer updates dynamic plugins (Kubernetes/Topology, optionally Tekton) with the remote cluster.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 
 From here, refer to Steps 2-4 from [template-remote-cluster.md](../documentation/app/template-remote-cluster.md) to complete the remote cluster setup and validation.
@@ -92,14 +97,13 @@ From here, refer to Steps 2-4 from [template-remote-cluster.md](../documentation
 ---
 =======
 ---
+=======
+>>>>>>> 09aaf7c (RHDHPAI-581: adding UI components and connecting cluster info)
 
-## Step 2: Register the remote cluster in Argo CD (host cluster)
-Argo CD must know how to reach the remote cluster to deploy the application there. For comprehensive instructions on cluster registration, refer to the official documentation:
-- [Argo CD Cluster Management](https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#clusters)
-- [External Cluster Credentials](https://argo-cd.readthedocs.io/en/stable/operator-manual/security/#external-cluster-credentials)
 
-You can register the cluster either via the Argo CD CLI (recommended) or create a Kubernetes Secret with the remote cluster information (manual), if you're having issues with Argo CD CLI. Refer to the Argo CD [docs](https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#clusters)
+From here, refer to Steps 2-4 from [template-remote-cluster.md](../documentation/app/template-remote-cluster.md) to complete the remote cluster setup and validation.
 
+<<<<<<< HEAD
 ### Register via Argo CD CLI
 
 ```bash
@@ -134,3 +138,6 @@ argocd cluster add <remote-cluster-context-name>
 
 ---
 >>>>>>> b353956 (RHDHPAI-581: adding UI components and connecting cluster info (#90))
+=======
+---
+>>>>>>> 09aaf7c (RHDHPAI-581: adding UI components and connecting cluster info)

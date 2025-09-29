@@ -49,6 +49,11 @@ spec:
           default: user:guest
           ui:field: OwnerPicker
           ui:options: {}
+        deployArgoCDApplicationOnRemoteCluster:
+          title: Deploy ArgoCD Application on Remote Cluster?
+          type: boolean
+          default: false
+          ui:help: "If you select this field, you must ensure that the Remote Cluster is already configured on your RHDH instance."
         argoNS:
           title: ArgoCD Namespace
           type: string
