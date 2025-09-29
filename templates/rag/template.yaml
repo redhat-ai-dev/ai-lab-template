@@ -246,6 +246,7 @@ spec:
           default: GitHub
         repoOwner:
           title: Repository Owner
+          default: ai-rolling-demo
           type: string
           ui:help: The organization, user or project that this repo will belong to
         repoName:
@@ -286,6 +287,15 @@ spec:
         - imageName
         # SED_APP_SUPPORT_END
         - namespace
+      ui:order:
+        - imageRegistry
+        - imageOrg
+        - imageName
+        - namespace
+        - deployArgoCDApplicationOnRemoteCluster
+        - remoteClusterAPIUrl
+        - remoteClusterDeploymentNamespace
+        - rhoaiSelected
       properties:
         # SED_APP_SUPPORT_START
         imageRegistry:
@@ -312,6 +322,11 @@ spec:
           ui:autofocus: true
           ui:options:
             rows: 5
+        deployArgoCDApplicationOnRemoteCluster:
+          title: Deploy ArgoCD Application on Remote Cluster?
+          type: boolean
+          default: false
+          ui:help: "Check this to deploy the ArgoCD application to a remote cluster"
         # SED_APP_SUPPORT_START
         rhoaiSelected:
           title: Create Workbench for OpenShift AI
@@ -320,6 +335,26 @@ spec:
           default: false
           ui:help: If you select this field, you must ensure that Red Hat OpenShift AI has been installed on your cluster.
           # SED_APP_SUPPORT_END
+      dependencies:
+        deployArgoCDApplicationOnRemoteCluster:
+          oneOf:
+            - required:
+                - remoteClusterAPIUrl
+                - remoteClusterDeploymentNamespace
+              properties:
+                deployArgoCDApplicationOnRemoteCluster:
+                  const: true
+                remoteClusterAPIUrl:
+                  title: Remote Cluster API URL
+                  type: string
+                  ui:help: "Kube API URL of remote cluster"
+                remoteClusterDeploymentNamespace:
+                  title: Remote Cluster Deployment Namespace
+                  type: string
+                  ui:help: "The namespace of the remote cluster that the argoCD application will be deployed"
+            - properties:
+                deployArgoCDApplicationOnRemoteCluster:
+                  const: false
   # These steps are executed in the scaffolder backend, using data that we gathered
   # via the parameters above.
   steps:
@@ -450,8 +485,7 @@ spec:
           # SED_LLM_SERVER_START
           # for vllm
           vllmSelected: ${{ parameters.modelServer === 'vLLM' }}
-          # vllmModelServiceContainer: quay.io/redhat-ai-dev/vllm-openai-ubi9:v0.11.0
-          vllmModelServiceContainer: quay.io/rh-ee-lyoon/vllm-openai-ubi9:v0.11.0
+          vllmModelServiceContainer: quay.io/redhat-ai-dev/vllm-openai-ubi9:v0.11.0
           modelName: ${{ parameters.modelName if parameters.modelServer === 'Bring you own model server' else (steps['fetch-model-from-catalog'].output.entity.metadata.name if parameters.modelServer === 'choose-from-the-catalog' else 'ibm-granite/granite-3.1-8b-instruct') }}
           modelSrc: https://huggingface.co/ibm-granite/granite-3.1-8b-instruct
           maxModelLength: 4096
