@@ -25,6 +25,9 @@ spec:
       ui:order:
         - name
         - owner
+        - deployArgoCDApplicationOnRemoteCluster
+        - remoteClusterAPIUrl
+        - remoteClusterDeploymentNamespace
         - argoNS
         - argoInstance
         - argoProject
@@ -49,6 +52,11 @@ spec:
           default: user:guest
           ui:field: OwnerPicker
           ui:options: {}
+        deployArgoCDApplicationOnRemoteCluster:
+          title: Deploy ArgoCD Application on Remote Cluster?
+          type: boolean
+          default: false
+          ui:help: "Check this to deploy the ArgoCD application to a remote cluster"
         argoNS:
           title: ArgoCD Namespace
           type: string
@@ -119,6 +127,22 @@ spec:
                   title: ArgoCD Application Label
                   type: string
                   description: Define the label RHDH will use to identify the ArgoCD Applications
+        deployArgoCDApplicationOnRemoteCluster:
+          oneOf:
+            - properties:
+                deployArgoCDApplicationOnRemoteCluster:
+                  const: true
+                remoteClusterAPIUrl:
+                  title: Remote Cluster API URL
+                  type: string
+                  ui:help: "Kube API URL of remote cluster"
+                remoteClusterDeploymentNamespace:
+                  title: Remote Cluster Deployment Namespace
+                  type: string
+                  ui:help: "The namespace of the remote cluster that the argoCD application will be deployed"
+            - properties:
+                deployArgoCDApplicationOnRemoteCluster:
+                  const: false
         modelServer:
           oneOf:
             # SED_EXISTING_SERVER_START
@@ -409,7 +433,7 @@ spec:
           name: ${{ parameters.name }}
           appName: ${{ parameters.name }}-gitops # for now just use the component name, since it's single component app
           description: This is GitOps manifest for ${{ parameters.name }}
-          namespace: ${{ parameters.namespace }}
+          namespace: ${{ parameters.remoteClusterDeploymentNamespace if parameters.deployArgoCDApplicationOnRemoteCluster else parameters.namespace }}
           rhdhNamespace: ${RHDH__DEFAULT__NAMESPACE}
           # example: github.com?owner=<owner>&repo=<srcRepo>, the gitops repo name will be <srcRepo>-gitops
           repoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops
@@ -463,6 +487,12 @@ spec:
           imageRegistry: ${{ parameters.imageRegistry }}
           imageOrg: ${{ parameters.imageOrg }}
           imageName: ${{ parameters.imageName }}
+          # Remote cluster configuration
+          deployOnRemoteCluster: ${{ parameters.deployArgoCDApplicationOnRemoteCluster }}
+          remoteClusterAPIUri: ${{ parameters.remoteClusterAPIUrl }}
+          remoteClusterDeploymentNamespace: ${{ parameters.remoteClusterDeploymentNamespace }}
+          customModelServer: ${{ parameters.modelServer }}
+          customModelName: ${{ parameters.modelName }}
     - id: cleanupDatabaseResources
       action: fs:delete
       name: Cleanup Unused Database Resources
