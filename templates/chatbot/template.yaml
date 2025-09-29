@@ -56,7 +56,11 @@ spec:
           title: Deploy ArgoCD Application on Remote Cluster?
           type: boolean
           default: false
+<<<<<<< HEAD
           ui:help: "If you select this field, you must ensure that the Remote Cluster is already configured on your RHDH instance."
+=======
+          ui:help: "Check this to deploy the ArgoCD application to a remote cluster"
+>>>>>>> 44c9833 (RHDHPAI-581: adding UI components and connecting cluster info)
         argoNS:
           title: ArgoCD Namespace
           type: string
