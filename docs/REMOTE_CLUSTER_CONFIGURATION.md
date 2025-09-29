@@ -8,6 +8,7 @@ This document covers only the ai-rhdh-installer specific configuration steps.
 
 ---
 
+<<<<<<< HEAD
 ## Terminology
 
 - **Host cluster**: The cluster running RHDH, Argo CD, and Tekton Pipelines
@@ -36,6 +37,9 @@ The GitOps application is split into two Argo CD Applications (for more informat
 ---
 
 ## Step 1: Configure RHDH with ai-rhdh-installer (host cluster)
+=======
+## Step 1: Configure RHDH with ai-rhdh-installer on your Host Cluster
+>>>>>>> 44c9833 (RHDHPAI-581: adding UI components and connecting cluster info)
 
 ### Interactive setup
 
@@ -80,6 +84,7 @@ When prompted:
 
 The installer updates dynamic plugins (Kubernetes/Topology, optionally Tekton) with the remote cluster.
 
+<<<<<<< HEAD
 ---
 
 ## Step 2: Register the remote cluster in Argo CD (host cluster)
@@ -122,3 +127,10 @@ argocd cluster add <remote-cluster-context-name>
 ```
 
 ---
+=======
+
+
+From here, refer to Steps 2-4 from [template-remote-cluster.md](../documentation/app/template-remote-cluster.md) to complete the remote cluster setup and validation.
+
+---
+>>>>>>> 44c9833 (RHDHPAI-581: adding UI components and connecting cluster info)
