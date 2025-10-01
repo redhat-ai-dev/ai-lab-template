@@ -31,39 +31,90 @@ function apply-configurations() {
     # get sample env variables
     source $SCRIPTDIR/envs/$SAMPLENAME
 
-    if [ -f $f/Containerfile ]; then
-        sed -i "s!sed.edit.DOCKERFILE!Containerfile!g" $DEST/template.yaml
-        sed -i "s!sed.edit.BUILDCONTEXT!.!g" $DEST/template.yaml
-    fi
+    # if using darwin (macos)
+    if ! sed --version >/dev/null 2>&1; then
+        if [ -f $f/Containerfile ]; then
+            sed -i '' "s!sed.edit.DOCKERFILE!Containerfile!g" $DEST/template.yaml
+            sed -i '' "s!sed.edit.BUILDCONTEXT!.!g" $DEST/template.yaml
+        fi
 
-    sed -i "s!sed.edit.APP_NAME!$APP_NAME!g" $DEST/template.yaml
-    sed -i "s!sed.edit.APP_DISPLAY_NAME!$APP_DISPLAY_NAME!g" $DEST/template.yaml
-    sed -i "s!sed.edit.DESCRIPTION!$APP_DESC!g" $DEST/template.yaml
-    sed -i "s!sed.edit.APPTAGS!$APP_TAGS!g" $DEST/template.yaml
-    sed -i "s!sed.edit.CATALOG_DESCRIPTION!Secure Supply Chain Example for $APP_DISPLAY_NAME!g" $DEST/template.yaml
-    sed -i "s!sed.edit.OWNER!$OWNER!g" $DEST/template.yaml
+        sed -i '' "s!sed.edit.APP_NAME!$APP_NAME!g" $DEST/template.yaml
+        sed -i '' "s!sed.edit.APP_DISPLAY_NAME!$APP_DISPLAY_NAME!g" $DEST/template.yaml
+        sed -i '' "s!sed.edit.DESCRIPTION!$APP_DESC!g" $DEST/template.yaml
+        sed -i '' "s!sed.edit.APPTAGS!$APP_TAGS!g" $DEST/template.yaml
+        sed -i '' "s!sed.edit.CATALOG_DESCRIPTION!Secure Supply Chain Example for $APP_DISPLAY_NAME!g" $DEST/template.yaml
+        sed -i '' "s!sed.edit.OWNER!$OWNER!g" $DEST/template.yaml
 
-    if [ $SUPPORT_APP == false ]; then
-        sed -i '/# SED_APP_SUPPORT_START/,/# SED_APP_SUPPORT_END/d' $DEST/template.yaml
-    fi
-    if [ $SUPPORT_LLM == false ]; then
-        sed -i '/# SED_LLM_SERVER_START/,/# SED_LLM_SERVER_END/d' $DEST/template.yaml
-    fi
-    if [ $SUPPORT_LLM_LLAMA == false ]; then
-        sed -i '/# SED_LLM_LLAMA_SERVER_START/,/# SED_LLM_LLAMA_SERVER_END/d' $DEST/template.yaml
-        sed -i 's/llama.cpp: ${MODEL_SERVICE_DESC}. | \[Learn more\][(]${MODEL_SERVICE_SRC}[)]//' $DEST/template.yaml
-    fi
-    if [ $SUPPORT_ASR == false ]; then
-        sed -i '/# SED_ASR_MODEL_SERVER_START/,/# SED_ASR_MODEL_SERVER_END/d' $DEST/template.yaml
-    fi
-    if [ $SUPPORT_DETR == false ]; then
-        sed -i '/# SED_DETR_MODEL_SERVER_START/,/# SED_DETR_MODEL_SERVER_END/d' $DEST/template.yaml
-    fi
-    if [ $SUPPORT_DB == false ]; then
-        sed -i '/# SED_DB_START/,/# SED_DB_END/d' $DEST/template.yaml
-    fi
-    if [ $SUPPORT_EXISTING_SERVER == false ]; then
-        sed -i '/# SED_EXISTING_SERVER_START/,/# SED_EXISTING_SERVER_END/d' $DEST/template.yaml
+        if [ $SUPPORT_APP == false ]; then
+            sed -i '' '/# SED_APP_SUPPORT_START/,/# SED_APP_SUPPORT_END/d' $DEST/template.yaml
+        fi
+        if [ $SUPPORT_LLM == false ]; then
+            sed -i '' '/# SED_LLM_SERVER_START/,/# SED_LLM_SERVER_END/d' $DEST/template.yaml
+        fi
+        if [ $SUPPORT_LLM_LLAMA == false ]; then
+            sed -i '' '/# SED_LLM_LLAMA_SERVER_START/,/# SED_LLM_LLAMA_SERVER_END/d' $DEST/template.yaml
+            sed -i '' 's/llama.cpp: ${MODEL_SERVICE_DESC}. | \[Learn more\][(]${MODEL_SERVICE_SRC}[)]//' $DEST/template.yaml
+        fi
+        if [ $SUPPORT_ASR == false ]; then
+            sed -i '' '/# SED_ASR_MODEL_SERVER_START/,/# SED_ASR_MODEL_SERVER_END/d' $DEST/template.yaml
+        fi
+        if [ $SUPPORT_DETR == false ]; then
+            sed -i '' '/# SED_DETR_MODEL_SERVER_START/,/# SED_DETR_MODEL_SERVER_END/d' $DEST/template.yaml
+        fi
+        if [ $SUPPORT_DB == false ]; then
+            sed -i '' '/# SED_DB_START/,/# SED_DB_END/d' $DEST/template.yaml
+        fi
+        if [ $SUPPORT_EXISTING == false ]; then
+            sed -i '' '/# SED_EXISTING_START/,/# SED_EXISTING_END/d' $DEST/template.yaml
+        fi
+        if [ $SUPPORT_EXISTING_SERVER == false ]; then
+            sed -i '' '/# SED_EXISTING_SERVER_START/,/# SED_EXISTING_SERVER_END/d' $DEST/template.yaml
+        fi
+        if [ $SUPPORT_MODEL_CATALOG == false ]; then
+            sed -i '' '/# SED_EXISTING_FROM_CATALOG_START/,/# SED_EXISTING_FROM_CATALOG_END/d' $DEST/template.yaml
+        fi
+    # if using linux
+    else
+        if [ -f $f/Containerfile ]; then
+            sed -i "s!sed.edit.DOCKERFILE!Containerfile!g" $DEST/template.yaml
+            sed -i "s!sed.edit.BUILDCONTEXT!.!g" $DEST/template.yaml
+        fi
+
+        sed -i "s!sed.edit.APP_NAME!$APP_NAME!g" $DEST/template.yaml
+        sed -i "s!sed.edit.APP_DISPLAY_NAME!$APP_DISPLAY_NAME!g" $DEST/template.yaml
+        sed -i "s!sed.edit.DESCRIPTION!$APP_DESC!g" $DEST/template.yaml
+        sed -i "s!sed.edit.APPTAGS!$APP_TAGS!g" $DEST/template.yaml
+        sed -i "s!sed.edit.CATALOG_DESCRIPTION!Secure Supply Chain Example for $APP_DISPLAY_NAME!g" $DEST/template.yaml
+        sed -i "s!sed.edit.OWNER!$OWNER!g" $DEST/template.yaml
+
+        if [ $SUPPORT_APP == false ]; then
+            sed -i '/# SED_APP_SUPPORT_START/,/# SED_APP_SUPPORT_END/d' $DEST/template.yaml
+        fi
+        if [ $SUPPORT_LLM == false ]; then
+            sed -i '/# SED_LLM_SERVER_START/,/# SED_LLM_SERVER_END/d' $DEST/template.yaml
+        fi
+        if [ $SUPPORT_LLM_LLAMA == false ]; then
+            sed -i '/# SED_LLM_LLAMA_SERVER_START/,/# SED_LLM_LLAMA_SERVER_END/d' $DEST/template.yaml
+            sed -i 's/llama.cpp: ${MODEL_SERVICE_DESC}. | \[Learn more\][(]${MODEL_SERVICE_SRC}[)]//' $DEST/template.yaml
+        fi
+        if [ $SUPPORT_ASR == false ]; then
+            sed -i '/# SED_ASR_MODEL_SERVER_START/,/# SED_ASR_MODEL_SERVER_END/d' $DEST/template.yaml
+        fi
+        if [ $SUPPORT_DETR == false ]; then
+            sed -i '/# SED_DETR_MODEL_SERVER_START/,/# SED_DETR_MODEL_SERVER_END/d' $DEST/template.yaml
+        fi
+        if [ $SUPPORT_DB == false ]; then
+            sed -i '/# SED_DB_START/,/# SED_DB_END/d' $DEST/template.yaml
+        fi
+        if [ $SUPPORT_EXISTING == false ]; then
+            sed -i '/# SED_EXISTING_START/,/# SED_EXISTING_END/d' $DEST/template.yaml
+        fi
+        if [ $SUPPORT_EXISTING_SERVER == false ]; then
+            sed -i '/# SED_EXISTING_SERVER_START/,/# SED_EXISTING_SERVER_END/d' $DEST/template.yaml
+        fi
+        if [ $SUPPORT_MODEL_CATALOG == false ]; then
+            sed -i '/# SED_EXISTING_FROM_CATALOG_START/,/# SED_EXISTING_FROM_CATALOG_END/d' $DEST/template.yaml
+        fi
     fi
 
     source $ROOT_DIR/properties
