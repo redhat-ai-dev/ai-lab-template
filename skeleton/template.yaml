@@ -82,15 +82,17 @@ spec:
         modelServer:
           # SED_LLM_SERVER_START
           title: Model Server
-          description: |
-            llama.cpp: ${MODEL_SERVICE_DESC}. | [Learn more](${MODEL_SERVICE_SRC})
-
-            vLLM: ${VLLM_DESC}. If you choose vLLM, ensure that your cluster has Nvidia GPU supported (with compute capability 7.0 or higher). Also, it should have enough CPU & memory resources for the model you would like to work with. | [Learn more](${VLLM_SRC})
           # SED_LLM_LLAMA_SERVER_START
           default: llama.cpp
           # SED_LLM_LLAMA_SERVER_END
           type: string
+          ui:enumDisabled:
+            - Create a new model server
+            # SED_EXISTING_START
+            - Select an existing model server
+            # SED_EXISTING_END
           enum:
+            - Create a new model server
             - vLLM
             # SED_LLM_LLAMA_SERVER_START
             - llama.cpp
@@ -98,23 +100,70 @@ spec:
           # SED_LLM_SERVER_END
           # SED_ASR_MODEL_SERVER_START
           title: Model Server
-          description: ${MODEL_SERVICE_DESC}. The deployed model on the server must support automatic speech recognition (ASR). | [Learn more](${MODEL_SERVICE_SRC})
           type: string
           default: whisper.cpp
+          ui:enumDisabled:
+            - Create a new model server
+            # SED_EXISTING_START
+            - Select an existing model server
+            # SED_EXISTING_END
           enum:
+            - Create a new model server
             - whisper.cpp
           # SED_ASR_MODEL_SERVER_END
           # SED_DETR_MODEL_SERVER_START
           title: Model Server
-          description: ${MODEL_SERVICE_DESC}. The deployed model on the server must support object detection. | [Learn more](${MODEL_SERVICE_SRC})
           type: string
           default: detr-resnet-101
+          ui:enumDisabled:
+            - Create a new model server
+            # SED_EXISTING_START
+            - Select an existing model server
+            # SED_EXISTING_END
           enum:
+            - Create a new model server
             - detr-resnet-101
             # SED_DETR_MODEL_SERVER_END
+            # SED_EXISTING_START
+            - Select an existing model server
             # SED_EXISTING_SERVER_START
-            - Existing model server
+            - Bring you own model server
             # SED_EXISTING_SERVER_END
+            # SED_EXISTING_FROM_CATALOG_START
+            - choose-from-the-catalog
+            # SED_EXISTING_FROM_CATALOG_END
+            # SED_EXISTING_END
+          enumNames:
+            - Create a new model server
+            # SED_LLM_SERVER_START
+            - vLLM
+            # SED_LLM_LLAMA_SERVER_START
+            - llama.cpp
+            # SED_LLM_LLAMA_SERVER_END
+            # SED_LLM_SERVER_END
+            # SED_ASR_MODEL_SERVER_START
+            - whisper.cpp
+            # SED_ASR_MODEL_SERVER_END
+            # SED_DETR_MODEL_SERVER_START
+            - detr-resnet-101
+            # SED_DETR_MODEL_SERVER_END
+            # SED_EXISTING_START
+            - Select an existing model server
+            # SED_EXISTING_SERVER_START
+            - Bring you own model server
+            # SED_EXISTING_SERVER_END
+            # SED_EXISTING_FROM_CATALOG_START
+            # SED_LLM_SERVER_START
+            - Choose from the Catalog model(s)
+            # SED_LLM_SERVER_END
+            # SED_ASR_MODEL_SERVER_START
+            - Choose from the Catalog model server(s)
+            # SED_ASR_MODEL_SERVER_END
+            # SED_DETR_MODEL_SERVER_START
+            - Choose from the Catalog model server(s)
+            # SED_DETR_MODEL_SERVER_END
+            # SED_EXISTING_FROM_CATALOG_END
+            # SED_EXISTING_END
       dependencies:
         includeArgoLabel:
           oneOf:
@@ -145,6 +194,7 @@ spec:
                   const: false
         modelServer:
           oneOf:
+            # SED_EXISTING_START
             # SED_EXISTING_SERVER_START
             - required:
                 - modelEndpoint
@@ -153,7 +203,18 @@ spec:
                 # SED_LLM_SERVER_END
               properties:
                 modelServer:
-                  const: Existing model server
+                  const: Bring you own model server
+                modelServerDescription:
+                  type: 'null'
+                  # SED_LLM_SERVER_START
+                  description: Fill in the model server endpoint and model name you wish to use with your application.
+                  # SED_LLM_SERVER_END
+                  # SED_DETR_MODEL_SERVER_START
+                  description: Fill in the model server endpoint you wish to use with your application.
+                  # SED_DETR_MODEL_SERVER_END
+                  # SED_ASR_MODEL_SERVER_START
+                  description: Fill in the model server endpoint you wish to use with your application.
+                  # SED_ASR_MODEL_SERVER_END
                 modelEndpoint:
                   title: Model Server Endpoint
                   type: string
@@ -190,10 +251,97 @@ spec:
                           - modelEndpointSecretName
                           - modelEndpointSecretKey
             # SED_EXISTING_SERVER_END
+            # SED_EXISTING_FROM_CATALOG_START
+            - required:
+                # SED_LLM_SERVER_START
+                - catalogModel
+                # SED_LLM_SERVER_END
+                # SED_ASR_MODEL_SERVER_START
+                - catalogModelServer
+                # SED_ASR_MODEL_SERVER_END
+                # SED_DETR_MODEL_SERVER_START
+                - catalogModelServer
+                # SED_DETR_MODEL_SERVER_END
+              properties:
+                modelServer:
+                  const: choose-from-the-catalog
+                modelServerDescription:
+                  type: 'null'
+                  # SED_LLM_SERVER_START
+                  description: Select a model from the RHDH catalog you wish to use with your application.
+                catalogModel:
+                  title: Model name
+                  type: string
+                  ui:help: "The model chosen from the model catalog."
+                  ui:field: EntityPicker
+                  ui:options:
+                    allowedKinds: []
+                    catalogFilter:
+                      kind: resource
+                      spec.type: ai-model
+                      spec.dependencyOf:
+                        exists: true
+                  # SED_LLM_SERVER_END
+                  # SED_DETR_MODEL_SERVER_START
+                  description: Select a model server from the RHDH catalog you wish to use with your application.
+                catalogModelServer:
+                  title: Model Server Entity
+                  type: string
+                  ui:help: "The model server chosen from the model catalog."
+                  ui:field: EntityPicker
+                  ui:options:
+                    allowedKinds: []
+                    catalogFilter:
+                      kind: component
+                      spec.type: model-server
+                  # SED_DETR_MODEL_SERVER_END
+                  # SED_ASR_MODEL_SERVER_START
+                  description: Select a model server from the RHDH catalog you wish to use with your application.
+                catalogModelServer:
+                  title: Model Server Entity
+                  type: string
+                  ui:help: "The model server chosen from the model catalog."
+                  ui:field: EntityPicker
+                  ui:options:
+                    allowedKinds: []
+                    catalogFilter:
+                      kind: component
+                      spec.type: model-server
+                # SED_ASR_MODEL_SERVER_END
+                includeModelEndpointSecret:
+                  title: Is bearer authentication required?
+                  type: boolean
+                  default: false
+                  ui:help: Create a Secret containing the authentication bearer in the preferred targeted Namespace first.
+              dependencies:
+                includeModelEndpointSecret:
+                  allOf:
+                    - if:
+                        properties:
+                          includeModelEndpointSecret:
+                            const: true
+                      then:
+                        properties:
+                          modelEndpointSecretName:
+                            title: Model Server Endpoint Secret Name
+                            ui:help: Paste in the name of the Secret containing your bearer.
+                            type: string
+                          modelEndpointSecretKey:
+                            title: Model Server Endpoint Secret Key
+                            ui:help: Paste in the key of the Secret containing the bearer value.
+                            type: string
+                        required:
+                          - modelEndpointSecretName
+                          - modelEndpointSecretKey
+            # SED_EXISTING_FROM_CATALOG_END
+            # SED_EXISTING_END
             # SED_LLM_SERVER_START
             - properties:
                 modelServer:
                   const: vLLM
+                modelServerDescription:
+                  type: 'null'
+                  description: ${VLLM_DESC}. If you choose vLLM, ensure that your cluster has Nvidia GPU supported (with compute capability 7.0 or higher). Also, it should have enough CPU & memory resources for the model you would like to work with. | [Learn more](${VLLM_SRC})
                 modelNameDeployed:
                   title: Model Name
                   description: ${LLM_MODEL_CLASSIFICATION} | ${LLM_MODEL_LICENSE} | [Learn more](${LLM_MODEL_SRC})
@@ -205,6 +353,9 @@ spec:
             - properties:
                 modelServer:
                   const: llama.cpp
+                modelServerDescription:
+                  type: 'null'
+                  description: ${MODEL_SERVICE_DESC}. | [Learn more](${MODEL_SERVICE_SRC})
                 modelNameDeployed:
                   title: Model Name
                   description: ${LLM_MODEL_CLASSIFICATION} | ${LLM_MODEL_LICENSE} | [Learn more](${LLM_MODEL_SRC})
@@ -218,6 +369,9 @@ spec:
             - properties:
                 modelServer:
                   const: whisper.cpp
+                modelServerDescription:
+                  type: 'null'
+                  description: ${MODEL_SERVICE_DESC}. The deployed model on the server must support automatic speech recognition (ASR). | [Learn more](${MODEL_SERVICE_SRC})
                 modelNameDeployed:
                   title: Model Name
                   description: ${ASR_MODEL_CLASSIFICATION} | ${ASR_MODEL_LICENSE} | [Learn more](${ASR_MODEL_SRC})
@@ -230,6 +384,9 @@ spec:
             - properties:
                 modelServer:
                   const: detr-resnet-101
+                modelServerDescription:
+                  type: 'null'
+                  description: ${MODEL_SERVICE_DESC}. The deployed model on the server must support object detection. | [Learn more](${MODEL_SERVICE_SRC})
                 modelNameDeployed:
                   title: Model Name
                   description: ${DETR_MODEL_CLASSIFICATION} | ${DETR_MODEL_LICENSE} | [Learn more](${DETR_MODEL_SRC})
@@ -331,6 +488,34 @@ spec:
   # These steps are executed in the scaffolder backend, using data that we gathered
   # via the parameters above.
   steps:
+    # SED_EXISTING_START
+    # SED_EXISTING_FROM_CATALOG_START
+    # SED_LLM_SERVER_START
+    # Fetches the ai-model entity if selected
+    - id: fetch-model-from-catalog
+      name: Fetch Model From Catalog
+      action: catalog:fetch
+      if: ${{ parameters.modelServer === 'choose-from-the-catalog' }}
+      input:
+        entityRef: ${{ parameters.catalogModel }}
+    # SED_LLM_SERVER_END
+    # Fetches the model-server entity of the selected ai-model
+    - id: fetch-model-server-from-catalog
+      name: Fetch Model Server From Catalog
+      action: catalog:fetch
+      if: ${{ parameters.modelServer === 'choose-from-the-catalog' }}
+      input:
+        # SED_LLM_SERVER_START
+        entityRef: ${{ steps['fetch-model-from-catalog'].output.entity.spec.dependencyOf[0] }}
+        # SED_LLM_SERVER_END
+        # SED_ASR_MODEL_SERVER_START
+        entityRef: ${{ parameters.catalogModelServer }}
+        # SED_ASR_MODEL_SERVER_END
+        # SED_DETR_MODEL_SERVER_START
+        entityRef: ${{ parameters.catalogModelServer }}
+        # SED_DETR_MODEL_SERVER_END
+    # SED_EXISTING_FROM_CATALOG_END
+    # SED_EXISTING_END
     # SED_APP_SUPPORT_START
     # Each step executes an action, in this case one templates files into the workspace.
     # Get the sample source code
@@ -358,11 +543,11 @@ spec:
           appRunCommand: "${APP_RUN_COMMAND}"
           modelServiceContainer: ${MODEL_SERVICE_CONTAINER}
           modelServicePort: ${MODEL_SERVICE_PORT}
-          customModelName: ${{ parameters.modelName }}
+          customModelName: ${{ steps['fetch-model-from-catalog'].output.entity.metadata.name if parameters.modelServer === 'choose-from-the-catalog' else parameters.modelName }}
           modelName: ${MODEL_NAME}
           modelSrc: ${MODEL_SRC}
           modelServerName: ${{ parameters.modelServer }}
-          customModelAndModelServerSelected: ${{ true if parameters.modelServer === 'Existing model server' else false }}
+          customModelAndModelServerSelected: ${{ true if parameters.modelServer === 'Bring you own model server' else (true if parameters.modelServer === 'choose-from-the-catalog' else false) }}
           modelServiceSrcVLLM: ${MODEL_SERVICE_SRC_VLLM}
           modelServiceSrcOther: ${MODEL_SERVICE_SRC_OTHER}
     # Renders all the template variables into the files and directory names and content, and places the result in the workspace.
@@ -459,17 +644,17 @@ spec:
           # for vllm
           vllmSelected: ${{ parameters.modelServer === 'vLLM' }}
           vllmModelServiceContainer: ${VLLM_CONTAINER}
-          modelName: ${{ parameters.modelName if parameters.modelServer === 'Existing model server' else '${LLM_MODEL_NAME}' }}
+          modelName: ${{ parameters.modelName if parameters.modelServer === 'Bring you own model server' else (steps['fetch-model-from-catalog'].output.entity.metadata.name if parameters.modelServer === 'choose-from-the-catalog' else '${LLM_MODEL_NAME}') }}
           modelSrc: ${MODEL_SRC}
           maxModelLength: ${LLM_MAX_MODEL_LEN}
           # SED_LLM_SERVER_END
-          existingModelServer: ${{ parameters.modelServer === 'Existing model server' }}
-          # SED_EXISTING_SERVER_START
-          modelEndpoint: ${{ parameters.modelEndpoint }}
+          existingModelServer: ${{ true if parameters.modelServer === 'Bring you own model server' else (true if parameters.modelServer === 'choose-from-the-catalog' else false) }}
+          # SED_EXISTING_START
+          modelEndpoint: ${{ (steps['fetch-model-server-from-catalog'].output.entity.metadata.annotations | pick('rhdh.modelcatalog.io/internal-service-url')) if parameters.modelServer === 'choose-from-the-catalog' else parameters.modelEndpoint }}
           modelEndpointSecretName: ${{ parameters.modelEndpointSecretName }}
           modelEndpointSecretKey: ${{ parameters.modelEndpointSecretKey }}
           includeModelEndpointSecret: ${{ parameters.includeModelEndpointSecret }}
-          # SED_EXISTING_SERVER_END
+          # SED_EXISTING_END
           # SED_APP_SUPPORT_START
           # for RHOAI
           rhoaiSelected: ${{ parameters.rhoaiSelected }}
@@ -519,7 +704,7 @@ spec:
     - id: cleanupModelServerResources
       action: fs:delete
       name: Cleanup Unused Model Server Resources
-      if: ${{ parameters.modelServer === 'Existing model server' }}
+      if: ${{ true if parameters.modelServer === 'Bring you own model server' else (true if parameters.modelServer === 'choose-from-the-catalog' else false) }}
       input:
         files:
           - 'gitops/components/http/base/deployment-model-server.yaml'
