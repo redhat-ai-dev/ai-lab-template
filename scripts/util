@@ -11,13 +11,19 @@ function apply-configurations() {
     TEMPLATE_TECHDOC_TYPE=$3
 
     DOC_SRC_ROOT="$ROOT_DIR/documentation/$TEMPLATE_TECHDOC_TYPE"
+
+    # documentation (sample, prerequisites, remote cluster)
     SAMPLE_DOC_SRC="$DOC_SRC_ROOT/$SAMPLENAME"
     PREREQ_DOC_SRC="$DOC_SRC_ROOT/template-prerequisites.md"
+    REMOTE_DOC_SRC="$DOC_SRC_ROOT/template-remote-cluster.md"
     if [ -d $DOC_SRC_ROOT ]; then
         if [ -d $SAMPLE_DOC_SRC ]; then
             cp -r $SAMPLE_DOC_SRC $DEST/docs
             if [ -f $PREREQ_DOC_SRC ]; then
                 cp $PREREQ_DOC_SRC $DEST/docs/template-prerequisites.md
+            fi
+            if [ -f $REMOTE_DOC_SRC ]; then
+                cp $REMOTE_DOC_SRC $DEST/docs/template-remote-cluster.md
             fi
         fi
         cp -r $DOC_SRC_ROOT/mkdocs.yml $DEST/mkdocs.yml
