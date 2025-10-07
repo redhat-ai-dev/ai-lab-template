@@ -8,7 +8,8 @@ export APP_SUMMARY="A granite-3.1 8b model server deployment."
 export APP_TAGS='["ai", "vllm", "modelserver"]'
 
 # https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/vllm/0.8.4
-export VLLM_CONTAINER="quay.io/redhat-ai-dev/vllm-openai-ubi9:v0.8.4"
+# export VLLM_CONTAINER="quay.io/redhat-ai-dev/vllm-openai-ubi9:v0.8.4"
+export VLLM_CONTAINER="quay.io/rh-ee-lyoon/vllm-openai-ubi9:v0.11.0"
 export VLLM_DESC="A high throughput, memory efficient inference and serving engine with GPU support for LLMs in OpenShift"
 export VLLM_SRC="https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/vllm/0.8.4"
 

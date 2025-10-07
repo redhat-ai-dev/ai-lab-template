@@ -318,7 +318,8 @@ spec:
           appContainer: ${{ 'quay.io/redhat-ai-dev/ai-template-bootstrap-app:latest' if parameters.hostType === 'GitHub' else 'quay.io/redhat-ai-dev/audio-to-text:latest' }}
           appPort: 8501
           appRunCommand: "streamlit run whisper_client.py"
-          modelServiceContainer: quay.io/redhat-ai-dev/whispercpp:1.7.6
+          # modelServiceContainer: quay.io/redhat-ai-dev/whispercpp:1.7.6
+          modelServiceContainer: quay.io/rh-ee-lyoon/whispercpp:1.8.0
           modelServicePort: 8001
           customModelName: ${{ steps['fetch-model-from-catalog'].output.entity.metadata.name if parameters.modelServer === 'choose-from-the-catalog' else parameters.modelName }}
           modelName: ggerganov/whisper.cpp
@@ -415,7 +416,8 @@ spec:
           modelPath: "/model/model.file"
           appContainer: ${{ 'quay.io/redhat-ai-dev/ai-template-bootstrap-app:latest' if parameters.hostType === 'GitHub' else 'quay.io/redhat-ai-dev/audio-to-text:latest' }}
           appPort: 8501
-          modelServiceContainer: quay.io/redhat-ai-dev/whispercpp:1.7.6
+          # modelServiceContainer: quay.io/redhat-ai-dev/whispercpp:1.7.6
+          modelServiceContainer: quay.io/rh-ee-lyoon/whispercpp:1.8.0
           modelServicePort: 8001
           existingModelServer: ${{ true if parameters.modelServer === 'Bring you own model server' else (true if parameters.modelServer === 'choose-from-the-catalog' else false) }}
           # SED_EXISTING_START
