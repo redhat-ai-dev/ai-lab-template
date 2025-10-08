@@ -16,3 +16,7 @@ export GIT__SECRET__DEFAULT__NAME=gitlab-auth-secret
 export GIT__SECRET__DEFAULT__KEY=password
 export WEBHOOK__SECRET__DEFAULT__NAME=pipelines-secret
 export WEBHOOK__SECRET__DEFAULT__KEY=webhook.secret
+
+export SAMPLE_BRANCH=release-v0.11.x
+export GITOPS_BRANCH=release-v0.11.x
+export PIPELINE_BRANCH=release-v0.11.x
