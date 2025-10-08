@@ -10,6 +10,7 @@ metadata:
     backstage.io/techdocs-ref: dir:.
 spec:
   type: service
+  owner: rhdh-pai
   # These parameters are used to generate the input form in the frontend, and are
   # used to gather input data for the execution of the template.
   parameters:
@@ -24,6 +25,9 @@ spec:
       ui:order:
         - name
         - owner
+        - deployArgoCDApplicationOnRemoteCluster
+        - remoteClusterAPIUrl
+        - remoteClusterDeploymentNamespace
         - argoNS
         - argoInstance
         - argoProject
@@ -48,6 +52,11 @@ spec:
           default: user:guest
           ui:field: OwnerPicker
           ui:options: {}
+        deployArgoCDApplicationOnRemoteCluster:
+          title: Deploy ArgoCD Application on Remote Cluster?
+          type: boolean
+          default: false
+          ui:help: "If you select this field, you must ensure that the Remote Cluster is already configured on your RHDH instance."
         argoNS:
           title: ArgoCD Namespace
           type: string
@@ -74,14 +83,18 @@ spec:
         modelServer:
           # SED_LLM_SERVER_START
           title: Model Server
-          description: |
-            
-
-            vLLM: A high throughput, memory efficient inference and serving engine with GPU support for LLMs in OpenShift. If you choose vLLM, ensure that your cluster has Nvidia GPU supported (with compute capability 7.0 or higher). Also, it should have enough CPU & memory resources for the model you would like to work with. | [Learn more](https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/vllm/0.8.4)
           type: string
+          ui:enumDisabled:
+            - Create a new model server
           enum:
+            - Create a new model server
             - vLLM
           # SED_LLM_SERVER_END
+          enumNames:
+            - Create a new model server
+            # SED_LLM_SERVER_START
+            - vLLM
+            # SED_LLM_SERVER_END
       dependencies:
         includeArgoLabel:
           oneOf:
@@ -95,12 +108,31 @@ spec:
                   type: string
                   description: Define the label RHDH will use to identify the ArgoCD Applications
                   default: rolling-demo
+        deployArgoCDApplicationOnRemoteCluster:
+          oneOf:
+            - properties:
+                deployArgoCDApplicationOnRemoteCluster:
+                  const: true
+                remoteClusterAPIUrl:
+                  title: Remote Cluster API URL
+                  type: string
+                  ui:help: "Kube API URL of remote cluster"
+                remoteClusterDeploymentNamespace:
+                  title: Remote Cluster Deployment Namespace
+                  type: string
+                  ui:help: "The namespace of the remote cluster that the argoCD application will be deployed"
+            - properties:
+                deployArgoCDApplicationOnRemoteCluster:
+                  const: false
         modelServer:
           oneOf:
             # SED_LLM_SERVER_START
             - properties:
                 modelServer:
                   const: vLLM
+                modelServerDescription:
+                  type: 'null'
+                  description: A high throughput, memory efficient inference and serving engine with GPU support for LLMs in OpenShift. If you choose vLLM, ensure that your cluster has Nvidia GPU supported (with compute capability 7.0 or higher). Also, it should have enough CPU & memory resources for the model you would like to work with. | [Learn more](https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/vllm/0.8.4)
                 modelNameDeployed:
                   title: Model Name
                   description: Text Generation | Apache-2.0 | [Learn more](https://huggingface.co/ibm-granite/granite-3.1-8b-instruct)
@@ -183,7 +215,7 @@ spec:
           name: ${{ parameters.name }}
           appName: ${{ parameters.name }}-gitops # for now just use the component name, since it's single component app
           description: This is GitOps manifest for ${{ parameters.name }}
-          namespace: ${{ parameters.namespace }}
+          namespace: ${{ parameters.remoteClusterDeploymentNamespace if parameters.deployArgoCDApplicationOnRemoteCluster else parameters.namespace }}
           rhdhNamespace: rolling-demo-ns
           # example: github.com?owner=<owner>&repo=<srcRepo>, the gitops repo name will be <srcRepo>-gitops
           repoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops
@@ -209,11 +241,11 @@ spec:
           # for vllm
           vllmSelected: ${{ parameters.modelServer === 'vLLM' }}
           vllmModelServiceContainer: quay.io/redhat-ai-dev/vllm-openai-ubi9:v0.8.4
-          modelName: ${{ parameters.modelName if parameters.modelServer === 'Existing model server' else 'ibm-granite/granite-3.1-8b-instruct' }}
+          modelName: ${{ parameters.modelName if parameters.modelServer === 'Bring you own model server' else (steps['fetch-model-from-catalog'].output.entity.metadata.name if parameters.modelServer === 'choose-from-the-catalog' else 'ibm-granite/granite-3.1-8b-instruct') }}
           modelSrc: 
           maxModelLength: 4096
           # SED_LLM_SERVER_END
-          existingModelServer: ${{ parameters.modelServer === 'Existing model server' }}
+          existingModelServer: ${{ true if parameters.modelServer === 'Bring you own model server' else (true if parameters.modelServer === 'choose-from-the-catalog' else false) }}
           # Database is required for the RAG templates
           dbRequired: false
           supportApp: false
@@ -223,6 +255,12 @@ spec:
           imageRegistry: ${{ parameters.imageRegistry }}
           imageOrg: ${{ parameters.imageOrg }}
           imageName: ${{ parameters.imageName }}
+          # Remote cluster configuration
+          deployOnRemoteCluster: ${{ parameters.deployArgoCDApplicationOnRemoteCluster }}
+          remoteClusterAPIUri: ${{ parameters.remoteClusterAPIUrl }}
+          remoteClusterDeploymentNamespace: ${{ parameters.remoteClusterDeploymentNamespace }}
+          customModelServer: ${{ parameters.modelServer }}
+          customModelName: ${{ parameters.modelName }}
     - id: cleanupDatabaseResources
       action: fs:delete
       name: Cleanup Unused Database Resources
@@ -249,7 +287,7 @@ spec:
     - id: cleanupModelServerResources
       action: fs:delete
       name: Cleanup Unused Model Server Resources
-      if: ${{ parameters.modelServer === 'Existing model server' }}
+      if: ${{ true if parameters.modelServer === 'Bring you own model server' else (true if parameters.modelServer === 'choose-from-the-catalog' else false) }}
       input:
         files:
           - 'gitops/components/http/base/deployment-model-server.yaml'
@@ -277,7 +315,6 @@ spec:
       if: ${{ parameters.hostType === 'GitHub' }}
       input:
         sourcePath: gitops
-        allowedHosts: ['${{ parameters.githubServer }}']
         description: This is GitOps repository for ${{ parameters.name }}
         repoUrl: ${{ parameters.githubServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}-gitops
         defaultBranch: "main"
@@ -290,7 +327,6 @@ spec:
       if: ${{ parameters.hostType === 'GitLab' }}
       input:
         sourcePath: gitops
-        allowedHosts: ['${{ parameters.gitlabServer }}']
         description: This is GitOps repository for ${{ parameters.name }}
         repoUrl: ${{ parameters.gitlabServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}-gitops
         defaultBranch: "main"
@@ -315,7 +351,7 @@ spec:
         # name set in rhdh config
         argoInstance: ${{ parameters.argoInstance }}
         namespace: ${{ parameters.argoNS }}
-        labelValue: ${{ parameters.argoAppLabel if parameters.includeArgoLabel else '' }}
+        labelValue: rolling-demo
         repoUrl: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops.git
         path: './app-of-apps'
 
