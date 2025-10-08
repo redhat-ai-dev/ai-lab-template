@@ -595,6 +595,7 @@ spec:
       input:
         repoUrl: ${{ parameters.githubServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}
         branchName: trigger-pipeline
+        commitMessage: trigger pipeline build
         description: "pr to trigger pipeline build"
         title: trigger pipeline build
         sourcePath: source
