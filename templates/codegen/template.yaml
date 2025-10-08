@@ -147,7 +147,10 @@ spec:
             - properties:
                 deployArgoCDApplicationOnRemoteCluster:
                   const: false
+<<<<<<< HEAD
 		              default: rolling-demo
+=======
+>>>>>>> 950db5e (Update rolling demo branch for RHDH 1.8 (#93))
         modelServer:
           oneOf:
             # SED_EXISTING_START
@@ -208,7 +211,11 @@ spec:
                   const: vLLM
                 modelServerDescription:
                   type: 'null'
+<<<<<<< HEAD
                   description: A high throughput, memory efficient inference and serving engine with GPU support for LLMs in OpenShift. If you choose vLLM, ensure that your cluster has Nvidia GPU supported (with compute capability 7.0 or higher). Also, it should have enough CPU & memory resources for the model you would like to work with. | [Learn more](https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/vllm/0.11.0)
+=======
+                  description: A high throughput, memory efficient inference and serving engine with GPU support for LLMs in OpenShift. If you choose vLLM, ensure that your cluster has Nvidia GPU supported (with compute capability 7.0 or higher). Also, it should have enough CPU & memory resources for the model you would like to work with. | [Learn more](https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/vllm/0.8.4)
+>>>>>>> 950db5e (Update rolling demo branch for RHDH 1.8 (#93))
                 modelNameDeployed:
                   title: Model Name
                   description: Text Generation | Apache-2.0 | [Learn more](https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.2-AWQ)
@@ -222,7 +229,11 @@ spec:
                   const: llama.cpp
                 modelServerDescription:
                   type: 'null'
+<<<<<<< HEAD
                   description: A Python binding of LLM inference in C/C++ with minimal setup. | [Learn more](https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/llamacpp_python/0.3.16)
+=======
+                  description: A Python binding of LLM inference in C/C++ with minimal setup. | [Learn more](https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/llamacpp_python/0.3.8)
+>>>>>>> 950db5e (Update rolling demo branch for RHDH 1.8 (#93))
                 modelNameDeployed:
                   title: Model Name
                   description: Text Generation | Apache-2.0 | [Learn more](https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.2-AWQ)
@@ -395,8 +406,13 @@ spec:
           modelSrc: https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.2-AWQ
           modelServerName: ${{ parameters.modelServer }}
           customModelAndModelServerSelected: ${{ true if parameters.modelServer === 'Bring you own model server' else (true if parameters.modelServer === 'choose-from-the-catalog' else false) }}
+<<<<<<< HEAD
           modelServiceSrcVLLM: https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/vllm/0.11.0
           modelServiceSrcOther: https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/llamacpp_python/0.3.16
+=======
+          modelServiceSrcVLLM: https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/vllm/0.8.4
+          modelServiceSrcOther: https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/llamacpp_python/0.3.8
+>>>>>>> 950db5e (Update rolling demo branch for RHDH 1.8 (#93))
     # Renders all the template variables into the files and directory names and content, and places the result in the workspace.
     - id: fetch-skeleton
       name: Fetch Skeleton
@@ -488,7 +504,11 @@ spec:
           # SED_LLM_SERVER_START
           # for vllm
           vllmSelected: ${{ parameters.modelServer === 'vLLM' }}
+<<<<<<< HEAD
           vllmModelServiceContainer: quay.io/redhat-ai-dev/vllm-openai-ubi9:v0.11.0
+=======
+          vllmModelServiceContainer: quay.io/redhat-ai-dev/vllm-openai-ubi9:v0.8.4
+>>>>>>> 950db5e (Update rolling demo branch for RHDH 1.8 (#93))
           modelName: ${{ parameters.modelName if parameters.modelServer === 'Bring you own model server' else (steps['fetch-model-from-catalog'].output.entity.metadata.name if parameters.modelServer === 'choose-from-the-catalog' else 'TheBloke/Mistral-7B-Instruct-v0.2-AWQ') }}
           modelSrc: https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.2-AWQ
           maxModelLength: 4096
@@ -617,7 +637,7 @@ spec:
         # name set in rhdh config
         argoInstance: ${{ parameters.argoInstance }}
         namespace: ${{ parameters.argoNS }}
-        labelValue: ${{ parameters.argoAppLabel if parameters.includeArgoLabel else '' }}
+        labelValue: rolling-demo
         repoUrl: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops.git
         path: './app-of-apps'
     # SED_APP_SUPPORT_START

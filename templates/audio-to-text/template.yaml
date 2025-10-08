@@ -123,6 +123,10 @@ spec:
                   title: ArgoCD Application Label
                   type: string
                   description: Define the label RHDH will use to identify the ArgoCD Applications
+<<<<<<< HEAD
+=======
+                  default: rolling-demo
+>>>>>>> 950db5e (Update rolling demo branch for RHDH 1.8 (#93))
         deployArgoCDApplicationOnRemoteCluster:
           oneOf:
             - properties:
@@ -430,8 +434,13 @@ spec:
           name: ${{ parameters.name }}
           appName: ${{ parameters.name }}-gitops # for now just use the component name, since it's single component app
           description: This is GitOps manifest for ${{ parameters.name }}
+<<<<<<< HEAD
           namespace: ${{ parameters.namespace }}
           rhdhNamespace: ai-rhdh
+=======
+          namespace: ${{ parameters.remoteClusterDeploymentNamespace if parameters.deployArgoCDApplicationOnRemoteCluster else parameters.namespace }}
+          rhdhNamespace: rolling-demo-ns
+>>>>>>> 950db5e (Update rolling demo branch for RHDH 1.8 (#93))
           # example: github.com?owner=<owner>&repo=<srcRepo>, the gitops repo name will be <srcRepo>-gitops
           repoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops
           srcRepoURL: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}
@@ -576,7 +585,7 @@ spec:
         # name set in rhdh config
         argoInstance: ${{ parameters.argoInstance }}
         namespace: ${{ parameters.argoNS }}
-        labelValue: ${{ parameters.argoAppLabel if parameters.includeArgoLabel else '' }}
+        labelValue: rolling-demo
         repoUrl: https://${{ parameters.githubServer if parameters.hostType === 'GitHub' else parameters.gitlabServer }}/${{ parameters.repoOwner }}/${{ parameters.repoName }}-gitops.git
         path: './app-of-apps'
     # SED_APP_SUPPORT_START
