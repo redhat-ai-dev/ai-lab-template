@@ -239,6 +239,15 @@ spec:
         - remoteClusterAPIUrl
         - remoteClusterDeploymentNamespace
         - rhoaiSelected
+      ui:order:
+        - imageRegistry
+        - imageOrg
+        - imageName
+        - namespace
+        - deployArgoCDApplicationOnRemoteCluster
+        - remoteClusterAPIUrl
+        - remoteClusterDeploymentNamespace
+        - rhoaiSelected
       properties:
         # SED_APP_SUPPORT_START
         imageRegistry:
@@ -265,6 +274,11 @@ spec:
           ui:autofocus: true
           ui:options:
             rows: 5
+        deployArgoCDApplicationOnRemoteCluster:
+          title: Deploy ArgoCD Application on Remote Cluster?
+          type: boolean
+          default: false
+          ui:help: "Check this to deploy the ArgoCD application to a remote cluster"
         deployArgoCDApplicationOnRemoteCluster:
           title: Deploy ArgoCD Application on Remote Cluster?
           type: boolean
