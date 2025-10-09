@@ -230,6 +230,15 @@ spec:
         - imageName
         # SED_APP_SUPPORT_END
         - namespace
+      ui:order:
+        - imageRegistry
+        - imageOrg
+        - imageName
+        - namespace
+        - deployArgoCDApplicationOnRemoteCluster
+        - remoteClusterAPIUrl
+        - remoteClusterDeploymentNamespace
+        - rhoaiSelected
       properties:
         # SED_APP_SUPPORT_START
         imageRegistry:

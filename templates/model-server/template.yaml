@@ -166,6 +166,15 @@ spec:
     - title: Deployment Information
       required:
         - namespace
+      ui:order:
+        - imageRegistry
+        - imageOrg
+        - imageName
+        - namespace
+        - deployArgoCDApplicationOnRemoteCluster
+        - remoteClusterAPIUrl
+        - remoteClusterDeploymentNamespace
+        - rhoaiSelected
       properties:
         namespace:
           title: Deployment Namespace
