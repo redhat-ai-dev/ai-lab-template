@@ -11,14 +11,13 @@ export APP_RUN_COMMAND="streamlit run chatbot_ui.py"
 # https://github.com/redhat-ai-dev/developer-images/tree/main/models/granite-3.1-8b-instruct-gguf
 export INIT_CONTAINER="quay.io/redhat-ai-dev/granite-3.1-8b-instruct-gguf:latest"
 
-# https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/llamacpp_python/0.3.8
-export MODEL_SERVICE_CONTAINER="quay.io/redhat-ai-dev/llamacpp_python:0.3.8"
+# https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/llamacpp_python/0.3.16
+export MODEL_SERVICE_CONTAINER="quay.io/redhat-ai-dev/llamacpp_python:0.3.16"
 export MODEL_SERVICE_DESC="A Python binding of LLM inference in C/C++ with minimal setup"
-export MODEL_SERVICE_SRC="https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/llamacpp_python/0.3.8"
+export MODEL_SERVICE_SRC="https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/llamacpp_python/0.3.16"
 
 # https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/vllm/0.8.4
-# export VLLM_CONTAINER="quay.io/redhat-ai-dev/vllm-openai-ubi9:v0.8.4"
-export VLLM_CONTAINER="quay.io/rh-ee-lyoon/vllm-openai-ubi9:v0.11.0"
+export VLLM_CONTAINER="quay.io/redhat-ai-dev/vllm-openai-ubi9:v0.11.0"
 export VLLM_DESC="A high throughput, memory efficient inference and serving engine with GPU support for LLMs in OpenShift"
 export VLLM_SRC="https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/vllm/0.11.0"
 

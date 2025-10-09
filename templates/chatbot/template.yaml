@@ -196,7 +196,7 @@ spec:
                   const: llama.cpp
                 modelServerDescription:
                   type: 'null'
-                  description: A Python binding of LLM inference in C/C++ with minimal setup. | [Learn more](https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/llamacpp_python/0.3.8)
+                  description: A Python binding of LLM inference in C/C++ with minimal setup. | [Learn more](https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/llamacpp_python/0.3.16)
                 modelNameDeployed:
                   title: Model Name
                   description: Text Generation | Apache-2.0 | [Learn more](https://huggingface.co/ibm-granite/granite-3.1-8b-instruct)
@@ -360,7 +360,7 @@ spec:
           appContainer: ${{ 'quay.io/redhat-ai-dev/ai-template-bootstrap-app:latest' if parameters.hostType === 'GitHub' else 'quay.io/redhat-ai-dev/chatbot:latest' }}
           appPort: 8501
           appRunCommand: "streamlit run chatbot_ui.py"
-          modelServiceContainer: quay.io/redhat-ai-dev/llamacpp_python:0.3.8
+          modelServiceContainer: quay.io/redhat-ai-dev/llamacpp_python:0.3.16
           modelServicePort: 8001
           customModelName: ${{ steps['fetch-model-from-catalog'].output.entity.metadata.name if parameters.modelServer === 'choose-from-the-catalog' else parameters.modelName }}
           modelName: ibm-granite/granite-3.1-8b-instruct
@@ -368,7 +368,7 @@ spec:
           modelServerName: ${{ parameters.modelServer }}
           customModelAndModelServerSelected: ${{ true if parameters.modelServer === 'Bring you own model server' else (true if parameters.modelServer === 'choose-from-the-catalog' else false) }}
           modelServiceSrcVLLM: https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/vllm/0.11.0
-          modelServiceSrcOther: https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/llamacpp_python/0.3.8
+          modelServiceSrcOther: https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/llamacpp_python/0.3.16
     # Renders all the template variables into the files and directory names and content, and places the result in the workspace.
     - id: fetch-skeleton
       name: Fetch Skeleton
@@ -455,12 +455,12 @@ spec:
           modelPath: "/model/model.file"
           appContainer: ${{ 'quay.io/redhat-ai-dev/ai-template-bootstrap-app:latest' if parameters.hostType === 'GitHub' else 'quay.io/redhat-ai-dev/chatbot:latest' }}
           appPort: 8501
-          modelServiceContainer: quay.io/redhat-ai-dev/llamacpp_python:0.3.8
+          modelServiceContainer: quay.io/redhat-ai-dev/llamacpp_python:0.3.16
           modelServicePort: 8001
           # SED_LLM_SERVER_START
           # for vllm
           vllmSelected: ${{ parameters.modelServer === 'vLLM' }}
-          vllmModelServiceContainer: quay.io/rh-ee-lyoon/vllm-openai-ubi9:v0.11.0
+          vllmModelServiceContainer: quay.io/redhat-ai-dev/vllm-openai-ubi9:v0.11.0
           modelName: ${{ parameters.modelName if parameters.modelServer === 'Bring you own model server' else (steps['fetch-model-from-catalog'].output.entity.metadata.name if parameters.modelServer === 'choose-from-the-catalog' else 'ibm-granite/granite-3.1-8b-instruct') }}
           modelSrc: https://huggingface.co/ibm-granite/granite-3.1-8b-instruct
           maxModelLength: 4096
@@ -481,7 +481,7 @@ spec:
           supportApp: true
           modelServerName: ${{ parameters.modelServer }}
           modelServiceSrcVLLM: https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/vllm/0.11.0
-          modelServiceSrcOther: https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/llamacpp_python/0.3.8
+          modelServiceSrcOther: https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/llamacpp_python/0.3.16
           imageRegistry: ${{ parameters.imageRegistry }}
           imageOrg: ${{ parameters.imageOrg }}
           imageName: ${{ parameters.imageName }}
