@@ -25,9 +25,6 @@ spec:
       ui:order:
         - name
         - owner
-        - deployArgoCDApplicationOnRemoteCluster
-        - remoteClusterAPIUrl
-        - remoteClusterDeploymentNamespace
         - argoNS
         - argoInstance
         - argoProject
@@ -52,15 +49,6 @@ spec:
           default: user:guest
           ui:field: OwnerPicker
           ui:options: {}
-        deployArgoCDApplicationOnRemoteCluster:
-          title: Deploy ArgoCD Application on Remote Cluster?
-          type: boolean
-          default: false
-<<<<<<< HEAD
-          ui:help: "If you select this field, you must ensure that the Remote Cluster is already configured on your RHDH instance."
-=======
-          ui:help: "Check this to deploy the ArgoCD application to a remote cluster"
->>>>>>> 44c9833 (RHDHPAI-581: adding UI components and connecting cluster info)
         argoNS:
           title: ArgoCD Namespace
           type: string
@@ -126,22 +114,6 @@ spec:
                   title: ArgoCD Application Label
                   type: string
                   description: Define the label RHDH will use to identify the ArgoCD Applications
-        deployArgoCDApplicationOnRemoteCluster:
-          oneOf:
-            - properties:
-                deployArgoCDApplicationOnRemoteCluster:
-                  const: true
-                remoteClusterAPIUrl:
-                  title: Remote Cluster API URL
-                  type: string
-                  ui:help: "Kube API URL of remote cluster"
-                remoteClusterDeploymentNamespace:
-                  title: Remote Cluster Deployment Namespace
-                  type: string
-                  ui:help: "The namespace of the remote cluster that the argoCD application will be deployed"
-            - properties:
-                deployArgoCDApplicationOnRemoteCluster:
-                  const: false
         modelServer:
           oneOf:
             # SED_EXISTING_START
@@ -284,6 +256,11 @@ spec:
           ui:autofocus: true
           ui:options:
             rows: 5
+        deployArgoCDApplicationOnRemoteCluster:
+          title: Deploy ArgoCD Application on Remote Cluster?
+          type: boolean
+          default: false
+          ui:help: "Check this to deploy the ArgoCD application to a remote cluster"
         # SED_APP_SUPPORT_START
         rhoaiSelected:
           title: Create Workbench for OpenShift AI
@@ -292,6 +269,26 @@ spec:
           default: false
           ui:help: If you select this field, you must ensure that Red Hat OpenShift AI has been installed on your cluster.
           # SED_APP_SUPPORT_END
+      dependencies:
+        deployArgoCDApplicationOnRemoteCluster:
+          oneOf:
+            - required:
+                - remoteClusterAPIUrl
+                - remoteClusterDeploymentNamespace
+              properties:
+                deployArgoCDApplicationOnRemoteCluster:
+                  const: true
+                remoteClusterAPIUrl:
+                  title: Remote Cluster API URL
+                  type: string
+                  ui:help: "Kube API URL of remote cluster"
+                remoteClusterDeploymentNamespace:
+                  title: Remote Cluster Deployment Namespace
+                  type: string
+                  ui:help: "The namespace of the remote cluster that the argoCD application will be deployed"
+            - properties:
+                deployArgoCDApplicationOnRemoteCluster:
+                  const: false
   # These steps are executed in the scaffolder backend, using data that we gathered
   # via the parameters above.
   steps:
