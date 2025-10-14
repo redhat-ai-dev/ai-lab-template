@@ -104,6 +104,9 @@ spec:
             # SED_EXISTING_SERVER_START
             - Bring you own model server
             # SED_EXISTING_SERVER_END
+            # SED_EXISTING_FROM_CATALOG_START
+            - choose-from-the-catalog
+            # SED_EXISTING_FROM_CATALOG_END
             # SED_EXISTING_END
           enumNames:
             - Create a new model server
@@ -118,6 +121,11 @@ spec:
             # SED_EXISTING_SERVER_START
             - Bring you own model server
             # SED_EXISTING_SERVER_END
+            # SED_EXISTING_FROM_CATALOG_START
+            # SED_LLM_SERVER_START
+            - Choose from the Catalog model(s)
+            # SED_LLM_SERVER_END
+            # SED_EXISTING_FROM_CATALOG_END
             # SED_EXISTING_END
       dependencies:
         includeArgoLabel:
@@ -201,6 +209,57 @@ spec:
                           - modelEndpointSecretName
                           - modelEndpointSecretKey
             # SED_EXISTING_SERVER_END
+            # SED_EXISTING_FROM_CATALOG_START
+            - required:
+                # SED_LLM_SERVER_START
+                - catalogModel
+                # SED_LLM_SERVER_END
+              properties:
+                modelServer:
+                  const: choose-from-the-catalog
+                modelServerDescription:
+                  type: 'null'
+                  # SED_LLM_SERVER_START
+                  description: Select a model from the RHDH catalog you wish to use with your application.
+                catalogModel:
+                  title: Model name
+                  type: string
+                  ui:help: "The model chosen from the model catalog."
+                  ui:field: EntityPicker
+                  ui:options:
+                    allowedKinds: []
+                    catalogFilter:
+                      kind: resource
+                      spec.type: ai-model
+                      spec.dependencyOf:
+                        exists: true
+                  # SED_LLM_SERVER_END
+                includeModelEndpointSecret:
+                  title: Is bearer authentication required?
+                  type: boolean
+                  default: false
+                  ui:help: Create a Secret containing the authentication bearer in the preferred targeted Namespace first.
+              dependencies:
+                includeModelEndpointSecret:
+                  allOf:
+                    - if:
+                        properties:
+                          includeModelEndpointSecret:
+                            const: true
+                      then:
+                        properties:
+                          modelEndpointSecretName:
+                            title: Model Server Endpoint Secret Name
+                            ui:help: Paste in the name of the Secret containing your bearer.
+                            type: string
+                          modelEndpointSecretKey:
+                            title: Model Server Endpoint Secret Key
+                            ui:help: Paste in the key of the Secret containing the bearer value.
+                            type: string
+                        required:
+                          - modelEndpointSecretName
+                          - modelEndpointSecretKey
+            # SED_EXISTING_FROM_CATALOG_END
             # SED_EXISTING_END
             # SED_LLM_SERVER_START
             - properties:
@@ -328,6 +387,26 @@ spec:
   # via the parameters above.
   steps:
     # SED_EXISTING_START
+    # SED_EXISTING_FROM_CATALOG_START
+    # SED_LLM_SERVER_START
+    # Fetches the ai-model entity if selected
+    - id: fetch-model-from-catalog
+      name: Fetch Model From Catalog
+      action: catalog:fetch
+      if: ${{ parameters.modelServer === 'choose-from-the-catalog' }}
+      input:
+        entityRef: ${{ parameters.catalogModel }}
+    # SED_LLM_SERVER_END
+    # Fetches the model-server entity of the selected ai-model
+    - id: fetch-model-server-from-catalog
+      name: Fetch Model Server From Catalog
+      action: catalog:fetch
+      if: ${{ parameters.modelServer === 'choose-from-the-catalog' }}
+      input:
+        # SED_LLM_SERVER_START
+        entityRef: ${{ steps['fetch-model-from-catalog'].output.entity.spec.dependencyOf[0] }}
+        # SED_LLM_SERVER_END
+    # SED_EXISTING_FROM_CATALOG_END
     # SED_EXISTING_END
     # SED_APP_SUPPORT_START
     # Each step executes an action, in this case one templates files into the workspace.
