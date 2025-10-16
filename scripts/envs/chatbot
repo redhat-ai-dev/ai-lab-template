@@ -16,7 +16,7 @@ export MODEL_SERVICE_CONTAINER="quay.io/redhat-ai-dev/llamacpp_python:0.3.16"
 export MODEL_SERVICE_DESC="A Python binding of LLM inference in C/C++ with minimal setup"
 export MODEL_SERVICE_SRC="https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/llamacpp_python/0.3.16"
 
-# https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/vllm/0.8.4
+# https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/vllm/0.11.0
 export VLLM_CONTAINER="quay.io/redhat-ai-dev/vllm-openai-ubi9:v0.11.0"
 export VLLM_DESC="A high throughput, memory efficient inference and serving engine with GPU support for LLMs in OpenShift"
 export VLLM_SRC="https://github.com/redhat-ai-dev/developer-images/tree/main/model-servers/vllm/0.11.0"
