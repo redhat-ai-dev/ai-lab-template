@@ -330,7 +330,7 @@ spec:
           appRunCommand: "streamlit run object_detection_client.py"
           modelServiceContainer: quay.io/redhat-ai-dev/object_detection_python:latest
           modelServicePort: 8000
-          customModelName: ${{ steps['fetch-model-from-catalog'].output.entity.metadata.name if parameters.modelServer === 'choose-from-the-catalog' else parameters.modelName }}
+          customModelName: ${{ steps['fetch-model-from-catalog'].output.entity.metadata.annotations | pick('rhdh.modelcatalog.io/model-name') if parameters.modelServer === 'choose-from-the-catalog' else parameters.modelName }}
           modelName: facebook/detr-resnet-101
           modelSrc: https://huggingface.co/facebook/detr-resnet-101
           modelServerName: ${{ parameters.modelServer }}

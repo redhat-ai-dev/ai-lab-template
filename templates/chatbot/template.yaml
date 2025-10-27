@@ -362,7 +362,7 @@ spec:
           appRunCommand: "streamlit run chatbot_ui.py"
           modelServiceContainer: quay.io/redhat-ai-dev/llamacpp_python:0.3.16
           modelServicePort: 8001
-          customModelName: ${{ steps['fetch-model-from-catalog'].output.entity.metadata.name if parameters.modelServer === 'choose-from-the-catalog' else parameters.modelName }}
+          customModelName: ${{ steps['fetch-model-from-catalog'].output.entity.metadata.annotations | pick('rhdh.modelcatalog.io/model-name') if parameters.modelServer === 'choose-from-the-catalog' else parameters.modelName }}
           modelName: ibm-granite/granite-3.1-8b-instruct
           modelSrc: https://huggingface.co/ibm-granite/granite-3.1-8b-instruct
           modelServerName: ${{ parameters.modelServer }}
@@ -461,7 +461,7 @@ spec:
           # for vllm
           vllmSelected: ${{ parameters.modelServer === 'vLLM' }}
           vllmModelServiceContainer: quay.io/redhat-ai-dev/vllm-openai-ubi9:v0.11.0
-          modelName: ${{ parameters.modelName if parameters.modelServer === 'Bring you own model server' else (steps['fetch-model-from-catalog'].output.entity.metadata.name if parameters.modelServer === 'choose-from-the-catalog' else 'ibm-granite/granite-3.1-8b-instruct') }}
+          modelName: ${{ parameters.modelName if parameters.modelServer === 'Bring you own model server' else (steps['fetch-model-from-catalog'].output.entity.metadata.annotations | pick('rhdh.modelcatalog.io/model-name') if parameters.modelServer === 'choose-from-the-catalog' else 'ibm-granite/granite-3.1-8b-instruct') }}
           modelSrc: https://huggingface.co/ibm-granite/granite-3.1-8b-instruct
           maxModelLength: 4096
           # SED_LLM_SERVER_END
