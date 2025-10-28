@@ -553,7 +553,7 @@ spec:
           appRunCommand: "${APP_RUN_COMMAND}"
           modelServiceContainer: ${MODEL_SERVICE_CONTAINER}
           modelServicePort: ${MODEL_SERVICE_PORT}
-          customModelName: ${{ steps['fetch-model-from-catalog'].output.entity.metadata.name if parameters.modelServer === 'choose-from-the-catalog' else parameters.modelName }}
+          customModelName: ${{ steps['fetch-model-from-catalog'].output.entity.metadata.annotations | pick('rhdh.modelcatalog.io/model-name') if parameters.modelServer === 'choose-from-the-catalog' else parameters.modelName }}
           modelName: ${MODEL_NAME}
           modelSrc: ${MODEL_SRC}
           modelServerName: ${{ parameters.modelServer }}
@@ -652,7 +652,7 @@ spec:
           # for vllm
           vllmSelected: ${{ parameters.modelServer === 'vLLM' }}
           vllmModelServiceContainer: ${VLLM_CONTAINER}
-          modelName: ${{ parameters.modelName if parameters.modelServer === 'Bring you own model server' else (steps['fetch-model-from-catalog'].output.entity.metadata.name if parameters.modelServer === 'choose-from-the-catalog' else '${LLM_MODEL_NAME}') }}
+          modelName: ${{ parameters.modelName if parameters.modelServer === 'Bring you own model server' else (steps['fetch-model-from-catalog'].output.entity.metadata.annotations | pick('rhdh.modelcatalog.io/model-name') if parameters.modelServer === 'choose-from-the-catalog' else '${LLM_MODEL_NAME}') }}
           modelSrc: ${MODEL_SRC}
           maxModelLength: ${LLM_MAX_MODEL_LEN}
           # SED_LLM_SERVER_END
