@@ -91,6 +91,9 @@ spec:
             # SED_EXISTING_SERVER_START
             - Bring you own model server
             # SED_EXISTING_SERVER_END
+            # SED_EXISTING_FROM_CATALOG_START
+            - choose-from-the-catalog
+            # SED_EXISTING_FROM_CATALOG_END
             # SED_EXISTING_END
           enumNames:
             - Create a new model server
@@ -102,6 +105,11 @@ spec:
             # SED_EXISTING_SERVER_START
             - Bring you own model server
             # SED_EXISTING_SERVER_END
+            # SED_EXISTING_FROM_CATALOG_START
+            # SED_ASR_MODEL_SERVER_START
+            - Choose from the Catalog model server(s)
+            # SED_ASR_MODEL_SERVER_END
+            # SED_EXISTING_FROM_CATALOG_END
             # SED_EXISTING_END
       dependencies:
         includeArgoLabel:
@@ -160,6 +168,55 @@ spec:
                           - modelEndpointSecretName
                           - modelEndpointSecretKey
             # SED_EXISTING_SERVER_END
+            # SED_EXISTING_FROM_CATALOG_START
+            - required:
+                # SED_ASR_MODEL_SERVER_START
+                - catalogModelServer
+                # SED_ASR_MODEL_SERVER_END
+              properties:
+                modelServer:
+                  const: choose-from-the-catalog
+                modelServerDescription:
+                  type: 'null'
+                  # SED_ASR_MODEL_SERVER_START
+                  description: Select a model server from the RHDH catalog you wish to use with your application.
+                catalogModelServer:
+                  title: Model Server Entity
+                  type: string
+                  ui:help: "The model server chosen from the model catalog."
+                  ui:field: EntityPicker
+                  ui:options:
+                    allowedKinds: []
+                    catalogFilter:
+                      kind: component
+                      spec.type: model-server
+                # SED_ASR_MODEL_SERVER_END
+                includeModelEndpointSecret:
+                  title: Is bearer authentication required?
+                  type: boolean
+                  default: false
+                  ui:help: Create a Secret containing the authentication bearer in the preferred targeted Namespace first.
+              dependencies:
+                includeModelEndpointSecret:
+                  allOf:
+                    - if:
+                        properties:
+                          includeModelEndpointSecret:
+                            const: true
+                      then:
+                        properties:
+                          modelEndpointSecretName:
+                            title: Model Server Endpoint Secret Name
+                            ui:help: Paste in the name of the Secret containing your bearer.
+                            type: string
+                          modelEndpointSecretKey:
+                            title: Model Server Endpoint Secret Key
+                            ui:help: Paste in the key of the Secret containing the bearer value.
+                            type: string
+                        required:
+                          - modelEndpointSecretName
+                          - modelEndpointSecretKey
+            # SED_EXISTING_FROM_CATALOG_END
             # SED_EXISTING_END
             # SED_ASR_MODEL_SERVER_START
             - properties:
@@ -306,6 +363,17 @@ spec:
   # via the parameters above.
   steps:
     # SED_EXISTING_START
+    # SED_EXISTING_FROM_CATALOG_START
+    # Fetches the model-server entity of the selected ai-model
+    - id: fetch-model-server-from-catalog
+      name: Fetch Model Server From Catalog
+      action: catalog:fetch
+      if: ${{ parameters.modelServer === 'choose-from-the-catalog' }}
+      input:
+        # SED_ASR_MODEL_SERVER_START
+        entityRef: ${{ parameters.catalogModelServer }}
+        # SED_ASR_MODEL_SERVER_END
+    # SED_EXISTING_FROM_CATALOG_END
     # SED_EXISTING_END
     # SED_APP_SUPPORT_START
     # Each step executes an action, in this case one templates files into the workspace.
