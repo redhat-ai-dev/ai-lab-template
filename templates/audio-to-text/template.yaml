@@ -386,10 +386,8 @@ spec:
       if: ${{ parameters.hostType === 'GitLab' }}
       input:
         sourcePath: source
-        description: This is ${{ parameters.name }}
         repoUrl: ${{ parameters.gitlabServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}
         defaultBranch: ${{ parameters.branch }}
-        protectDefaultBranch: false
         repoVisibility: "public"
     # SED_APP_SUPPORT_END
     # The final step is to register our new component in the catalog.
@@ -517,10 +515,8 @@ spec:
       if: ${{ parameters.hostType === 'GitLab' }}
       input:
         sourcePath: gitops
-        description: This is GitOps repository for ${{ parameters.name }}
         repoUrl: ${{ parameters.gitlabServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}-gitops
         defaultBranch: "main"
-        protectDefaultBranch: false
         repoVisibility: "public"
     - id: wait-for-github-repository
       name: Waiting for Repository Availability
