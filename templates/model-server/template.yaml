@@ -337,6 +337,8 @@ spec:
         repoUrl: ${{ parameters.gitlabServer }}?owner=${{ parameters.repoOwner }}&repo=${{ parameters.repoName }}-gitops
         defaultBranch: "main"
         repoVisibility: "public"
+        settings:
+          description: This is GitOps repository for ${{ parameters.name }}
     - id: wait-for-github-repository
       name: Waiting for Repository Availability
       action: 'debug:wait'
