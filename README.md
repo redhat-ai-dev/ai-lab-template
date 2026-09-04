@@ -1,5 +1,8 @@
 #  AI-lab Software Templates
 
+> [!WARNING]
+> This repository has been retired and will no longer be maintained. It has been moved to [redhat-developer/rhdh-ai-template](https://github.com/redhat-developer/rhdh-ai-template).
+
 ## Prerequisite 
 > [!IMPORTANT]  
 > The Software Templates in this repository require OpenShift Pipelines and OpenShift GitOps installed, along with their respective plugins in Red Hat Developer Hub. For more information on configuring them, please see [ai-rhdh-installer](https://github.com/redhat-ai-dev/ai-rhdh-installer/).
